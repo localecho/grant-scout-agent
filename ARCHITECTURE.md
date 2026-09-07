@@ -1,23 +1,24 @@
 # Architecture
 
-Grant Scout is a single Strands `Agent` with two tools and a system prompt that tells it what
+Grant Scout is a single Strands `Agent` with three tools and a system prompt that tells it what
 "good enough to surface" means. There's no orchestration framework beyond Strands itself — the
-judgment (search → cross-check → drop weak matches → write a brief) lives in the prompt and is
-executed via the agent's normal tool-calling loop.
+judgment (search → cross-check → cost-check → drop weak matches → write a brief) lives in the
+prompt and is executed via the agent's normal tool-calling loop.
 
 ```mermaid
 flowchart TD
     subgraph Input
-        P[Org profile YAML<br/>mission, budget, states, keywords, volunteer hours]
+        P[Org profile YAML<br/>mission, budget, states, keywords, volunteer hours,<br/>compliance status]
     end
 
     subgraph Agent["Strands Agent (src/agent.py)"]
-        SP[System prompt:<br/>search → vet → drop weak matches → brief top 3 max]
+        SP[System prompt:<br/>compliance floor → search → vet → cost-check → brief top 3 max]
     end
 
     subgraph Tools
         T1[search_open_grants<br/>grants.gov public API<br/>live, open/forecasted opportunities]
         T2[historical_award_context<br/>FY2021 USASpending extract<br/>real nonprofit award $ + counts]
+        T3[estimate_compliance_burden<br/>2 CFR 200 math<br/>uncovered overhead + Single Audit check]
     end
 
     subgraph Model["Model provider (swappable via env var)"]
@@ -26,26 +27,31 @@ flowchart TD
     end
 
     subgraph Output
-        O[Markdown brief:<br/>at most 3 opportunities,<br/>each with fit + $ range + honest risk<br/>OR "nothing cleared the bar"]
+        O[Markdown brief:<br/>at most 3 opportunities,<br/>each with fit + $ range + compliance cost + honest risk<br/>OR "nothing cleared the bar"]
     end
 
     P --> Agent
     Agent <--> T1
     Agent <--> T2
+    Agent <--> T3
     Agent <--> Model
     Agent --> O
 ```
 
 ## Why this shape
 
-- **Two tools, not ten.** The judging criteria reward "genuine effort and a working, non-trivial
-  implementation," not tool-count. The non-trivial part here is the *cross-check*: an opportunity
-  that sounds like a fit by title alone gets rejected if `historical_award_context` shows no real
-  nonprofit award history for that program. That's the difference between a keyword-matcher and
-  an agent that actually vets.
+- **Three tools, not ten.** The judging criteria reward "genuine effort and a working,
+  non-trivial implementation," not tool-count. The non-trivial part is the layered vetting: an
+  opportunity that sounds like a fit by title alone gets rejected if `historical_award_context`
+  shows no real nonprofit award history, and a program with excellent award history can still get
+  dropped if `estimate_compliance_burden` shows winning it would cost more than the org can
+  absorb. That's the difference between a keyword-matcher and an agent that actually vets.
 - **Real data, not fixtures.** `search_open_grants` hits grants.gov live. `historical_award_context`
   reads a table derived from a real USASpending.gov bulk pull (`data/extract_benchmarks.sql`
-  documents the exact query) — not synthetic or invented numbers.
+  documents the exact query) — not synthetic or invented numbers. `estimate_compliance_burden`
+  computes from real federal regulation (2 CFR 200.414(f)'s 10% de minimis rate, 2 CFR 200 Subpart
+  F's $750K Single Audit threshold), with its overhead-rate assumption clearly labeled as an
+  assumption, not data this tool has verified per-program.
 - **Provider-agnostic on purpose.** `src/agent.py::_build_model` switches on
   `GRANT_SCOUT_MODEL_PROVIDER`. The default is OpenRouter (fast iteration, one key, hundreds of
   models); `bedrock` is a first-class alternate path with the same agent code, so this is a
@@ -102,8 +108,13 @@ surfaced.
 Note step 3 is a **drop rule with a condition, not a blanket ban** on zero-history programs — a
 program with no FY2021 nonprofit history but an ambiguous (not obviously state/university-aimed)
 title survives to the brief stage flagged as an open risk, rather than being silently dropped or
-silently trusted. See `sample_run_food_bank.md`'s Cold Chain Grants call for exactly this case,
-and the corrected framing of it in `DEVPOST.md`'s Challenges section.
+silently trusted; see `sample_run_library.md`'s treatment of the IMLS library programs for a
+current example ("these programs *may* fund nonprofits, but I cannot confirm that with the
+available data... recommend you manually verify"). Step 6's compliance-burden check adds a
+second, independent reason to drop an otherwise-strong opportunity: `sample_run_library.md` and
+`sample_run_afterschool.md` both show the Community Services Block Grant (CFDA 93.570) — a
+program with real, strong nonprofit award history — dropped anyway because winning it would
+cross the $750K Single Audit threshold and impose real compliance costs the org can't absorb.
 
 ## Evaluation across profiles, not one anecdote
 

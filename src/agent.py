@@ -12,6 +12,7 @@ import os
 from strands import Agent
 
 from src.profile import OrgProfile
+from src.tools.compliance_burden import estimate_compliance_burden
 from src.tools.grants_gov import search_open_grants
 from src.tools.historical_benchmarks import historical_award_context
 
@@ -42,10 +43,33 @@ For every candidate opportunity:
    grants this org structurally can't win.
 4. DROP any opportunity that would require more grant-writing hours than the org has available,
    unless the payoff (award size vs. budget) clearly justifies it -- say so explicitly.
-5. For the opportunities that survive, write a short brief: why it fits, the realistic award
+5. For each opportunity that survives, call estimate_compliance_burden with the realistic award
+   amount (use the midpoint of the historical range) to quantify -- not just name -- the
+   structural cost of winning: uncovered overhead if the org has no negotiated indirect cost
+   rate, and whether this award would push the org over the Single Audit threshold. These are
+   real dollar consequences of winning, separate from the effort of applying, and belong in the
+   brief even for opportunities you do recommend -- "winning costs something too" is not a
+   reason alone to drop an opportunity, but it is a reason to say the number out loud.
+6. For the opportunities that survive, write a short brief: why it fits, the realistic award
    range (grounded in the historical numbers, not a guess), the deadline, the compliance floor
-   (SAM.gov/UEI/indirect cost rate status per above), and one honest risk or reason it might not
-   be worth the org's time.
+   (SAM.gov/UEI/indirect cost rate status per above), the systemic cost of winning (from
+   estimate_compliance_burden, labeled as the rule-of-thumb estimate it is), and one honest risk
+   or reason it might not be worth the org's time.
+
+Ground every claim in what search_open_grants and historical_award_context actually returned.
+If historical_award_context finds no nonprofit award history for a program, say exactly that --
+"no nonprofit award history found in this data" -- and stop there. Do NOT add outside claims
+from your own general knowledge of grant-writing practice (e.g. "I know IMLS programs typically
+award to nonprofits") to fill the gap; that manufactures false confidence the tool's real data
+doesn't back, which is exactly the failure mode the historical cross-check exists to prevent.
+A missing data point is a reason to recommend manual verification, not a reason to reach for
+what you already believe.
+
+Write every brief for a reader who has never seen a federal grant application, not a grants
+professional. The first time you use a term like a CFDA number, "SAM.gov," "UEI," or "indirect
+cost rate agreement (NICRA)," give a plain-language parenthetical (e.g. "CFDA 93.224 (the
+program's federal ID number)"). Never assume the reader already knows what a compliance term
+means.
 
 Surface at most 3 opportunities. If nothing clears the bar, say so plainly -- do not pad the
 list with weak matches just to have something to show. Output format: one Markdown section per
@@ -65,7 +89,12 @@ def _build_model():
                 "base_url": "https://openrouter.ai/api/v1",
             },
             model_id=os.environ.get("GRANT_SCOUT_MODEL_ID", "anthropic/claude-haiku-4.5"),
-            params={"max_tokens": 2000},
+            # 2000 was enough for a 2-tool brief; adding estimate_compliance_burden's
+            # per-opportunity section pushed a real 3-opportunity run past that cap mid-response
+            # (strands.types.exceptions.MaxTokensReachedException, hit live regenerating
+            # sample_run_health_clinic.md). Raised with headroom rather than tuned to the exact
+            # observed failure.
+            params={"max_tokens": 4000},
         )
 
     if provider == "bedrock":
@@ -87,7 +116,7 @@ def build_agent() -> Agent:
     return Agent(
         model=_build_model(),
         system_prompt=SYSTEM_PROMPT,
-        tools=[search_open_grants, historical_award_context],
+        tools=[search_open_grants, historical_award_context, estimate_compliance_burden],
     )
 
 

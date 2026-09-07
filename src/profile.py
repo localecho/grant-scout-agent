@@ -24,6 +24,13 @@ class OrgProfile:
     # orgs fail before the writing hours even start.
     sam_gov_registered: bool | None = None
     has_indirect_cost_rate_agreement: bool | None = None
+    # Rough total of federal funds this org already receives in a fiscal year, from all sources
+    # (not just what Grant Scout might add) -- used only to check the Single Audit threshold
+    # (2 CFR 200 Subpart F triggers at $750,000/year in federal expenditures). 0 = none stated.
+    # Per Vu Le's review: search-and-vet tools that stop at "can you win it" launder a real
+    # post-award structural cost (uncovered overhead, audit burden) into invisibility. This
+    # field lets the agent quantify that cost instead of only naming it in the abstract.
+    estimated_current_annual_federal_funding_usd: float = 0.0
 
     @classmethod
     def from_yaml(cls, path: str) -> "OrgProfile":
@@ -51,5 +58,7 @@ class OrgProfile:
             f"Grant-writing capacity: ~{self.max_grant_writing_hours_available} volunteer/staff hours available\n"
             f"SAM.gov registered (has a Unique Entity ID): {self._compliance_status(self.sam_gov_registered)}\n"
             f"Has an indirect cost rate agreement: {self._compliance_status(self.has_indirect_cost_rate_agreement)}\n"
+            f"Estimated current annual federal funding (all sources, for Single Audit threshold "
+            f"checks): ${self.estimated_current_annual_federal_funding_usd:,.0f}\n"
             f"Notes: {self.notes}"
         )

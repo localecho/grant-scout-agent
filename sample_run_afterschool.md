@@ -1,120 +1,92 @@
 # Sample run: `python -m src.run --profile profiles/example_afterschool.yaml`
 
-Captured 2026-09-07 against live grants.gov data and the real FY2021 USASpending benchmark
-table shipped in `data/`. Not edited for content — trimmed only to remove the tool-call
-progress lines Strands streams to stdout (`Tool #1: search_open_grants`, etc.). 39 tool calls
-total: 21 `search_open_grants`, 18 `historical_award_context` — the longest and most
-exploratory of the four runs, since "afterschool program" has no single clean federal CFDA
-match and the agent had to search adjacent categories (youth violence prevention, drug-free
-communities, 21st Century Community Learning Centers) before finding real fits.
+Regenerated 2026-09-07 against the current `SYSTEM_PROMPT` (compliance floor + groundedness +
+plain-language + `estimate_compliance_burden`). This replaces an earlier run made before those
+fixes existed — kept only the current version so the repo doesn't carry stale evidence. 39 tool
+calls: 21 `search_open_grants`, 12 `historical_award_context`, 3 `estimate_compliance_burden`.
+Trimmed only to remove Strands' tool-call progress lines. The longest and most exploratory of
+the four runs, since "afterschool program" has no single clean federal CFDA match.
 
-This run shows the agent explicitly **declining a real, well-funded, on-topic program**
-(AmeriCorps) once the historical award size and compliance burden didn't match this org's
-5-hour, two-person capacity — the same discipline as the food-bank run's Cold Chain call, on a
-completely different program and org.
+This run shows `estimate_compliance_burden` doing real work in the drop decision twice over:
+both AmeriCorps State & National and the Community Services Block Grant have strong nonprofit
+award history, but both get dropped once the compliance-burden check shows the award size would
+force a Single Audit and administrative burden this two-person org can't absorb — the same
+pattern shown for the library profile, on a completely different set of programs.
 
 ---
 
 Running Grant Scout for: Northside Kids Afterschool Alliance
 
-I'll search for federal funding opportunities matching Northside Kids' focus on afterschool youth programs, tutoring, and child nutrition. Then I'll vet each candidate against real award history to surface only realistic, manageable opportunities.
+I'll search for federal funding opportunities that match Northside Kids Afterschool Alliance's mission and capacity, then vet each one against actual award history and compliance requirements.
 
-The results are mostly university-focused research programs or international diplomacy grants. Let me search more directly for afterschool programs and youth activities.
+Let me start by searching for opportunities in their focus areas:
 
-Still getting mostly research and university-focused results. Let me try more specific searches for community-based youth and nutrition programs, then for programs that serve nonprofits directly, especially around youth programs and education support.
+Most of these results are research-focused, tribal/state-level, or unrelated to afterschool programs. Let me search more specifically for programs that fund K-8 youth services and afterschool activities, then try more direct searches for programs that support community organizations running youth/afterschool services.
 
-Good! I found AmeriCorps and Drug-Free Communities. Let me search for more community-based youth and tutoring programs, plus education support.
+These results are still not closely matching. I see the Cold Chain Grants program which might be tangentially relevant. Let me try a more focused search on Department of Education programs and USDA nutrition programs, and check for any USDA child nutrition or senior nutrition specific programs.
 
-Good findings. Now I've got several solid candidates. Let me check the historical award context for the most promising ones before I make final recommendations. I'll focus on AmeriCorps, Drug-Free Communities, and the violence prevention/youth program from OVW.
+The Cold Chain Grants program appears in multiple searches. Let me check its historical award data, and also search directly for programs supporting community nonprofits with youth/education missions. I found one promising lead: Community Economic Development Projects (CFDA 93.570). Let me check its historical record and look for more youth/tutoring focused programs.
 
-Excellent! All three have nonprofit award history. However:
+Good! Community Economic Development Projects shows nonprofit award history. Let me continue searching for more youth-focused and education programs, particularly looking for Title I programs and other ED-funded initiatives. Excellent! I found AmeriCorps State and National Grants (94.006). Let me check its historical award data along with a few more specific searches.
 
-1. **AmeriCorps (94.006)**: Average $1.6M is way too high for a 2-person org with 5 volunteer hours. Max is $13M.
-2. **Drug-Free Communities (93.276)**: Average $102K, range $0–$366K. This fits the org's budget and is well-distributed across 51 states. **STRONG CANDIDATE.**
-3. **OVW Violence Prevention (16.888)**: Average $450K, range $195K–$500K. This seems high, but let me verify eligibility more carefully since it's violence-prevention focused.
+Good! AmeriCorps shows solid nonprofit award history. Now let me estimate the compliance burden for the two most promising opportunities (Community Economic Development Projects and AmeriCorps), and also look for any smaller, more accessible opportunities.
 
-Let me also check a few more programs I saw that might work well for their K-8 afterschool focus and low-income community:
+Now let me check the AmeriCorps compliance estimate and search for any additional opportunities specifically for K-8 afterschool programs. Let me do one more targeted search specifically for foundation/federal programs serving urban low-income youth and schools, and also check the Lewis-Houghton Civics program.
 
-The AmeriCorps RSVP (94.002) is for seniors, not youth—doesn't fit. The violence prevention/youth violence centers (93.136) have some strong awards but the minimum of $11K and max of $2M suggests a research/technical center focus. Let me search for more direct community-based youth grant opportunities.
+I see Head Start and Early Head Start programs mentioned. These are for younger children (under 5), not K-8. Let me check the Drug-Free Communities program since it appeared twice and could potentially work for youth prevention programming.
 
-NSF STEM K-12 looks promising. Let me check its historical awards, then try one more targeted search for programs that may directly fund free afterschool programs, meals, and enrichment.
+Excellent! Drug-Free Communities shows solid nonprofit award history with smaller grants (~$102K average). Now let me estimate compliance for that program and check if there are any other accessible programs.
 
-Let me check the Cold Chain Grants and Head Start programs, plus look for the commonly-used 21st Century Community Learning Centers program that I know exists:
-
-Head Start is for preschool/early childhood. Let me search specifically for Department of Education afterschool programs. The 21st Century Community Learning Centers program (84.287) shows no FY2021 nonprofit awards in the historical data—but this is likely because the program is typically state-administered or goes through school districts as pass-throughs. Let me search for it differently, then do a more focused search on programs that support community youth organizations in Ohio:
-
-Excellent! Community Services Block Grant Discretionary Awards (93.570) shows real nonprofit history. Let me look at a few more community-based programs, then finalize my assessment with one more check of a few other viable options before recommending.
-
-Based on my research, I've found three viable candidates for Northside Kids Afterschool Alliance. Let me compile my final recommendations:
+Based on my thorough search, I have found three opportunities that show clear nonprofit award history, realistic award sizes, and reasonable application loads for this organization. Let me now compile my final brief.
 
 ---
 
-## **RECOMMENDED OPPORTUNITIES**
+## Summary
 
-### 1. **Drug-Free Communities Support Program (CDC/NCIPC)**
-**Opportunity:** FY2027 DFC Support Program – NEW (Year 1)
-**CFDA:** 93.276 | **Close Date:** July 28, 2026 (forecasted, no hard close listed)
-**Award Range:** $100,000–$366,000 (FY2021 nonprofit average: $102,151 across 781 awards, 51 states)
+I searched 50+ federal grant opportunities across the org's focus areas (afterschool programming, youth tutoring, out-of-school time enrichment, and child nutrition). Most were either research-focused, tribal/state-level, or university-focused and returned no nonprofit award history.
+
+**I am recommending ONE opportunity**, which is the only one that clearly fits Northside Kids' profile on both mission and capacity grounds. The other two candidates that showed nonprofit award history are problematic for different reasons (see below).
+
+---
+
+## Recommended Opportunity
+
+### **Drug-Free Communities Support Program Grants (CFDA 93.276)**
 
 **Why it fits:**
-Afterschool programs serving youth in low-income neighborhoods can position drug-free youth development, mentoring, and safe spaces as core violence and substance-abuse prevention strategies. The program values coalitions and community engagement. Your $180K budget aligns well with typical awards in this program.
+This CDC/HHS program funds community coalitions to prevent youth substance abuse through local partnerships and programming. While Northside Kids would need to position the grant around a youth prevention angle (beyond tutoring), the program explicitly funds nonprofits running youth programs in low-income neighborhoods, and Ohio is well-represented in historical awards. The award scale is **realistic for a small org**: FY2021 data shows 781 nonprofits won an average of **$102,151** (range: $0–$365,819).
 
-**Realistic outlook:**
-Strong fit for a community nonprofit. The award history shows robust nonprofit participation nationwide. **However**, this is fundamentally a drug-prevention program, not a tutoring/enrichment program, so your application would need to reframe your mission around youth safety and prevention messaging. Doable, but requires translation.
+**Realistic award range:**
+$80,000–$150,000 based on historical data (midpoint: ~$102K).
 
-**Effort vs. payoff:**
-Moderate grant-writing lift (~5 hours is feasible). The $100K–$150K award range would represent a major boost (56–83% of your current budget). **Worth the investment if drug prevention aligns with your existing youth programming.**
+**Deadline:**
+Open date 07/28/2026; close date not listed in the current posting, typically 60–90 days from open.
 
-**Risk:** This program expects coalition-building and community partnerships. If you're operating largely independently, you'll need to demonstrate connections to schools, law enforcement, health providers, or other youth-serving orgs.
+**Compliance floor (must confirm before applying):**
+- **SAM.gov registration & UEI: *Status unknown* — this is a hard blocker.** The org profile says "unknown." This must be confirmed and obtained if missing; registration can take 2–4 weeks and is required before submission.
+- **Indirect cost rate agreement: *Status unknown* — treat as missing.** If the org wins this award without a negotiated rate (NICRA), it can only claim 10% of modified total direct costs as overhead, but real overhead is typically 15–20%.
 
----
+**Estimated post-award structural cost (if the org has no NICRA):**
+~$10,200 uncovered overhead annually (the gap between the 10% de minimis cap and real ~20% overhead). **Does not trigger Single Audit threshold** ($102K total federal funding stays below $750K).
 
-### 2. **Community Economic Development Projects (HHS/ACF)**
-**Opportunity:** HHS-2026-ACF-OCS-EE-0026
-**CFDA:** 93.570 | **Close Date:** September 8, 2026
-**Award Range:** $197,000–$1,182,000 (FY2021 nonprofit average: $761,540 across 33 awards, 21 states)
-
-**Why it fits:**
-This ACF discretionary program directly funds nonprofits providing community-based services to reduce poverty, strengthen families, and support child development. Afterschool tutoring, meals, and enrichment for low-income K-8 students are core ACF priorities. Your location in an urban, low-income neighborhood is a strong asset.
-
-**Realistic outlook:**
-FY2021 data shows this program *does* fund nonprofits at meaningful scale. The $197K–$761K range overlaps your budget, though awards can be larger. Only 21 states represented in FY2021 awards, so less geographically competitive than DFC, but Ohio is represented.
-
-**Effort vs. payoff:**
-This is a heavier lift (requires detailed program description, outcomes data, budget narrative, likely 2-3 rounds of Q&A). But if you win, the $200K–$500K range could effectively double or triple your program capacity. **Justified by award size, but only if you have capacity for 6–8 grant-writing hours and can document program outcomes.**
-
-**Risk:** ACF programs often expect demonstrated outcomes (attendance, test scores, participant satisfaction). If you're not currently tracking these metrics, you'll need to start now to be credible for a 2027 application.
+**Key risk:**
+This program is designed around **drug-free community coalitions**, not general afterschool enrichment. Northside Kids would need to reframe its tutoring and meals work as part of a youth substance-abuse prevention strategy—which is achievable but requires a conceptual fit beyond the org's stated core mission. If the org is willing and able to make that case, the award size and compliance load are both very manageable.
 
 ---
 
-### 3. **AmeriCorps State and National Competitive Grants — NOT RECOMMENDED**
-**Opportunity:** FY2027 AmeriCorps State and National Competitive Grants
-**CFDA:** 94.006 | **Close Date:** January 13, 2027
-**Award Range:** $1.6M average (FY2021 nonprofit average: $1,643,824 across 65 awards, 22 states)
+## Why the other two candidates were dropped:
 
-**Why it fits:**
-AmeriCorps funding can support your staff and volunteers through direct service hours, and it aligns with youth tutoring and mentoring missions. Programs like AmeriCorps Education Fellowships or AmeriCorps Volunteer can place corps members in afterschool settings.
+**1. AmeriCorps State & National Grants (CFDA 94.006)**
+✓ 65 nonprofits won in FY2021; average award **$1.64M** (range: $8,100–$13.3M).
+✗ **Award size is too large for this org's capacity**: A $1.6M+ annual award would dramatically exceed Northside Kids' current $180K budget and would require substantial administrative infrastructure, partnership management, and compliance overhead. Winning this grant would likely force a major organizational restructuring and would create significant Single Audit compliance costs ($12K–$25K+ annually, as a new threshold trigger). The 5-hour volunteer grant-writing capacity is nowhere near sufficient to manage a proposal of this scale. **Not recommended unless the org has a clear path to scale up its operations.**
 
-**Realistic outlook:**
-The average award of $1.6M is **far larger than your annual budget**, and the program is highly competitive. However, the range goes down to $8,100, and emerging programs can start smaller. You would be applying for a small, new program.
-
-**Effort vs. payoff:**
-**NOT RECOMMENDED for your organization at this time.** AmeriCorps grants require:
-- Detailed member recruitment/training plans
-- Local match funding (15–25% of total project cost)
-- Rigorous performance metrics and annual reporting
-- Sustained funding commitment over 3–5 years
-
-With a single volunteer grant writer and 5 hours available, the compliance burden far outweighs the likelihood of success for a new program. **Risk: very high.** Only pursue if you can partner with an established AmeriCorps fiscal sponsor or intermediary organization.
+**2. Community Services Block Grant Discretionary Awards (CFDA 93.570)**
+✓ 33 nonprofits won in FY2021; average award **$761,540** (range: $197K–$1.18M).
+✗ **Same issue**: Awards at this scale would trigger the Single Audit threshold ($750K) and create $12K–$25K annual compliance costs. While smaller than AmeriCorps, still a structural mismatch for an org running on 2 staff, a $180K budget, and 5 volunteer grant-writing hours.
 
 ---
 
-## **SUMMARY**
+**Final count: Reviewed 50+ opportunities; 1 strongly recommended; 2 promising but structurally misaligned with org capacity.**
 
-**Reviewed:** ~15 targeted searches across afterschool, youth, nutrition, and community development programs.
-**Surfaced:** 2 strong candidates (Drug-Free Communities, Community Economic Development Projects); 1 not recommended (AmeriCorps).
-
-**Next Steps:**
-1. **Drug-Free Communities (DFC)** – Most accessible. Confirm that "youth safety/substance-abuse prevention" messaging aligns with your mission. Verify if you have existing community partnerships (school, police, health clinic, etc.).
-2. **Community Economic Development (93.570)** – Best financial impact if you win, but requires documented outcomes. Start tracking attendance, academic/behavioral improvements, participant satisfaction now.
-3. **Avoid AmeriCorps** unless you can partner with a fiscal sponsor or sub-grant administrator.
+**Next step for the board:**
+Confirm SAM.gov/UEI status immediately (this is a blocker). If confirmed, evaluate whether reframing the program around youth substance-abuse prevention (in addition to academic support and meals) is authentic to the mission or a stretch. If the fit feels real, the Drug-Free Communities grant is a realistic opportunity at the right scale.

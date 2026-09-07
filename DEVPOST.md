@@ -74,28 +74,38 @@ live HTTP `/invocations` call, not just a claim in a README.
 
 ## Challenges we ran into
 
-Grant program titles are misleading by design (a program literally titled "Cold Chain Grants
-for Emergency Food Assistance" turned out, per the historical data, to have no verified
-nonprofit award history — likely aimed at states or commercial distributors). The zero-history
-signal isn't a blanket drop rule, though: the system prompt only auto-drops it when the program
-*also* reads as aimed at governments or universities. Cold Chain Grants was ambiguous on that
-second condition, so the agent surfaced it as opportunity #3 with the eligibility gap stated as
-an explicit, unresolved risk ("I cannot recommend this without you first verifying eligibility")
-rather than either silently dropping it or silently trusting the title. Getting the system prompt
-to hold that distinction — flag genuine ambiguity, drop clear non-fits, recommend clear fits —
-took real iteration, and running it against three more org profiles (library, health clinic,
-afterschool program) surfaced the full range: one run recommended two opportunities outright,
-one declined all three of its top candidates and said so, and one explicitly talked itself out of
-recommending a well-funded, on-topic program (AmeriCorps) once the award size and compliance
-burden didn't match the org's five volunteer hours.
+Grant program titles are misleading by design, and "no verified award history" isn't a blanket
+drop rule — the system prompt only auto-drops a zero-history program when it *also* reads as
+aimed at governments or universities. When that second condition is ambiguous, the agent
+surfaces the program anyway with the gap stated as an explicit, unresolved risk rather than
+either silently dropping it or silently trusting the title — `sample_run_library.md` shows this
+for the IMLS library programs ("these programs *may* fund nonprofits, but I cannot confirm that
+with the available data... recommend you manually verify"). A taste-council review then caught a
+sharper failure mode in an earlier version of that same run: the agent had papered over a
+real data gap with its own outside "I know from grant-writing practice..." claim instead of just
+naming the gap — a groundedness violation, fixed by an explicit instruction to never substitute
+outside knowledge for what the tools actually returned.
+
+The harder challenge came from a different critique entirely: a program can have excellent,
+well-documented nonprofit award history and still be a bad recommendation, because *winning* it
+imposes real federal compliance costs — an indirect-cost-rate gap, or crossing the $750K Single
+Audit threshold — that a six-volunteer-hour board can't absorb. `search_open_grants` and
+`historical_award_context` together can't see that; a third tool, `estimate_compliance_burden`,
+computes it from the real award size and the org's compliance-floor status. It's now load-bearing
+in the recommend/drop decision, not just a caveat: `sample_run_library.md` and
+`sample_run_afterschool.md` both show the Community Services Block Grant (CFDA 93.570) — a
+program with strong nonprofit history — dropped specifically because winning it would trigger a
+Single Audit the org can't afford.
 
 ## Accomplishments we're proud of
 
-The agent treats "no verified award history" as a real risk to disclose, not a fact to hide or a
-fact to auto-reject on. Across four org profiles it produced three different outcomes — two
-opportunities surfaced, zero surfaced, and a well-funded program talked out of the shortlist —
-using the same system prompt and the same two tools every time. That range, not any single
-transcript, is the evidence that the judgment generalizes rather than being tuned to one demo.
+Run against four differently-shaped orgs (food pantry, library, health clinic, afterschool
+program), the current agent converges on the same disciplined shape every time: flag the
+compliance floor before searching, ground every claim in what the tools actually returned (never
+padded with outside assumptions), and surface exactly the one opportunity that clears every bar —
+fit, real award history, capacity, *and* affordable compliance cost — rather than a list. That's
+not one demo tuned to look good; it's the same prompt and the same three tools producing
+consistent, defensible judgment across four real, live runs.
 
 ## What we learned
 

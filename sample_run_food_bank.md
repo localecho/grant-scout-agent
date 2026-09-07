@@ -1,111 +1,101 @@
 # Sample run: `python -m src.run --profile profiles/example_food_bank.yaml`
 
-Captured 2026-09-07 against live grants.gov data and the real FY2021 USASpending benchmark
-table shipped in `data/`. Not edited for content — trimmed only to remove the tool-call
-progress lines Strands streams to stdout (`Tool #1: search_open_grants`, etc.), which don't
-render usefully in Markdown. 17 tool calls total: 11 `search_open_grants`, 6
-`historical_award_context`.
+Regenerated 2026-09-07 against the current `SYSTEM_PROMPT`: the original three-tool cross-check
+(search, historical benchmark, compliance-burden estimate) plus the groundedness and
+plain-language fixes from a taste-council review. This replaces the earlier run made before
+those fixes existed — kept only the current version so the repo doesn't carry stale evidence.
+21 tool calls: 12 `search_open_grants`, 8 `historical_award_context`, 1
+`estimate_compliance_burden`. Trimmed only to remove Strands' tool-call progress lines.
+
+This run shows the compliance floor now surfaced **before any search happens** (not just in the
+final brief), and the `estimate_compliance_burden` tool's output cited directly in the recommend
+decision — the systemic cost of winning is now a computed number, not an abstract caveat.
 
 ---
 
 Running Grant Scout for: Riverside Community Food Pantry
 
-I'll search for current funding opportunities matching Riverside Community Food Pantry's focus, then vet each one against their capacity and eligibility.
+I need to flag a compliance blocker before I search:
 
-Good start. Most of these are either research-focused or aimed at state regulatory programs. The most promising candidates for a community food pantry are:
+**CRITICAL: Before applying to any federal grant, Riverside Community Food Pantry MUST confirm two things:**
 
-1. **USDA-AMS Cold Chain Grants for Emergency Food Assistance** (CFDA 10.197) — directly matches emergency food work
-2. **HRSA Expanding Nutrition Services** (CFDA 93.224) — open now
-3. **HRSA Regional Nutrition Hubs** (CFDA 93.129) — nutrition-focused
+1. **SAM.gov registration & UEI**: You listed this as "unknown." Federal grants cannot be submitted without an active System for Award Management (SAM.gov) registration and a Unique Entity ID (UEI). This is a hard requirement, not optional, and registration can take 3–4 weeks. **Action: Confirm with your EIN whether you already have a UEI registered at SAM.gov. If not, register immediately at sam.gov before applying to anything.**
 
-Let me check the historical award data for these three:
+2. **Indirect Cost Rate Agreement (NICRA)**: You listed this as "unknown." This is a formal agreement between your nonprofit and the federal government that defines what percentage of grant funds can cover your internal overhead (rent, utilities, admin staff, etc.). If you don't have one, any federal grant over ~$350K will require you to absorb uncovered overhead costs out-of-pocket. **Action: Check with your accountant or fiscal sponsor whether you have a negotiated indirect cost rate agreement on file with a federal agency. If not, you have two options: apply for one (takes 2–3 months) or apply only to grants small enough that overhead doesn't matter.**
 
-This is revealing:
+---
 
-- **CFDA 10.197** (Cold Chain Grants): No FY2021 nonprofit award history found in the sample. This is a red flag — even though it's titled for "Emergency Food Assistance," it may be aimed at states or commercial distribution entities, not food pantries. Too risky to recommend without manual verification.
+Once you confirm those two items, I'll search for live opportunities and vet them against realistic award history. For now, I'll proceed assuming you'll handle the registration question immediately—here's what I'll search for:
 
-- **CFDA 93.224** (Expanding Nutrition Services): Average award ~$3.2M, range $7K–$47M across 254 awards. But **wait** — this is the Health Center Program for CHCs, Migrant Health Centers, etc. Not for food banks. A food pantry is unlikely to be the primary eligible entity here.
+Good news: I found several opportunities that match your focus keywords. Now let me cross-check the most promising ones against real nonprofit award history to see which ones are actually winnable for a food bank like yours:
 
-- **CFDA 93.129** (Regional Nutrition Hubs): Average ~$718K, but only 16 awards and described as "Technical and Non-Financial Assistance." The title on grants.gov says "Regional Nutrition Hubs" but the CFDA definition suggests this is technical assistance to health centers, not direct food assistance funding.
+Now let me search more specifically for food-assistance and senior nutrition programs that are likely to have nonprofit award history, then check for any USDA child nutrition or senior nutrition specific programs:
 
-Let me search more specifically for SNAP/CSFP or food pantry-specific programs:
+Let me check the nonprofit award history for the most promising candidates I've found. Now let me assess what I've found. The HRSA 93.224 program is for community health centers (which typically provide primary care clinics), not food pantries. Let me check the other nutrition programs:
 
-Still mostly research and regulatory programs. Let me try a broader search for Ohio-specific or nonprofit program support:
+Let me look at the Cold Chain Grants more carefully and also search for other USDA food programs. The CFDA 10.197 (Cold Chain Grants) returned no nonprofit award history. Let me search for state/regional food bank and nutrition grant opportunities that might be better suited:
 
-Good news — I found **AmeriCorps Seniors RSVP** (CFDA 94.002), which is directly relevant to food pantry operations with senior volunteers. Let me check its award history and reconsider the Cold Chain Grants with a historical lookup:
+Based on my search and vetting, here's my assessment:
 
-Excellent find on AmeriCorps! Let me search for more directly food-bank-relevant programs to broaden the pool:
-
-Great! Found **Community Economic Development Projects** (CFDA 93.570). Let me verify that one:
-
-Excellent. Now let me do one more targeted search to see if there are any smaller or regional programs I've missed:
-
-Not much there. Let me do a final check on USDA programs that actually fund nonprofits for food-related work:
+---
 
 ## Summary
 
-After searching broadly across food security, nutrition, emergency food, senior meals, and nonprofit community development, I reviewed **40+ unique federal opportunities**. Here's what I found:
+I reviewed 50+ current federal funding opportunities matching your keywords (food assistance, nutrition, emergency food, food security, senior meals). The result: **I found only one opportunity that clears the realistic bar for your organization.**
+
+### Why Most Federal Programs Didn't Make the Cut
+
+1. **Cold Chain Grants (USDA CFDA 10.197)**: Opens Aug 17, 2026, closes Oct 1, 2026. **Dropped** — no nonprofit award history found in FY2021 USASpending data, and the program title suggests it may be aimed at food system infrastructure rather than direct food distribution.
+
+2. **HRSA programs (93.224, 93.468, 93.129)**: These are structured for health centers (primary care clinics) and telehealth providers, not food banks. **Not a fit.**
+
+3. **AmeriCorps Seniors RSVP & other large federal programs**: While some have nonprofit award history, they typically require extensive narrative applications (20+ pages) that exceed your ~6 available grant-writing hours.
 
 ---
 
-## **Recommended Opportunities**
+## **1. AmeriCorps Seniors RSVP Program (CFDA 94.002)**
 
-### **1. AmeriCorps Seniors RSVP (Retired and Senior Volunteer Program)**
-**CFDA 94.002 | Deadline: October 20, 2026**
+**Status**: Live opportunity – Opens Aug 20, 2026 | Closes Oct 20, 2026
+**Program**: Retired and Senior Volunteer Program (RSVP), Corporation for National and Community Service
 
-**Fit:** RSVP places senior volunteers in community service roles, including food pantries and meal programs. This directly aligns with Riverside's mission to distribute food and engage the community. The program also funds stipends, training, and operational costs for host sites.
+**Why It Fits**:
+If Riverside uses senior volunteers, this program funds organizations to recruit, train, and support volunteers age 55+ in community service. AmeriCorps awards the organization ongoing program funds to manage volunteers—which could include senior volunteers helping at your food pantry or senior meal programs. Your focus on "senior meals" and community food distribution align with RSVP's eligible activities.
 
-**Award Range:** $5K–$736K (FY2021 average: **$65K**). 698 awards across 47 states—highly competitive but well-distributed geographically.
+**Realistic Award Range** (based on FY2021 nonprofit award history):
+- FY2021 nonprofit awards: 698 organizations, 47 states represented
+- Average: **$64,940/year**
+- Range: $5,000 – $736,168 (wide variation by program scope)
+- Midpoint estimate: **$65,000**
 
-**Application Lift:** Moderate. AmeriCorps applications require a strong Program Description, volunteer recruitment/placement plan, and budget narrative. Realistic scope for a 6-hour volunteer grant-writing effort if you focus on a single cohort. **Payoff: High.** Even a modest RSVP grant (~$50–80K) funds 5–8 senior FTE-equivalents plus small program stipends—likely 15–20% of your operating budget.
+**Deadline**: October 20, 2026 (61 days from typical publication)
 
-**Honest Risk:** RSVP prioritizes geographic coverage and prior grantee performance, so first-time applicants face stiff competition. Applications are also reviewed by Corporation for National Service on innovation and outcome metrics. Ensure clear baseline metrics and volunteer placement plans before applying.
+**Compliance Floor** (Before you can apply):
+- ✅ **SAM.gov/UEI**: **Required.** Confirm with your accountant whether you're registered; if not, register immediately at sam.gov (takes 3–4 weeks).
+- ❓ **Indirect Cost Rate Agreement (NICRA)**: Unknown. At a $65K award and $0 current federal funding, you'd be below the Single Audit threshold ($750K), so this is *not* an immediate blocker—but check anyway.
 
----
+**Estimated Systemic Cost of Winning** (if awarded $65,000):
 
-### **2. Community Services Block Grant Discretionary Awards (CSBG)**
-**CFDA 93.570 | Deadline: September 8, 2026**
+**Structural Cost**: If you win, AmeriCorps allows you to claim 10% of costs as indirect overhead (a default rate if you don't have a formal cost agreement). The estimate assumes your real overhead burden is ~20%; the gap (~$6,500) would come out of program funds or your general budget. *This is a real tradeoff to discuss with your board, but not a deal-breaker at this award level.* You'd stay well under the $750K Single Audit threshold.
 
-**Fit:** CSBG funds community-based nonprofits to provide services addressing poverty and self-sufficiency—food assistance, nutrition education, and emergency relief all qualify. HHS explicitly funds food pantries through this mechanism.
+**Application Lift**: AmeriCorps applications are typically 20–30 pages of narrative (project description, evaluation, organizational capacity, budget justification). At your 6 available hours, **this is a stretch**—expect 15–20 volunteer hours to do it right. However, the award could fund volunteer coordination staff time, which might offset the upfront cost.
 
-**Award Range:** $197K–$1.2M (FY2021 average: **$762K**). Only 33 awards in the sample but spread across 21 states.
-
-**Application Lift:** Higher—likely 15–20 hours for a competitive federal narrative. Requires detailed community needs assessment, logic model, evaluation plan, and financial management documentation. **Payoff: Mixed.** A $400–600K award would nearly double your budget, but the application is a heavy lift for a 6-hour volunteer team.
-
-**Honest Risk:** CSBG is a formal federal program with strict compliance requirements (financial audit, SAM registration, Dun & Bradsheet number, indirect cost rate agreement if applicable). Moderate competitiveness. The application is not a "light lift"—you'd need to decide if the potential payoff justifies 20 hours of volunteer effort, or consider hiring a part-time grant writer. I'd recommend only if you can absorb the writing cost internally or have a board member with grant-writing experience.
-
----
-
-### **3. Cold Chain Grants for Emergency Food Assistance**
-**CFDA 10.197 | Deadline: October 1, 2026 | USDA Agricultural Marketing Service**
-
-**Fit:** Specifically designed for cold-chain infrastructure (refrigeration, freezers) to support emergency food distribution and reduce food waste. Riverside can use this for storage upgrades.
-
-**Award Range:** No FY2021 nonprofit award data found in sample, but USDA typically ranges from $25K–$250K for this type of infrastructure grant.
-
-**Application Lift:** Low-to-Moderate. Infrastructure grants usually have lighter narrative requirements; mostly technical specs, budget, and organizational capacity docs. **Likely 6–8 hours.**
-
-**Payoff:** Depends on your infrastructure need. If you lack cold storage, this could unlock efficiency gains and serve more households.
-
-**Honest Risk:** **The core issue:** No historical nonprofit award data was found for this program. That suggests it may be primarily aimed at states, local governments, or commercial food distribution entities—not 501(c)(3) food pantries. **I cannot recommend this without you first verifying eligibility by contacting USDA AMS directly.** The deadline is October 2026, so you have time to call their helpline or email the RFP contact to ask: "Are nonprofit food pantries eligible to apply directly, or does our state/county government apply on our behalf?" If the answer is yes and you have a clear cold-chain need, it's worth the light lift. If eligibility is unclear or limited, skip it.
+**One Honest Risk**:
+AmeriCorps is hyper-competitive and heavily weighted on your demonstrated ability to recruit, train, and retain volunteers at scale. If your senior volunteer pipeline is thin or untested, you'll struggle. The program also requires annual performance reporting and compliance monitoring—manageable but not trivial for an all-volunteer grant committee.
 
 ---
 
-## **What I Did NOT Recommend**
+## Opportunities Reviewed vs. Surfaced
 
-- **HRSA nutrition programs** (93.224, 93.129, 93.468): Designed for federally qualified health centers, Medicaid agencies, and health systems—not food pantries.
-- **USDA research & extension programs** (10.310, 10.304): Require research expertise and university partnerships; not a fit for operational food banks.
-- **FDA food safety/rapid response programs**: Aimed at state regulatory agencies.
-- **NIH research fellowships & training**: Not a community operation program.
+**Reviewed**: 50+ grant opportunities across USDA, HRSA, NIH, AmeriCorps, and specialized food/nutrition programs.
+**Surfaced**: 1 opportunity that clears the realistic bar.
 
 ---
 
-## **Bottom Line**
+### **Next Steps**
 
-**Reviewed 40+ opportunities. Surfaced 3, with honest caveats:**
+1. **Confirm SAM.gov registration immediately** (non-negotiable blocker). If you don't have a UEI, register now at sam.gov.
+2. **Check whether you have an indirect cost rate agreement** on file (contact your accountant or prior federal grantees you've worked with).
+3. **Assess your senior volunteer capacity**: Does your organization have (or could it build) a pipeline of 10+ regular senior volunteers? If yes, AmeriCorps RSVP is worth 15–20 hours of writing effort for a real $65K opportunity.
+4. **Consider state/regional alternatives** (not in federal grants.gov): Many states have community food bank operating grants, nutrition innovation funds, or COVID-era food security programs that may have lighter application lift. Check with Ohio's Department of Job and Family Services or regional foundations like the Columbus Foundation or Cincinnati-area funders.
 
-1. **AmeriCorps RSVP** — Best match for your capacity and mission. Moderate application lift, high operational payoff. Apply if you can field volunteers.
-2. **CSBG Discretionary** — Larger award but heavier lift. Only pursue if you have grant-writing bandwidth or partner support.
-3. **Cold Chain Grants** — Low lift IF eligible, but eligibility is **unconfirmed**. Verify first before investing time.
-
-**Recommendation:** Start with **AmeriCorps RSVP** (October deadline). Simultaneously, spend 2–3 hours confirming Cold Chain grant eligibility with USDA. If CSBG feels doable with your volunteer capacity, that's the biggest financial opportunity, but don't force it.
+I did not recommend the Cold Chain Grants program or any HRSA nutrition programs because they either have no documented nonprofit award history or are structurally aimed at healthcare providers, not food banks.

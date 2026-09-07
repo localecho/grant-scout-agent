@@ -43,8 +43,10 @@ shortlist), not just one clean anecdote.
 
 The interesting part isn't "call an LLM with a search tool." It's that the agent is instructed
 to actively **reject** plausible-looking matches using a second, independent real-data source —
-see [`ARCHITECTURE.md`](ARCHITECTURE.md) for the tool-calling flow and why the two-tool
-cross-check is the load-bearing design decision here, not an afterthought.
+and to reject them again, for a completely different reason, if a third tool shows that *winning*
+would cost more in compliance burden than the org can absorb. See [`ARCHITECTURE.md`](ARCHITECTURE.md)
+for the tool-calling flow and why this layered cross-check is the load-bearing design decision
+here, not an afterthought.
 
 ## Quickstart
 
@@ -116,9 +118,13 @@ a stack trace on bad input).
   (no AWS account was configured for this build). `agentcore launch` is the remaining step.
 - **Benchmark data is FY2021.** `historical_award_context` reads a static extract; it doesn't
   re-pull from USASpending live. A program with no FY2021 nonprofit history isn't necessarily
-  unwinnable today — the agent is instructed to treat that as a real risk signal to disclose,
-  not silent proof of ineligibility (see the sample run's Cold Chain Grants call). Regenerate
-  the table for a newer year with `data/extract_benchmarks.sql`.
+  unwinnable today — the agent is instructed to treat that as a real risk signal to disclose and
+  recommend manual verification, never to fill the gap with its own outside assumptions (see
+  `sample_run_library.md`'s treatment of the IMLS programs). Regenerate the table for a newer
+  year with `data/extract_benchmarks.sql`.
+- **`estimate_compliance_burden`'s overhead-gap math uses a labeled assumption (20% real
+  nonprofit overhead), not per-program verified data** — it's a rule-of-thumb the brief cites as
+  exactly that, not a number this codebase has confirmed for any specific grant program.
 - **`search_open_grants` caps at 25 results per call** (grants.gov's per-request max) with no
   pagination across calls. Fine for a single org's focused keyword search; would need paging
   to exhaustively enumerate a broad category.

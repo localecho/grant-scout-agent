@@ -1,0 +1,40 @@
+COMMUNITY (if inferred): Devpost judges for AWS's Agents for Humans Hackathon, Good Neighbor track — agentic-AI builders + social-impact reviewers scoring technical execution, impact, idea quality, and pitch clarity.
+
+COUNCIL
+1. Simon Willison — insists on "real data, not fixtures," and will actually run your test suite before believing your README
+2. Swyx — judges hackathon submissions on narrative arc: does the "why this is non-trivial" section earn its claim
+3. Kelsey Hightower — "if it's not running in prod, it's a design doc" — deployment-or-it-didn't-happen
+4. Werner Vogels — works backwards from the customer; wants the problem statement to survive contact with a real org
+5. Amjad Masad — rewards visible iteration speed; docks anything that reads like a plan instead of a shipped loop
+6. Sarah Guo — reads every submission for the defensible wedge, not the feature list
+7. Swizec Teller — reviews technical writing craft; notices when docs serve the reader vs. serve the author
+8. Beth Kanter (nonprofit tech capacity-building) — asks whether a volunteer board could actually use this, not just run it
+9. Lucy Bernholz (digital civil society / philanthropy academic) — tracks data provenance and human-in-the-loop discipline in tools aimed at the sector
+10. † Vu Le (NonprofitAF — nonprofit-sector critic) — rejects "search is the problem" framings that skip the sector's real structural barriers
+
+GRADES
+1. Simon Willison: A-  — "Live grants.gov calls, a real FY2021 USASpending extract with the SQL committed, and a test file that asserts properties of committed transcripts instead of mocking the model — this is the rare submission I'd actually trust the numbers in."
+2. Swyx: B+ — "The 'why this is non-trivial' section does real work — it names the load-bearing decision (the cross-check) instead of hiding behind tool count — but for an AWS hackathon, defaulting to OpenRouter and calling Bedrock the 'alternate path' undercuts the story you're telling the judges who wrote the rules."
+3. Kelsey Hightower: B- — "Verified-locally-via-curl is not the same sentence as running-on-AgentCore-Runtime, and a hackathon called 'Agents for Humans' should have put a human in front of the actual infra, not a localhost port."
+4. Werner Vogels: B+ — "Leading with the org's six volunteer hours instead of the model's capabilities is the right instinct, and catching the SAM.gov compliance floor after review is exactly the kind of 'day-1' correction I want to see, but nobody's shown me a real board using this yet."
+5. Amjad Masad: A- — "Regenerating the health-clinic run after a review flagged a real gap, in the same submission cycle, is the shipping behavior I reward — most teams would've left the stale run in and hoped nobody noticed."
+6. Sarah Guo: B+ — "The two-tool cross-check is a genuine wedge — search-then-verify against independent ground truth is a pattern worth a company, not just a demo — but I have zero signal on distribution: who hands this URL to an actual food bank."
+7. Swizec Teller: A- — "The 'Known limitations' section reads like it was written by someone who wants to be believed rather than impress, which is rarer and better than it sounds — my only knock is four sample-run files plus three top-level docs is a lot to ask a judge with twenty submissions to read tonight."
+8. Beth Kanter: B — "The no-YAML intake form is the correct next move for this audience, and the volunteer-hour framing throughout shows real listening to how under-resourced orgs actually operate — but 'CFDA 93.224' and 'NICRA' are still landmines in the brief a volunteer board member has to read cold."
+9. Lucy Bernholz: B+ — "I appreciate that the agent is instructed to disclose 'no verified award history' as a risk rather than launder it into false confidence, which is the correct posture for a tool making eligibility-adjacent claims at nonprofits — but the library run shows the model reasoning from its own priors ('I know from grant-writing practice that IMLS programs DO award...') outside the very data source it claims to ground itself in, and that's the seam where trust breaks quietly."
+10. † Vu Le: C+ — "You've built a nicer flashlight for a maze the government rigged on purpose — SAM.gov registration, indirect cost rate agreements, and 25-hour narratives are the actual barrier keeping small orgs out, and no amount of clever cross-checking changes that a food pantry with six volunteer hours a month still can't clear HRSA's compliance floor even after your agent tells them, accurately, that they can't."
+
+SYNTHESIS
+Median grade: B+
+Consensus strengths (7+): Real, unmocked data end-to-end (live grants.gov, real USASpending extract, real transcripts under automated invariant tests); visible, dated iteration in response to review feedback (compliance-floor fix, intake form) rather than static polish; disciplined "say no" behavior (caps at 3, an actual zero-surfaced run, a declined AmeriCorps recommendation) that's demonstrated across four org shapes, not asserted once.
+Consensus weaknesses (7+): Nothing deployed to live AWS infrastructure despite an AWS-specific hackathon and an AgentCore entrypoint that exists only as a local dev-server proof; no evidence a real nonprofit or volunteer board has touched the output.
+Tension: Willison/Masad/Teller (A- range) score the engineering rigor and honesty on its own terms; Hightower and Vu Le score against what the artifact was supposed to *become* — a running service a real org can reach — and find it stalled one step short on both the infra and the human side.
+Idiosyncratic-but-right: Lucy Bernholz's catch that the library-run transcript leans on the model's outside "grant-writing practice" knowledge instead of the tool's own verified data — a small crack in the "grounded only in real evidence" promise that no one else flagged, and it's the kind of thing that compounds if the prompt drifts.
+FINAL GRADE: B+ — This is unusually honest, unusually well-tested hackathon work: real data, real iteration, a judgment discipline that holds across four differently-shaped orgs. It loses a full grade band because the two things a "Good Neighbor" AWS submission most needs to prove — that it runs on AWS's own infrastructure, and that an actual under-resourced org has used it — are both still open items named in the README rather than closed in the evidence.
+
+THE PROMPT THEY WOULD HAVE GIVEN THE WRITER INSTEAD
+"Before writing one more sample-run transcript, get the AgentCore entrypoint on real Bedrock infrastructure and put the intake-form URL in front of one actual food bank or library volunteer — then tell us what they did with it."
+
+```verdict
+{"final_grade": "B+", "median_grade": "B+", "grades": [{"voice": "Simon Willison", "grade": "A-"}, {"voice": "Swyx", "grade": "B+"}, {"voice": "Kelsey Hightower", "grade": "B-"}, {"voice": "Werner Vogels", "grade": "B+"}, {"voice": "Amjad Masad", "grade": "A-"}, {"voice": "Sarah Guo", "grade": "B+"}, {"voice": "Swizec Teller", "grade": "A-"}, {"voice": "Beth Kanter", "grade": "B"}, {"voice": "Lucy Bernholz", "grade": "B+"}, {"voice": "Vu Le", "grade": "C+"}]}
+```
