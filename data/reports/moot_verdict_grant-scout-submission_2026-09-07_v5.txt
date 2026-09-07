@@ -1,0 +1,51 @@
+COMMUNITY (if inferred): Given — Devpost judges for AWS's Agents for Humans Hackathon, Good Neighbor track: agentic-AI builders and social-impact program reviewers scoring on technical execution, potential impact, quality of idea, and demo/pitch clarity.
+
+COUNCIL
+1. Simon Willison — judges credibility by whether you show the actual raw API output, not a claim about it
+2. Hamel Husain — "look at your data": grades the eval harness by its actual assertions, not its README description
+3. swyx (Shawn Wang) — frames everything as eval-driven development, judges whether observability compounds across runs
+4. DHH — majestic-monolith instinct, allergic to unneeded abstraction, rewards doing less with what's there
+5. Julia Evans — zine-brain clarity check: does a confused reader get un-confused fast
+6. Erik Bernhardsson — distrusts any number presented as "computed" that's actually a labeled guess
+7. Pieter Levels — cares only whether the thing is actually live and used, discounts docs-about-docs
+8. Kelsey Hightower — judges cloud-hackathon entries by whether they run on the cloud they're pitching
+9. Vu Le (Nonprofit AF) — nonprofit-sector critic, satirical about the nonprofit-industrial complex, name-checked inside the artifact itself
+10. † Bruce Schneier — security, adversarial seat: reflexively distrusts unauthenticated systems facing a vulnerable user population
+
+GRADES
+1. Simon Willison: A- — Real curl output, real "no nonprofit history found" dead ends left in instead of edited out — this is what "no mocked output" should actually look like, and half the README doubles as a great weeknotes post proving it.
+2. Hamel Husain: B — The eval harness checks real structural invariants (never >3 surfaced, one profile hits zero), which beats vibes, but it tests shape not correctness — nobody's grading whether the food-bank run's own $65K RSVP recommendation, which admits its 15–20 hour lift against the org's stated 6 hours, should have survived the drop rule at all.
+3. swyx: A- — The "groundedness fix / compliance-burden tool added after a critique" changelog embedded in the docs is eval-driven development in miniature; you can watch the prompt get better against dated, named failures instead of just being told it's good.
+4. DHH: A — Three tools, one system prompt, one `Agent` object reused verbatim across CLI, AgentCore, and the intake form — the majestic-monolith instinct applied to an agent, and I'll take this over ten tools nobody needed.
+5. Julia Evans: B+ — The plain-language validation error instead of a stack trace is the one line that proves someone thought about the non-technical user, but it's buried under so much meta-narration about the docs' own revision history that a two-minute skim might miss it.
+6. Erik Bernhardsson: B- — Calling 20%-overhead-vs-10%-de-minimis math "estimate_compliance_burden" and letting it actively drop CSBG dresses a rule-of-thumb up as a fact; the disclaimer doesn't stop the sample runs from stating "~$6,494 uncovered overhead" with precision it hasn't earned.
+7. Pieter Levels: C+ — Cool prompt, but it's still running on someone's laptop; "agentcore launch is the remaining step" is the sentence every unshipped side project writes, and a Good Neighbor tool that needs a technical person to run `python -m src.intake_form` locally hasn't reached a nonprofit yet.
+8. Kelsey Hightower: B- — You built a real AgentCore entrypoint for an AWS agents hackathon and then didn't run it on AgentCore — that's the first integration a judge from this track checks, and "verified locally" is carrying a lot of weight to avoid saying "not on AWS."
+9. Vu Le: B+ — Finally a grant tool that says "nothing cleared the bar" instead of dumping forty links on my board, and it flags SAM.gov and audit thresholds before burning our six volunteer hours — but recommending AmeriCorps RSVP to a food pantry whose own numbers say it needs 2.5–3x the available hours is exactly the "technically eligible, actually not for you" advice that burns out boards, agent or not.
+10. † Bruce Schneier: C — A stdlib `http.server` taking a nonprofit's mission, budget, and compliance status over plain HTTP with zero auth is fine for a demo and a bad idea the moment you "hand the org a URL"; nothing in Known Limitations names that as the security gap it is.
+
+SYNTHESIS
+Median grade: B+
+Consensus strengths (7+):
+- Real, live, unmocked data end-to-end (grants.gov + USASpending), demonstrated across four differently-shaped orgs, not one cherry-picked anecdote.
+- Judgment discipline actually lives in the system prompt (drop rules, "nothing cleared the bar," honest risk sections) rather than only being claimed in the pitch copy.
+- An unusually specific, non-evasive Known Limitations section (static FY2021 data, unverified 20% assumption, no live AWS deployment).
+
+Consensus weaknesses (7+):
+- Nothing is actually deployed to the AWS infrastructure the hackathon is about — AgentCore is "verified locally," not live.
+- The compliance-burden number is a labeled assumption doing the work of a fact inside a decision the agent treats as load-bearing (a program gets dropped over it).
+
+Tension: The devtool/process voices (DHH, Simon, swyx) grade this high for taste and rigor of process; the delivery voices (Pieter, Kelsey, Schneier) grade it much lower because nothing is live, hosted, or secured — same artifact, opposite verdict depending on whether you grade the code or the reach.
+
+Idiosyncratic-but-right: Vu Le's catch — the food-bank run recommends a program its own numbers say needs 2.5–3x the org's stated hours — is a real internal-consistency bug in the judgment logic, not a style note, and per Hamel it's exactly the kind of thing the eval harness should catch but doesn't, since the harness checks output shape, not this kind of cross-field consistency.
+
+Adversary verdict (if seat present): "A stdlib `http.server` taking a nonprofit's mission, budget, and compliance status over plain HTTP with zero auth is fine for a demo and a bad idea the moment you 'hand the org a URL.'"
+
+FINAL GRADE: B+ — Exceptional craft and unusual honesty for a hackathon submission (real data, real limitations, a documented self-critique loop across runs), but it's still a local prototype dressed in deployed-agent language, and one of its four flagship sample runs recommends an opportunity its own math says the org can't realistically staff.
+
+THE PROMPT THEY WOULD HAVE GIVEN THE WRITER INSTEAD
+Before writing another paragraph of README, spend that time on `agentcore launch` and a second eval assertion that catches "recommended opportunity requires more hours than the org has, unless payoff justifies it" being violated in your own committed transcripts.
+
+```verdict
+{"final_grade": "B+", "median_grade": "B+", "grades": [{"voice": "Simon Willison", "grade": "A-"}, {"voice": "Hamel Husain", "grade": "B"}, {"voice": "swyx", "grade": "A-"}, {"voice": "DHH", "grade": "A"}, {"voice": "Julia Evans", "grade": "B+"}, {"voice": "Erik Bernhardsson", "grade": "B-"}, {"voice": "Pieter Levels", "grade": "C+"}, {"voice": "Kelsey Hightower", "grade": "B-"}, {"voice": "Vu Le", "grade": "B+"}, {"voice": "Bruce Schneier", "grade": "C"}]}
+```

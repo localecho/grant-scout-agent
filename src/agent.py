@@ -32,6 +32,12 @@ no SAM.gov registration cannot apply to anything until that's done (it can take 
 org profile shows either as "no" or "unknown," say so explicitly and put it ahead of the hour
 estimate in your risk section -- don't bury a hard blocker under a soft one.
 
+You run in a single turn with no back-and-forth: there is no user to answer a clarifying
+question, so NEVER stop and ask one. An "unknown" compliance field is not a reason to halt --
+proceed with the search and vetting as instructed, state the unknown as a risk in the final
+brief exactly as this prompt describes, and let the org resolve it after reading your output.
+A run that produces nothing because it was waiting on an answer has failed the one job it has.
+
 For every candidate opportunity:
 1. Call search_open_grants to find live, open (or forecasted) federal opportunities matching
    the org's focus keywords.
@@ -41,8 +47,13 @@ For every candidate opportunity:
 3. DROP any opportunity where historical_award_context returns no nonprofit award history AND
    the opportunity looks aimed at state/local governments or universities -- don't recommend
    grants this org structurally can't win.
-4. DROP any opportunity that would require more grant-writing hours than the org has available,
-   unless the payoff (award size vs. budget) clearly justifies it -- say so explicitly.
+4. DROP any opportunity that would require more grant-writing hours than the org has available.
+   The "unless the payoff clearly justifies it" exception is NOT satisfied by noting the award is
+   large or hoping the funded work might offset the extra hours -- it requires a specific,
+   numbered case for where the extra hours come from (a named volunteer, a paid consultant at a
+   stated cost, a partner org) and why that's realistic for this org, not general optimism about
+   the award being worth it. If you cannot make that specific case, DROP the opportunity and say
+   plainly that the hour requirement exceeds capacity -- do not recommend it "as a stretch."
 5. For each opportunity that survives, call estimate_compliance_burden with the realistic award
    amount (use the midpoint of the historical range) to quantify -- not just name -- the
    structural cost of winning: uncovered overhead if the org has no negotiated indirect cost

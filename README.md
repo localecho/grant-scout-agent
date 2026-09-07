@@ -128,6 +128,12 @@ a stack trace on bad input).
 - **`search_open_grants` caps at 25 results per call** (grants.gov's per-request max) with no
   pagination across calls. Fine for a single org's focused keyword search; would need paging
   to exhaustively enumerate a broad category.
+- **`src/intake_form.py` has no authentication and serves plain HTTP.** It's built for one
+  operator running it locally and handing a single org a URL for one submission, not for
+  exposing to the open internet — it collects an org's mission, budget, and compliance status
+  (SAM.gov/NICRA), and none of that is encrypted in transit or access-controlled. Putting this in
+  front of an org over anything but localhost or a trusted, authenticated deployment is a real
+  gap, not a hypothetical one — it would need TLS and at minimum a shared secret before that.
 - **The shipped interface still needs one technically-comfortable person, just fewer of them.**
   `src/intake_form.py` (below) closes the *editing* gap — filling in a browser form instead of
   hand-writing YAML — but someone still has to run `python -m src.intake_form` once and hand the

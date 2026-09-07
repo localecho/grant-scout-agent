@@ -14,6 +14,7 @@ import re
 from pathlib import Path
 
 import pytest
+import yaml
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 
@@ -23,6 +24,13 @@ TRANSCRIPTS = [
     "sample_run_health_clinic.md",
     "sample_run_afterschool.md",
 ]
+
+PROFILE_FOR_TRANSCRIPT = {
+    "sample_run_food_bank.md": "profiles/example_food_bank.yaml",
+    "sample_run_library.md": "profiles/example_library.yaml",
+    "sample_run_health_clinic.md": "profiles/example_health_clinic.yaml",
+    "sample_run_afterschool.md": "profiles/example_afterschool.yaml",
+}
 
 
 def _read(name: str) -> str:
@@ -115,3 +123,64 @@ def test_every_run_grounds_its_verdict_in_real_evidence(name):
         f"{name} neither cites a dollar figure nor explicitly declines for lack of award "
         f"history -- its verdict isn't grounded in checkable evidence"
     )
+
+
+@pytest.mark.parametrize("name", TRANSCRIPTS)
+def test_over_capacity_recommendations_name_a_specific_mitigation(name):
+    """Rule 4 lets the agent recommend an opportunity needing more hours than the org has ONLY
+    if it names a specific, realistic source for the extra hours (a named volunteer, a paid
+    consultant, a partner org) -- not general optimism that the award is worth it.
+
+    A taste-council review (Vu Le / Hamel Husain, in
+    data/reports/moot_verdict_grant-scout-submission_2026-09-07_v5.txt) caught a real violation:
+    an earlier food-bank run recommended AmeriCorps RSVP needing 15-20 hours against the org's
+    stated 6, justified only by "the award could fund coordination staff time, which might
+    offset the upfront cost" -- optimism, not a specific mitigation. Checks every hour-range
+    mention against the org's actual stated capacity (read from its profile YAML, not asserted
+    in the transcript); any that clears a 2x margin must EITHER name a consultant/partner/hire in
+    the same paragraph OR be part of an explicit decline (rule 4's other valid outcome: DROP the
+    opportunity and say plainly the hour requirement exceeds capacity).
+
+    An earlier version of this test didn't make that second branch, and flagged
+    sample_run_afterschool.md's summary line -- "AmeriCorps ... far exceeds capacity (5 hours)
+    without external resources I cannot verify you have" -- as a violation. That sentence isn't
+    an unmitigated recommendation; it's the DROP outcome working correctly, restating why nothing
+    was recommended. The rule is about what a RECOMMENDATION requires, not about never mentioning
+    a large hour estimate.
+    """
+    profile = yaml.safe_load((REPO_ROOT / PROFILE_FOR_TRANSCRIPT[name]).read_text())
+    available_hours = profile["max_grant_writing_hours_available"]
+
+    text = _read(name)
+    # Deliberately does NOT match the bare word "volunteer" -- that word appears in nearly every
+    # sentence of this domain ("volunteer hours," "volunteer board") without naming a specific
+    # NEW source of capacity, which is exactly the false-negative an earlier version of this
+    # check had: it matched "volunteer" in "expect 15-20 volunteer hours to do it right" and
+    # missed that the sentence names no actual mitigation, just restates the shortfall.
+    specific_mitigation = re.compile(
+        r"\bconsultants?\b|\bcontract(?:or|ors|ing)?\b|\bpro bono\b|\bhir(?:e|es|ing)\b"
+        r"|\bpartner(?:s|ing)?(?:\s+(?:with|org))?\b|\bbring(?:ing)? in\b"
+        # any stated number of volunteers, however phrased -- "recruit 5 more volunteers",
+        # "a pipeline of 10+ regular senior volunteers", "does your org have 10+ volunteers".
+        # An earlier version required the literal word "recruit" immediately before the number
+        # and missed a real, equally-specific "does your organization have (or could it build) a
+        # pipeline of 10+ regular senior volunteers?" conditional in sample_run_food_bank.md.
+        r"|\d+\+?\s+(?:\w+\s+){0,3}volunteers?\b",
+        re.IGNORECASE,
+    )
+    decline_signal = re.compile(
+        r"doesn'?t clear the bar|does not clear the bar|far exceeds capacity|drop(?:ped)? "
+        r"(?:this|the) opportunity|not recommend|without external resources|cannot verify you have"
+        r"|surfaced:? 0|0 opportunities (?:surfaced|recommended)",
+        re.IGNORECASE,
+    )
+    for para in text.split("\n\n"):
+        for low, _high in re.findall(r"(\d+)\s*[-–]\s*(\d+)\s*hours", para, re.IGNORECASE):
+            if int(low) > available_hours * 2:
+                assert specific_mitigation.search(para) or decline_signal.search(para), (
+                    f"{name}: a paragraph estimates {low}+ hours against the org's "
+                    f"{available_hours}-hour capacity without naming a specific mitigation "
+                    f"(a consultant, a contractor, hiring help, a named partner, or recruiting "
+                    f"a stated number of additional volunteers) AND without declining the "
+                    f"opportunity outright: {para[:200]!r}"
+                )
