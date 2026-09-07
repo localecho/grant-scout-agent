@@ -105,11 +105,14 @@ keywords alone will get wrong.
 
 ## What's next
 
-Deploy the existing, tested AgentCore entrypoint to live AWS infrastructure (`agentcore
-launch`), then a scheduled version that runs weekly per org and only emails a human when a new
-opportunity clears the bar — the "runs in the background, surfaces only for a real decision"
-framing this hackathon asks for, taken from a locally-verified AgentCore endpoint to an
-always-on one.
+Two concrete gaps, both named plainly rather than glossed over. First: deploy the existing,
+tested AgentCore entrypoint to live AWS infrastructure (`agentcore launch`), then a scheduled
+version that runs weekly per org and only emails a human when a new opportunity clears the bar —
+taken from a locally-verified AgentCore endpoint to an always-on one. Second: the CLI + YAML
+interface assumed technical comfort the target audience often doesn't have; `src/intake_form.py`
+(a real, tested HTML form, zero new dependencies) already closes the *editing* half of that gap —
+what's left is hosting it so an org reaches it without anyone running Python locally, which is
+the same AWS-deployment step as above.
 
 ## Built with
 

@@ -128,3 +128,6 @@ in either adapter:
   Not deployed to live AWS infrastructure for this submission (no AWS account configured for
   this build) — `agentcore launch` is the remaining step for an operator with Bedrock
   AgentCore access.
+- `src/intake_form.py` — a stdlib-only HTML form, so the org profile can be filled in by
+  someone who has never seen YAML (see `sample_run_intake_form.md`). Still runs locally; hosting
+  it is the same remaining AWS step as the AgentCore entrypoint above.

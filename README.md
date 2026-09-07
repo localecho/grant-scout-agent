@@ -93,6 +93,22 @@ Deploying to real AWS infrastructure (`agentcore configure` + `agentcore launch`
 AWS account with Bedrock AgentCore access, which wasn't set up for this submission — see Known
 limitations.
 
+## No-YAML intake for non-technical org staff
+
+The CLI's `--profile some.yaml` flow assumes comfort hand-editing YAML — not a safe assumption
+for the volunteer boards this is built for. `src/intake_form.py` serves a plain HTML form
+(stdlib `http.server` only, no new dependency) that takes the same fields as a profile YAML and
+saves a normal profile file — no special-casing, reads through the same `OrgProfile.from_yaml`
+path as one written by hand:
+
+```bash
+python -m src.intake_form   # prints a local URL; open it in a browser, fill in the blanks
+```
+
+See [`sample_run_intake_form.md`](sample_run_intake_form.md) for a real, unmocked run (server
+started, real HTTP requests, a real saved YAML, and a plain-language validation error instead of
+a stack trace on bad input).
+
 ## Known limitations
 
 - **Not deployed to live AWS infrastructure.** The AgentCore entrypoint above is real,
@@ -106,12 +122,11 @@ limitations.
 - **`search_open_grants` caps at 25 results per call** (grants.gov's per-request max) with no
   pagination across calls. Fine for a single org's focused keyword search; would need paging
   to exhaustively enumerate a broad category.
-- **The shipped interface (CLI + a hand-edited YAML profile) is not yet usable by the exact
-  audience this is built for.** A volunteer board with no grant-writing department is also, on
-  average, a board with no one comfortable running `pip install` or editing YAML. Today someone
-  with basic command-line comfort has to run this on the org's behalf — a real gap between the
-  "who it's for" pitch and the shipped artifact, closed only by the AgentCore/scheduled-email
-  path in "What's next," not by anything in this repo yet.
+- **The shipped interface still needs one technically-comfortable person, just fewer of them.**
+  `src/intake_form.py` (below) closes the *editing* gap — filling in a browser form instead of
+  hand-writing YAML — but someone still has to run `python -m src.intake_form` once and hand the
+  org a URL. Closing that last *hosting* gap means an always-on deployment (AgentCore, Lambda, or
+  similar), which this submission has not done — see the AgentCore section above.
 
 ## Bring your own org
 

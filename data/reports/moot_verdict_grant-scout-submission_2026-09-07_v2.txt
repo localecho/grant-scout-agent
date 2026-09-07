@@ -1,0 +1,40 @@
+COMMUNITY (if inferred): Devpost judges for AWS's Agents for Humans Hackathon, Good Neighbor track — agentic-AI builders and social-impact program reviewers scoring technical execution, impact, idea quality, and pitch clarity.
+
+COUNCIL
+1. Simon Willison — publishes real, unedited LLM transcripts and distrusts any agent demo that hides its tool calls.
+2. Hamel Husain — insists "eval" means a held-out test that can fail, not a vibe check dressed in prose.
+3. swyx — grades hackathon builds on restraint: fewest moving parts that still earn the "non-trivial" claim.
+4. Erik Bernhardsson — treats stale reference data as a silent-failure mode, not a footnote.
+5. Kelsey Hightower — won't call anything "deployed" until it's actually running on the infrastructure named in the prompt.
+6. Rachel Thomas — asks who a tool's interface actually excludes before crediting who it claims to serve.
+7. Beth Kanter — measures nonprofit tech by whether a real volunteer board could operate it, not whether a technical proxy can.
+8. Anil Dash — rewards respecting a user's time (a short list over a data dump) but wants proof it reaches a real org.
+9. Julia Evans — loves plain-language "here's what's fake and what's real" writing more than polish.
+10. † Diane Leonard (grant-writing consultant) — rejects any tool that treats *finding* a grant as the hard part.
+
+GRADES
+1. Simon Willison: A — "Not edited for content, trimmed only to remove tool-call progress lines" plus the exact tool-call counts per run is the kind of receipts almost nobody ships, and the Cold Chain Grants call is a genuinely interesting agent trace, not a cherry-picked screenshot.
+2. Hamel Husain: B+ — `test_judgment_invariants.py` is the real thing, a mechanical floor checked against committed transcripts instead of asserted in a README, but four hand-picked profiles is still an anecdote set wearing an eval's clothes, not a held-out benchmark.
+3. swyx: A- — "two tools, not ten" and the explicit refusal to pad the surfaced list is exactly the taste a hackathon judge is starved for; the system prompt as the "load-bearing artifact" framing is a clean pitch move.
+4. Erik Bernhardsson: B — grounding every verdict in a real USASpending pull instead of vibes is the right instinct, but shipping a frozen FY2021 table as the sole ground-truth source with no re-pull path is a staleness bug waiting to silently misjudge next year's programs.
+5. Kelsey Hightower: B- — you wrote a real AgentCore entrypoint and tested it against a local dev server, which is honest work, but this is an *AWS* hackathon and "agentcore launch remains the step" means the one thing being judged — does it run on AWS — never actually happened.
+6. Rachel Thomas: B — the SAM.gov compliance-floor fix, added specifically because a review caught that volunteer-hours alone hides the real first blocker, is a genuine impact-quality improvement; but the README's own "Known limitations" admits the shipped CLI+YAML interface excludes the exact under-resourced boards this is built for, and that's not a footnote, that's the whole thesis undercut.
+7. Beth Kanter: B- — "no verified award history, said so plainly" is the kind of honesty nonprofit tech almost never has, but until a volunteer board can run this without someone comfortable in a terminal, it's a tool for the grant-tech-adjacent, not for Fairview Township Library's actual staff.
+8. Anil Dash: B+ — refusing to dump 40 links on a volunteer board and instead saying "nothing cleared the bar" is real respect for people's scarce time, which is rarer than it should be in this space.
+9. Julia Evans: A- — the "Known limitations" section reads like someone who actually wants you to trust them: stale data, no pagination, no AWS deploy, wrong-audience interface, all named plainly instead of buried in a Q&A.
+10. † Diane Leonard: C+ — this automates the 20% of grant-seeking that was never the bottleneck; the actual reason small nonprofits lose money is a weak narrative, no relationship with the program officer, and no one available to write 25 hours of federal boilerplate — none of which "surface 3 opportunities" touches, so the tool optimizes search when the real scarce resource was always writing capacity.
+
+SYNTHESIS
+Median grade: B+
+Consensus strengths (7+): Real, unedited data end to end (live grants.gov, real USASpending pull, real transcripts); disciplined refusal to pad output or hide a "zero surfaced" outcome; honest, specific "Known limitations" section instead of marketing copy.
+Consensus weaknesses (7+): The gap between "who it's for" (a board with no grant-writing department) and "what's shipped" (CLI + hand-edited YAML) is large and self-admitted but unresolved; FY2021 benchmark staleness is a real, not hypothetical, risk to future judgments.
+Tension: Kelsey and Simon split hard — Simon rewards the honesty of "not deployed to AWS," Kelsey docks it because for this specific competition, running on AWS was the ask, and disclosure doesn't substitute for doing it.
+Idiosyncratic-but-right: Diane Leonard's C+ — everyone else grades the craft of the search-and-vet loop, but she's the only one asking whether search was ever the bottleneck worth building an agent for, and that's a premise-level critique the other nine voices never raise.
+FINAL GRADE: A- — Exceptional documentation and evidentiary discipline (real data, real invariant tests, real multi-profile range of outcomes) that most hackathon submissions don't attempt, undercut only by the honestly-disclosed-but-real gaps: no live AWS deployment for an AWS hackathon, and a shipped interface that doesn't yet reach the actual audience the pitch is built around. The craft of *disclosure* is the strongest thing here; the craft of *closing those gaps* is the weakest.
+
+THE PROMPT THEY WOULD HAVE GIVEN THE WRITER INSTEAD
+"Before adding a fourth sample-run profile, spend that time either getting one real AgentCore deployment onto AWS or building the one-click/email-in interface a volunteer board could actually use — the judgment logic is already proven, the audience gap and the AWS gap are the load-bearing risks left."
+
+```verdict
+{"final_grade": "A-", "median_grade": "B+", "grades": [{"voice": "Simon Willison", "grade": "A"}, {"voice": "Hamel Husain", "grade": "B+"}, {"voice": "swyx", "grade": "A-"}, {"voice": "Erik Bernhardsson", "grade": "B"}, {"voice": "Kelsey Hightower", "grade": "B-"}, {"voice": "Rachel Thomas", "grade": "B"}, {"voice": "Beth Kanter", "grade": "B-"}, {"voice": "Anil Dash", "grade": "B+"}, {"voice": "Julia Evans", "grade": "A-"}, {"voice": "Diane Leonard", "grade": "C+"}]}
+```
