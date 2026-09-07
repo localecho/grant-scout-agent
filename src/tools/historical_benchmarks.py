@@ -25,7 +25,7 @@ def _load() -> list[dict]:
     global _ROWS
     if _ROWS is None:
         with open(_DATA_PATH, newline="") as f:
-            _ROWS = list(csv.DictReader(f))
+            _ROWS = list(csv.DictReader(f, strict=True))
     return _ROWS
 
 

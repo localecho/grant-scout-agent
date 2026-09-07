@@ -4,6 +4,8 @@ A live-network test would be flaky in CI; the parsing logic is what this repo ow
 """
 from unittest.mock import MagicMock, patch
 
+import requests
+
 from src.tools.grants_gov import search_open_grants
 
 FAKE_RESPONSE = {
@@ -49,3 +51,14 @@ def test_rows_is_clamped_to_25(mock_post):
 
     sent_payload = mock_post.call_args.kwargs["json"]
     assert sent_payload["rows"] == 25
+
+
+@patch("src.tools.grants_gov.requests.post")
+def test_network_failure_returns_structured_error_not_a_crash(mock_post):
+    mock_post.side_effect = requests.ConnectionError("grants.gov unreachable")
+
+    results = search_open_grants(keyword="food assistance")
+
+    assert len(results) == 1
+    assert "error" in results[0]
+    assert "grants.gov unreachable" in results[0]["error"]

@@ -21,7 +21,13 @@ class OrgProfile:
     def from_yaml(cls, path: str) -> "OrgProfile":
         with open(path, "r") as f:
             data = yaml.safe_load(f)
-        return cls(**data)
+        try:
+            return cls(**data)
+        except TypeError as exc:
+            raise ValueError(
+                f"{path} is missing or misnames a required field ({exc}). "
+                f"Required fields: name, mission, org_type, annual_budget_usd, states."
+            ) from exc
 
     def as_prompt_block(self) -> str:
         return (

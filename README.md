@@ -64,6 +64,17 @@ across models) and includes a first-class **Amazon Bedrock** path with the ident
 code — flip `GRANT_SCOUT_MODEL_PROVIDER=bedrock` in `.env` (requires AWS credentials
 configured normally). See `src/agent.py`.
 
+## Known limitations
+
+- **Benchmark data is FY2021.** `historical_award_context` reads a static extract; it doesn't
+  re-pull from USASpending live. A program with no FY2021 nonprofit history isn't necessarily
+  unwinnable today — the agent is instructed to treat that as a real risk signal to disclose,
+  not silent proof of ineligibility (see the sample run's Cold Chain Grants call). Regenerate
+  the table for a newer year with `data/extract_benchmarks.sql`.
+- **`search_open_grants` caps at 25 results per call** (grants.gov's per-request max) with no
+  pagination across calls. Fine for a single org's focused keyword search; would need paging
+  to exhaustively enumerate a broad category.
+
 ## Bring your own org
 
 Copy `profiles/example_food_bank.yaml`, edit the fields, and point `--profile` at your new

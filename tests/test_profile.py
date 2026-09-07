@@ -1,4 +1,14 @@
+import pytest
+
 from src.profile import OrgProfile
+
+
+def test_missing_required_field_raises_clear_error(tmp_path):
+    bad_profile = tmp_path / "bad.yaml"
+    bad_profile.write_text("name: Incomplete Org\nmission: Missing other fields\n")
+
+    with pytest.raises(ValueError, match="Required fields"):
+        OrgProfile.from_yaml(str(bad_profile))
 
 
 def test_loads_example_profile():

@@ -27,9 +27,14 @@ def search_open_grants(keyword: str, rows: int = 10) -> list[dict]:
         "keyword": keyword,
         "oppStatuses": "forecasted|posted",
     }
-    resp = requests.post(GRANTS_GOV_SEARCH_URL, json=payload, timeout=20)
-    resp.raise_for_status()
-    body = resp.json()
+    try:
+        resp = requests.post(GRANTS_GOV_SEARCH_URL, json=payload, timeout=20)
+        resp.raise_for_status()
+        body = resp.json()
+    except requests.RequestException as exc:
+        # Surface a structured signal the agent can reason about and report to the user,
+        # instead of crashing the whole run on a transient grants.gov outage.
+        return [{"error": f"grants.gov search failed: {exc}"}]
     hits = body.get("data", {}).get("oppHits", [])
     return [
         {
