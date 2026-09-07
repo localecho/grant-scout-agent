@@ -1,0 +1,45 @@
+COMMUNITY: same as v1 -- Devpost judges for AWS's Agents for Humans Hackathon (Good Neighbor
+track), blended with professional grant-readiness practice and nonprofit-sector tech critique.
+
+RE-GRADE METHOD: same 10 voices as v1, asked to re-grade against the current repo (post the
+multi-profile evidence + published system prompt + AgentCore entrypoint + compliance-floor
+fix + judgment eval harness + regenerated health-clinic run), explicitly instructed not to
+soften grades. Run via OpenRouter/deepseek-chat, same mechanism as v1 (see that file for the
+original council roster and characteristic moves).
+
+GRADES (resolved/partial/not-resolved on their v1 critique -- updated grade)
+1. Simon Willison: resolved -- eval harness checks real properties across all 4 transcripts -- A (was A-)
+2. Shawn "swyx" Wang: resolved -- test_judgment_invariants.py checks judgment, not just plumbing -- A- (was B+)
+3. Hamel Husain: resolved -- 4 real runs across differently-shaped orgs + invariant tests -- B+ (was B-)
+4. Harrison Chase: resolved -- compliance-floor fix proves the cross-check tool catches real structural blockers -- A (was A-)
+5. Riley Goodside: resolved -- system prompt published verbatim in ARCHITECTURE.md and src/agent.py -- A- (was B)
+6. Amjad Masad: resolved -- health-clinic run's "STOP" alert is an even sharper demo beat -- A (unchanged)
+7. Andrej Karpathy: partial -- AgentCore entrypoint exists and is tested, but not deployed/scheduled; "background agent" framing still aspirational -- A- (was B+)
+8. Diane Leonard: resolved -- compliance-floor alert is now front-and-center, verified live -- B+ (was B)
+9. Beth Kanter: NOT resolved -- CLI+YAML still not "no grant-writing department" friendly; AgentCore is an HTTP endpoint, not a no-install surface for a volunteer board -- B- (unchanged)
+10. (dagger) Vu Le: NOT resolved -- still optimizes search-and-triage, doesn't touch indirect cost caps / reporting burden that cost nonprofits the actual win -- B- (unchanged)
+
+UPDATED MEDIAN GRADE: A-  (up from B+ at v1/v2)
+
+IS A+ HONESTLY ACHIEVABLE WITHOUT A LIVE AWS DEPLOYMENT OR A SCOPE CHANGE: No. Two hard
+ceilings remain, and both are decisions, not bugs:
+- Deployment gap (Karpathy/Kanter): the AgentCore path is real, tested code, but not launched
+  on AWS -- closing it needs an AWS account with Bedrock AgentCore access and a decision to
+  spend against it. Not something to do without checking first, and not needed to submit.
+- Scope critique (Vu Le): "this optimizes the ten hours nobody was going to spend, not the
+  systemic hundred hours" is a critique of the category of solution, not a fixable code gap.
+  Addressing it for real (e.g. compliance-onboarding assistance) is a different, larger product
+  than what six weeks and this hackathon's judging criteria call for.
+
+REMAINING GAPS:
+1. No live AWS deployment (code exists, untested against real Bedrock AgentCore Runtime)
+2. CLI+YAML interface still a real install-friction barrier for the stated non-technical audience
+3. Doesn't and can't fully address systemic nonprofit-sector constraints (indirect cost caps,
+   reporting burden) within this scope
+4. Eval harness is invariant-based (checks properties of real transcripts), not a statistical
+   eval with labeled ground truth across many runs per profile -- a real but smaller gap than
+   the "zero eval harness" v1 critique it replaced
+
+CEILING CALL: A is the honest ceiling for this codebase as submitted. A+ requires either a live
+AWS deployment decision or a scope decision this session should not make unilaterally -- both
+handed to the operator rather than silently claimed as done.
