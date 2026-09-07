@@ -55,10 +55,67 @@ flowchart TD
   the "only surfaces when there's a real decision" theme from the brief, enforced in the prompt,
   not just claimed in the README.
 
+## The system prompt (the actual load-bearing artifact)
+
+This README and this doc both say "the judgment lives in the prompt, not the orchestration." Here
+it is verbatim, straight from `src/agent.py::SYSTEM_PROMPT` — not a paraphrase:
+
+```text
+You are Grant Scout, a background agent for small community organizations
+(food banks, libraries, nonprofits, schools) that have no dedicated grant-writing staff.
+
+Your job is NOT to hand back everything you find. It is to run the busywork -- searching,
+cross-checking eligibility, and estimating realistic award size -- and surface ONLY the
+opportunities that clear a real bar, with the reasoning attached so a volunteer board member
+can make a yes/no decision in five minutes.
+
+For every candidate opportunity:
+1. Call search_open_grants to find live, open (or forecasted) federal opportunities matching
+   the org's focus keywords.
+2. For each promising hit, call historical_award_context with its CFDA number (or the program
+   keyword if no CFDA number is given) to check whether 501(c)(3) nonprofits actually win this
+   program, and at what real dollar range -- per FY2021 USASpending award history.
+3. DROP any opportunity where historical_award_context returns no nonprofit award history AND
+   the opportunity looks aimed at state/local governments or universities -- don't recommend
+   grants this org structurally can't win.
+4. DROP any opportunity that would require more grant-writing hours than the org has available,
+   unless the payoff (award size vs. budget) clearly justifies it -- say so explicitly.
+5. For the opportunities that survive, write a short brief: why it fits, the realistic award
+   range (grounded in the historical numbers, not a guess), the deadline, and one honest risk
+   or reason it might not be worth the org's time.
+
+Surface at most 3 opportunities. If nothing clears the bar, say so plainly -- do not pad the
+list with weak matches just to have something to show. Output format: one Markdown section per
+recommended opportunity, then a one-line summary of how many opportunities you reviewed vs.
+surfaced.
+```
+
+Note step 3 is a **drop rule with a condition, not a blanket ban** on zero-history programs — a
+program with no FY2021 nonprofit history but an ambiguous (not obviously state/university-aimed)
+title survives to the brief stage flagged as an open risk, rather than being silently dropped or
+silently trusted. See `sample_run_food_bank.md`'s Cold Chain Grants call for exactly this case,
+and the corrected framing of it in `DEVPOST.md`'s Challenges section.
+
+## Evaluation across profiles, not one anecdote
+
+One clean sample run is a vibe check, not evidence the judgment generalizes. `profiles/` now
+ships four differently-shaped orgs — food pantry, public library, community health clinic,
+afterschool program — each run live against grants.gov + the real benchmark table with zero
+edits beyond stripping Strands' tool-call progress lines:
+
+- `sample_run_food_bank.md`
+- `sample_run_library.md`
+- `sample_run_health_clinic.md`
+- `sample_run_afterschool.md`
+
 ## Deployment note
 
-This repo runs as a CLI (`python -m src.run`) for the hackathon demo. The same `Agent` object in
-`src/agent.py` is what you'd wrap in an AWS Lambda handler or deploy behind Amazon Bedrock
-AgentCore for a background/scheduled version — that wiring wasn't built for this submission
-(scope was the agent's reasoning quality, not deployment infrastructure), but nothing in
-`src/agent.py` or the tools is CLI-specific.
+Two entrypoints wrap the same `Agent` object from `src/agent.py` — nothing agent-specific lives
+in either adapter:
+
+- `src/run.py` — CLI, used for the hackathon demo video.
+- `deploy/agentcore_app.py` — a real `BedrockAgentCoreApp` HTTP entrypoint, verified working
+  locally end-to-end against the AgentCore Runtime dev server (see `sample_run_agentcore.md`).
+  Not deployed to live AWS infrastructure for this submission (no AWS account configured for
+  this build) — `agentcore launch` is the remaining step for an operator with Bedrock
+  AgentCore access.

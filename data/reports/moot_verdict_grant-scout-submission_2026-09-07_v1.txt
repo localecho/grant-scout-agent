@@ -1,0 +1,49 @@
+COMMUNITY (if inferred): Devpost judges for AWS's Agents for Humans Hackathon (Good Neighbor track) — agentic-AI builders and social-impact program reviewers, blended with two adjacent domains the artifact actually touches: professional grant-readiness practice and nonprofit-sector tech adoption/critique.
+
+COUNCIL
+1. Simon Willison (AI engineering/tooling) — insists on "show me the real, unmocked output" and audits reproducibility receipts down to the SQL.
+2. Shawn "swyx" Wang (AI engineer commentary) — judges by whether the eval loop, not the demo gloss, is where the craft lives.
+3. Hamel Husain (LLM evals) — "look at your data" — wants labeled failure cases across many runs, not one clean narrative.
+4. Harrison Chase (agent orchestration) — praises minimal tool surfaces where each tool earns its place in the loop.
+5. Riley Goodside (prompt engineering) — reads the actual system prompt text as the artifact, not the README's description of it.
+6. Amjad Masad (hackathon/demo craft) — grades pitch and video for whether the "aha" moment lands in the first 90 seconds.
+7. Andrej Karpathy (agentic framing) — cares whether the "interrupt human only for real decisions" framing is actually built or just narrated.
+8. Diane Leonard (professional grant-readiness consultant) — checks the application-lift math against real federal compliance gates (SAM.gov, UEI, indirect cost rate).
+9. Beth Kanter (nonprofit tech adoption) — asks whether the stated audience (volunteer boards, no grant department) can actually operate the tool as shipped.
+10. † Vu Le (NonprofitAF — nonprofit-sector critic) — rejects the premise that search-and-triage, not systemic underfunding and compliance overhead, is nonprofits' binding constraint.
+
+GRADES
+1. Simon Willison: A- — real grants.gov and USASpending data end-to-end, committed extraction SQL, tests that don't need a model call — this is what "show your work" looks like, and the FY2021-staleness disclosure is the kind of honesty I rarely see in a hackathon README.
+2. Shawn "swyx" Wang: B+ — the "two tools, not ten" discipline and the refusal-to-pad system prompt are real engineering taste, but I see zero eval harness for judgment quality, only unit tests for tool plumbing — that's the part that was supposed to be hard.
+3. Hamel Husain: B- — one sample run against one food-bank profile is a vibe check, not error analysis; show me ten profiles and where the cross-check tool actually failed, not just the one Cold Chain anecdote that reads suspiciously cherry-picked for the demo.
+4. Harrison Chase: A- — the historical-award cross-check as the load-bearing tool, not a bolt-on, is the correct agent-design instinct, and the provider-swap via one env var with identical agent code is a clean demonstration of what "provider-agnostic" should mean.
+5. Riley Goodside: B — the README brags that "the judgment lives in the prompt," but the prompt itself never appears in any doc I can grade — I'm being asked to trust a description of craft I can't read.
+6. Amjad Masad: A — the video script's "sounds perfect... no award history... flags it as a risk instead of recommending it anyway" beat is exactly the kind of concrete, un-fakeable demo moment that wins a Devpost track.
+7. Andrej Karpathy: B+ — "absorb the repetitive judgment-heavy task, interrupt the human only for the real decision" is the right sentence to write about agents in 2026, but the artifact is a CLI proof of that sentence, not the background agent it's titled after.
+8. Diane Leonard: B — the hour-estimates per program (6-8 for infrastructure, 15-20 for CSBG) show someone actually modeled grant-writing labor correctly, but nothing here surfaces that SAM.gov registration and an indirect cost rate agreement are the gate most six-volunteer-hour orgs fail before the writing hours even start.
+9. Beth Kanter: B- — a YAML profile and a Python CLI is not "no grant-writing department" friendly; the org this is built for is the org least likely to `pip install` anything, and that gap is only closed in the "what's next" section, not the shipped artifact.
+10. † Vu Le: B- — this is a nice triage tool on top of two data sources that were already free and public, but it doesn't touch why a food pantry loses a CSBG award anyway — restrictive indirect cost caps and reporting burden that eat the "win" — so it optimizes the ten hours nobody was going to spend and leaves the systemic hundred hours untouched.
+
+SYNTHESIS
+Median grade: B+
+Consensus strengths (7+):
+- Real, live, reproducible data end to end (grants.gov API + USASpending extract with committed SQL) — no mocked numbers anywhere in the pipeline
+- Honest failure disclosure as a design feature: FY2021 staleness flagged, "nothing cleared the bar" preferred over padding, Cold Chain Grants surfaced as an open risk rather than silently dropped
+- Minimal two-tool architecture where the cross-check tool is the actual thesis of the submission, not decoration
+
+Consensus weaknesses (7+):
+- No systematic evaluation of judgment quality — one polished sample run stands in for what should be several org profiles' worth of evidence
+- The pitch is for a background, scheduled, only-interrupt-for-real-decisions agent; the shipped thing is a CLI that runs once when invoked — the framing is ahead of the build
+
+Tension: The AI/agent-building voices (Willison, Chase, Masad, Karpathy) score the architecture and demo narrative in the A-/A range as craft; the eval-rigor and nonprofit-domain voices (Hamel, Kanter, Le) mark it down to B-/B- because neither the judgment quality nor the real-world usability by the stated audience is demonstrated beyond one curated run.
+
+Idiosyncratic-but-right: Goodside's objection that the system prompt — the document ARCHITECTURE.md itself calls the load-bearing artifact — never appears in any submission file. Judges are asked to trust a description of the judgment encoded in the prompt rather than read it; for a submission whose entire pitch is "the prompt is where the hard part lives," that's a real, correctable gap, not a nitpick.
+
+Adversary verdict (if seat present): "It optimizes the ten hours nobody was going to spend and leaves the systemic hundred hours — indirect cost caps, reporting burden — untouched."
+
+THE PROMPT (or PROMPT) THEY WOULD HAVE GIVEN THE WRITER INSTEAD
+Publish the actual system prompt and re-run the agent against five differently-shaped org profiles (a library, a health clinic, an after-school program, not just the one food pantry) so the judgment generalizes on the page instead of resting on a single, suspiciously clean anecdote.
+
+```verdict
+{"final_grade": "B+", "median_grade": "B+", "grades": [{"voice": "Simon Willison", "grade": "A-"}, {"voice": "Shawn swyx Wang", "grade": "B+"}, {"voice": "Hamel Husain", "grade": "B-"}, {"voice": "Harrison Chase", "grade": "A-"}, {"voice": "Riley Goodside", "grade": "B"}, {"voice": "Amjad Masad", "grade": "A"}, {"voice": "Andrej Karpathy", "grade": "B+"}, {"voice": "Diane Leonard", "grade": "B"}, {"voice": "Beth Kanter", "grade": "B-"}, {"voice": "Vu Le", "grade": "B-"}]}
+```

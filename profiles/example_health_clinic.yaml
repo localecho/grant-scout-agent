@@ -1,0 +1,10 @@
+name: "Cedar Valley Community Health Clinic"
+mission: "Provide sliding-scale primary care and chronic-disease management to uninsured and underinsured residents of a small mill town."
+org_type: "501(c)(3) nonprofit, Federally Qualified Health Center look-alike (not yet FQHC-designated)"
+annual_budget_usd: 1450000
+states: ["WV"]
+focus_keywords: ["primary care", "chronic disease management", "uninsured", "rural health", "sliding scale clinic"]
+max_grant_writing_hours_available: 15
+sam_gov_registered: false
+has_indirect_cost_rate_agreement: false
+notes: "Has a part-time grants coordinator (0.25 FTE) but no compliance officer; needs to know up front if a program requires an indirect cost rate agreement or SAM.gov UEI they don't yet have."

@@ -31,8 +31,13 @@ volunteer hours are realistically available for grant writing). It then:
 4. **Surfaces at most 3 opportunities** — each with the real historical award range, the
    deadline, and one honest risk — or says plainly that nothing cleared the bar this cycle.
 
-See a real run (live grants.gov data, no mocked output) in
-[`sample_run_food_bank.md`](sample_run_food_bank.md).
+See real runs (live grants.gov data, no mocked output) against four differently-shaped orgs —
+[`sample_run_food_bank.md`](sample_run_food_bank.md),
+[`sample_run_library.md`](sample_run_library.md),
+[`sample_run_health_clinic.md`](sample_run_health_clinic.md),
+[`sample_run_afterschool.md`](sample_run_afterschool.md) — chosen to cover the full range of
+outcomes (opportunities surfaced, zero surfaced, a well-funded program talked out of the
+shortlist), not just one clean anecdote.
 
 ## Why this is a non-trivial Strands build
 
@@ -64,8 +69,29 @@ across models) and includes a first-class **Amazon Bedrock** path with the ident
 code — flip `GRANT_SCOUT_MODEL_PROVIDER=bedrock` in `.env` (requires AWS credentials
 configured normally). See `src/agent.py`.
 
+## Running on Amazon Bedrock AgentCore
+
+`deploy/agentcore_app.py` wraps the same `Agent` from `src/agent.py` in a
+[`BedrockAgentCoreApp`](https://strandsagents.com/docs/user-guide/deploy/deploy_to_bedrock_agentcore/) —
+no separate agent logic, just the deployment adapter. Verified working locally end-to-end
+(see [`sample_run_agentcore.md`](sample_run_agentcore.md) for a real HTTP request/response):
+
+```bash
+python deploy/agentcore_app.py                          # starts the local AgentCore dev server
+curl -X POST http://localhost:8080/invocations \
+  -H "Content-Type: application/json" \
+  -d '{"profile_path": "profiles/example_food_bank.yaml"}'
+```
+
+Deploying to real AWS infrastructure (`agentcore configure` + `agentcore launch`) requires an
+AWS account with Bedrock AgentCore access, which wasn't set up for this submission — see Known
+limitations.
+
 ## Known limitations
 
+- **Not deployed to live AWS infrastructure.** The AgentCore entrypoint above is real,
+  tested code, but this submission runs it locally rather than on Bedrock AgentCore Runtime
+  (no AWS account was configured for this build). `agentcore launch` is the remaining step.
 - **Benchmark data is FY2021.** `historical_award_context` reads a static extract; it doesn't
   re-pull from USASpending live. A program with no FY2021 nonprofit history isn't necessarily
   unwinnable today — the agent is instructed to treat that as a real risk signal to disclose,
@@ -74,6 +100,12 @@ configured normally). See `src/agent.py`.
 - **`search_open_grants` caps at 25 results per call** (grants.gov's per-request max) with no
   pagination across calls. Fine for a single org's focused keyword search; would need paging
   to exhaustively enumerate a broad category.
+- **The shipped interface (CLI + a hand-edited YAML profile) is not yet usable by the exact
+  audience this is built for.** A volunteer board with no grant-writing department is also, on
+  average, a board with no one comfortable running `pip install` or editing YAML. Today someone
+  with basic command-line comfort has to run this on the org's behalf — a real gap between the
+  "who it's for" pitch and the shipped artifact, closed only by the AgentCore/scheduled-email
+  path in "What's next," not by anything in this repo yet.
 
 ## Bring your own org
 
@@ -94,7 +126,12 @@ data/
   nonprofit_award_benchmarks_fy2021.csv   Derived real award-history table (see extract_benchmarks.sql)
 profiles/
   example_food_bank.yaml      Sample org profile used in the demo
+  example_library.yaml        Rural public library profile (see sample_run_library.md)
+  example_health_clinic.yaml  FQHC-lookalike health clinic profile (see sample_run_health_clinic.md)
+  example_afterschool.yaml    Afterschool youth program profile (see sample_run_afterschool.md)
 tests/                        Unit tests (mocked network, no model calls)
+deploy/
+  agentcore_app.py            Bedrock AgentCore Runtime entrypoint (same Agent, HTTP adapter)
 ```
 
 ## License

@@ -34,7 +34,9 @@ volunteer hours) and runs the busywork end to end:
 4. Surfaces at most 3 opportunities with an honest brief (fit, real $ range, deadline, one
    risk) — or says plainly that nothing cleared the bar. It does not pad the list.
 
-See `sample_run_food_bank.md` in the repo for a full, real (not scripted) run.
+See `sample_run_food_bank.md` in the repo for a full, real (not scripted) run — and
+`sample_run_library.md`, `sample_run_health_clinic.md`, `sample_run_afterschool.md` for three
+more, against three differently-shaped orgs, so the judgment isn't resting on one anecdote.
 
 ## Who it's for
 
@@ -66,21 +68,34 @@ required); `historical_award_context` reads a table derived from a real USASpend
 award-data pull (FY2021 prime-award transactions filtered to 501(c)(3) recipients), with the
 exact extraction SQL committed alongside it for reproducibility.
 
+The same agent also runs behind a real Amazon Bedrock AgentCore Runtime entrypoint
+(`deploy/agentcore_app.py`) — verified locally end-to-end via the AgentCore dev server and a
+live HTTP `/invocations` call, not just a claim in a README.
+
 ## Challenges we ran into
 
 Grant program titles are misleading by design (a program literally titled "Cold Chain Grants
 for Emergency Food Assistance" turned out, per the historical data, to have no verified
-nonprofit award history — likely aimed at states or commercial distributors). That's exactly
-the failure mode the second tool exists to catch, and tuning the system prompt to actually *use*
-that signal to drop a plausible-sounding match — rather than rationalize it into the shortlist —
-took real iteration.
+nonprofit award history — likely aimed at states or commercial distributors). The zero-history
+signal isn't a blanket drop rule, though: the system prompt only auto-drops it when the program
+*also* reads as aimed at governments or universities. Cold Chain Grants was ambiguous on that
+second condition, so the agent surfaced it as opportunity #3 with the eligibility gap stated as
+an explicit, unresolved risk ("I cannot recommend this without you first verifying eligibility")
+rather than either silently dropping it or silently trusting the title. Getting the system prompt
+to hold that distinction — flag genuine ambiguity, drop clear non-fits, recommend clear fits —
+took real iteration, and running it against three more org profiles (library, health clinic,
+afterschool program) surfaced the full range: one run recommended two opportunities outright,
+one declined all three of its top candidates and said so, and one explicitly talked itself out of
+recommending a well-funded, on-topic program (AmeriCorps) once the award size and compliance
+burden didn't match the org's five volunteer hours.
 
 ## Accomplishments we're proud of
 
-The agent correctly declined to recommend a title-matching program because the real award data
-didn't back it up, and said so explicitly in its output instead of hiding the uncertainty. That
-kind of self-skepticism, grounded in a second real data source, is the actual hard part of
-"agent does research on your behalf" — not the search itself.
+The agent treats "no verified award history" as a real risk to disclose, not a fact to hide or a
+fact to auto-reject on. Across four org profiles it produced three different outcomes — two
+opportunities surfaced, zero surfaced, and a well-funded program talked out of the shortlist —
+using the same system prompt and the same two tools every time. That range, not any single
+transcript, is the evidence that the judgment generalizes rather than being tuned to one demo.
 
 ## What we learned
 
@@ -90,9 +105,11 @@ keywords alone will get wrong.
 
 ## What's next
 
-An AgentCore-deployed, scheduled version that runs weekly per org and only emails a human when
-a new opportunity clears the bar — the "runs in the background, surfaces only for a real
-decision" framing this hackathon asks for, taken from CLI demo to always-on agent.
+Deploy the existing, tested AgentCore entrypoint to live AWS infrastructure (`agentcore
+launch`), then a scheduled version that runs weekly per org and only emails a human when a new
+opportunity clears the bar — the "runs in the background, surfaces only for a real decision"
+framing this hackathon asks for, taken from a locally-verified AgentCore endpoint to an
+always-on one.
 
 ## Built with
 
