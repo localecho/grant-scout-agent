@@ -63,11 +63,17 @@ def test_at_least_one_profile_drops_a_historically_strong_program_for_compliance
     anyway once estimate_compliance_burden shows winning it would cost more (via the Single
     Audit threshold) than the org can absorb -- proof the third tool changes the recommendation,
     not just the prose.
+
+    The decline-language regex has already been widened once for real phrasing variation: a
+    regeneration declined AmeriCorps with "Opportunities surfaced: 0" and "Why This Opportunity
+    Doesn't Clear the Bar" as its section header, neither of which the original phrase list
+    covered.
     """
     hit = any(
         re.search(r"single audit", _read(name), re.IGNORECASE)
         and re.search(
-            r"dropped|not recommend|structurally mismatch|poor risk",
+            r"dropped|not recommend|structurally mismatch|poor risk"
+            r"|does(?:n't| not) clear the bar|surfaced:?\s*0\b",
             _read(name),
             re.IGNORECASE,
         )
