@@ -62,6 +62,12 @@ independently of any model call):
 python -m pytest -v
 ```
 
+`tests/test_judgment_invariants.py` is a small automated eval harness, not just tool-plumbing
+tests: it checks real properties of the committed sample-run transcripts (never surfaces more
+than 3 opportunities, at least one profile gets zero surfaced, every verdict is grounded in a
+real dollar figure or an explicit no-award-history finding) so a prompt regression breaking the
+agent's judgment gets caught mechanically, not by re-reading four transcripts by eye.
+
 ## Model provider
 
 Strands is provider-agnostic; this repo defaults to **OpenRouter** (one key, fast iteration
