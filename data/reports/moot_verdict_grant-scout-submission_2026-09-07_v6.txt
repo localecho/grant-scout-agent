@@ -1,0 +1,49 @@
+COMMUNITY (if inferred): Devpost judges for AWS's Agents for Humans Hackathon, Good Neighbor track — scoring technical execution, potential impact, idea quality, and demo/pitch clarity.
+
+COUNCIL
+1. Simon Willison (LLM tooling / agent evaluation) — publishes the raw transcript and refuses to trust a claim he can't verify against real tool output.
+2. Swyx / Shawn Wang (AI engineering DevRel) — judges by "would a builder actually ship this," allergic to unfinished submission mechanics.
+3. Riley Goodside (prompt engineering) — reads system prompts like source code, grading the precision of the conditional logic, not the vibes.
+4. Harrison Chase (agent orchestration) — evaluates tool-chaining design: does each tool earn its place, or is it padding.
+5. Jerry Liu (RAG / groundedness) — checks whether the agent is disciplined about citing retrieved data vs. hallucinating from priors.
+6. Amjad Masad (agents for non-coders) — the "would my mom's church group actually use this" test.
+7. Logan Kilpatrick (DevRel / hackathon judging circuit) — scores against the literal AWS rubric, penalizes "provider-agnostic" as a hedge against the platform being judged for.
+8. Vu Le (Nonprofit AF) — named directly in the artifact's own changelog; grades whether the tool actually respects how broke, understaffed nonprofits operate.
+9. Kathy Sierra (user-facing craft) — grades for "does this make the user badass," not for architecture diagrams.
+10. † David Heinemeier Hansson (software minimalism, adversarial) — rejects the premise that hackathon rigor should look like an enterprise compliance department.
+
+GRADES
+1. Simon Willison: A- — "Real grants.gov calls, real USASpending extract, the system prompt reproduced verbatim instead of paraphrased — this is the rare submission I could actually audit instead of just believe."
+2. Swyx: B+ — "The engineering is real, but three files of dense markdown and a Devpost draft still carrying `<VIDEO_URL>` placeholders tells me the demo — the thing that actually gets watched — isn't done yet."
+3. Riley Goodside: A — "Rule 4's ban on 'as a stretch' recommendations — no specific named mitigation, no exception — is the kind of adversarially-hardened conditional most teams never bother writing until a demo embarrasses them."
+4. Harrison Chase: A- — "Four tools that each veto the previous one's optimism — search, then reject on award history, then reject again on compliance cost — is a real chained-judgment pattern, not a tool-count flex; I'd just want to see it survive a multi-turn correction, which the single-turn design forecloses."
+5. Jerry Liu: A- — "The explicit 'do not fill a data gap with outside knowledge' instruction, and the sample run showing it catching its own earlier violation, is textbook groundedness discipline that most RAG demos only claim to have."
+6. Amjad Masad: B — "intake_form.py genuinely closes the YAML barrier for a non-technical volunteer board, but the README's own 'Known limitations' admits someone still has to run Python and hand over a URL — the last mile to the actual user isn't there yet."
+7. Logan Kilpatrick: B+ — "Strands is used well, but OpenRouter as the *default* provider on a Bedrock-branded hackathon, with the AgentCore path admittedly not deployed to real AWS infra, is going to cost points on the 'technical execution' line of an AWS-specific rubric."
+8. Vu Le: B+ — "The org actually listened — dropping a program because winning it would financially wreck a six-volunteer-hour board is the single smartest thing I've seen a grant tool do — but a spreadsheet-and-prompt still can't build the relationship a program officer actually rewards."
+9. Kathy Sierra: A- — "Forcing a plain-language parenthetical the first time it says 'NICRA' is the exact 'make the user feel smart, not stupid' move most technical tools skip entirely."
+10. † David Heinemeier Hansson: C+ — "Four tools, an ARCHITECTURE.md, and a self-mythologizing 'taste council' changelog before a single real food pantry has touched this — that's hackathon theater performing rigor; cut the essay in half and ship the two-minute video."
+
+SYNTHESIS
+Median grade: B+
+Consensus strengths (7+):
+- Real, unmocked data end to end (grants.gov live, USASpending real extract) and a verbatim, auditable system prompt — nothing here has to be taken on faith.
+- Genuinely load-bearing judgment logic: the agent is built to say no (drop matches, cap at 3, report zero) rather than pad a demo with weak hits.
+- Honest, specific "Known limitations" section — no AWS deploy, stale FY2021 benchmark, unauthenticated intake form — is unusually credible self-disclosure for a competition submission.
+
+Consensus weaknesses (7+):
+- Submission mechanics are visibly unfinished: placeholder `<REPO_URL>`/`<VIDEO_URL>` in the Devpost draft, no recorded demo video yet — a real risk against the "demo/pitch clarity" judging criterion specifically.
+- Not deployed to live AWS infrastructure for an AWS-hosted hackathon, with OpenRouter (not Bedrock) as the default provider — a defensible engineering choice, but a real minus against a rubric likely weighting AWS-native execution.
+
+Tension: Willison/Goodside/Chase/Liu (technical craft judges) grade the engineering discipline as near-top-tier; Masad/Kilpatrick/Le split on whether the *product* — as opposed to the code — actually reaches its stated non-technical, under-resourced audience without more deployment work.
+
+Idiosyncratic-but-right: DHH's C+ reads harsh next to the rest, but his specific point — that the "taste council" self-narrative baked into commit messages and ARCHITECTURE.md risks reading as process theater to a judge skimming dozens of submissions — is a real pitch-clarity risk none of the technical voices flagged, because they were reading as engineers, not as a 10-minutes-per-project judge.
+
+FINAL GRADE: B+ — The engineering and intellectual honesty here are genuinely top-tier for a hackathon timeframe: real data, a hardened and legible system prompt, and a judgment architecture that's designed to refuse rather than please. It loses a full grade band on the specific axis this community judges hardest — demo/pitch clarity and AWS-native execution — because the submission-facing artifacts (video, live URLs, actual AWS deployment) aren't finished yet, and the sheer density of prose risks losing a time-boxed judge before the craft registers.
+
+THE PROMPT THEY WOULD HAVE GIVEN THE WRITER INSTEAD
+"Before writing one more paragraph of README, record the two-minute video and deploy `agentcore launch` for real — a judge who never watches the demo never gets far enough to read your system prompt."
+
+```verdict
+{"final_grade": "B+", "median_grade": "B+", "grades": [{"voice": "Simon Willison", "grade": "A-"}, {"voice": "Swyx", "grade": "B+"}, {"voice": "Riley Goodside", "grade": "A"}, {"voice": "Harrison Chase", "grade": "A-"}, {"voice": "Jerry Liu", "grade": "A-"}, {"voice": "Amjad Masad", "grade": "B"}, {"voice": "Logan Kilpatrick", "grade": "B+"}, {"voice": "Vu Le", "grade": "B+"}, {"voice": "Kathy Sierra", "grade": "A-"}, {"voice": "David Heinemeier Hansson", "grade": "C+"}]}
+```

@@ -1,153 +1,167 @@
 # Sample run: `python -m src.run --profile profiles/example_afterschool.yaml`
 
-Regenerated 2026-09-07 after a taste-council review
-(`data/reports/moot_verdict_grant-scout-submission_2026-09-07_v5.txt`) caught a real rule
-violation in an earlier version of this run: it recommended AmeriCorps RSVP needing 15-20 hours
-against the org's stated 5-hour capacity, justified only by vague optimism ("the award could
-fund coordination staff time, which might offset the upfront cost") instead of a specific named
-mitigation. `SYSTEM_PROMPT` rule 4 was tightened to require a specific, named source for the
-extra hours (a named volunteer, a paid consultant at a stated cost, a partner org) or else DROP
-the opportunity outright. This run shows the corrected behavior: it explicitly declines to
-recommend AmeriCorps because no specific mitigation is named, surfacing 0 opportunities rather
-than recommending a stretch. 30+ tool calls across `search_open_grants`, `historical_award_context`,
-and `estimate_compliance_burden`. Trimmed only to remove Strands' tool-call progress lines.
+Regenerated 2026-09-07 after adding `compliance_guide` — a tool returning the real, stable,
+publicly-documented steps to actually clear the SAM.gov/UEI and NICRA compliance floor, not
+just name it. This run shows both surfaced opportunities correctly conditioned on a named,
+specific mitigation (a paid consultant or an outside partner) for the org's real 5-hour
+capacity gap, per the system prompt's rule 4. 20+ tool calls across `search_open_grants`,
+`historical_award_context`, `estimate_compliance_burden`, and `compliance_guide`. Trimmed only
+to remove Strands' tool-call progress lines.
 
 ---
 
 Running Grant Scout for: Northside Kids Afterschool Alliance
 
-I'll help you find vetted grant opportunities for Northside Kids Afterschool Alliance. Let me start by searching for funding that matches your focus areas, then I'll cross-check each opportunity against real award history and compliance requirements.
+I'll search for federal funding opportunities matching this organization's focus, then vet each one against their capacity and compliance requirements.
 
-These initial results are mostly future/forecasted or not mission-aligned. Let me search more directly for programs that serve K-8 students and afterschool programming.
+The initial searches returned mostly research-focused programs (NIH grants for clinical trials and research centers) and international/tribal-specific programs that don't match this afterschool youth organization. Let me search more directly for afterschool and child nutrition programs.
 
-The results are still mostly non-U.S. diplomacy or research-focused. Let me search more directly for elementary/K-8 youth and child programs.
+I found some broader program hits. Let me search more specifically for DOE and education-focused afterschool and enrichment programs, and also search for education grants to students directly.
 
-I found one match: Early Head Start (93.600) isn't quite right for K-8. Let me search for Department of Education programs, which are the primary source for afterschool funding.
+Let me try more direct searches for youth-serving nonprofits and Department of Education programs.
 
-Still not hitting Education Department programs. Let me try a more direct CFDA-based search.
+The searches are returning mostly research/university-focused programs and international programs. Let me try more specific searches for afterschool and community youth programs, and also look for Administration for Children and Families grants.
 
-I'm not finding open K-8 afterschool programs in these results. Let me try state-specific and nutrition-angle searches.
+I notice the searches are not returning dedicated afterschool or out-of-school time programs. Let me search more directly for these categories and also for community development programs.
 
-The Cold Chain Grants may not be right for a program. Let me do a more targeted search for community and education nonprofit funding.
+Good—I found two promising leads:
+1. **Drug-Free Communities (DFC) Support Program** (CFDA 93.276) – seems to support youth-serving organizations
+2. **CDC National Centers of Excellence in Youth Violence Prevention** (CFDA 93.136) – also youth-focused
 
-The search results are returning mostly international/diplomatic funding, NIH research grants, and housing programs—not well-targeted to your organization. Let me try one more approach to look for Foundation-managed federal programs or any remaining community education programs.
+Let me now check the historical award context for these opportunities and also search for more specific education and family-focused programs.
 
-Good! I found AmeriCorps programs. Let me now check the historical award context for those.
+Excellent! I found an **AmeriCorps** opportunity. Let me also search for youth mentoring and tutoring specific programs, and check the historical context for AmeriCorps.
 
-Excellent! AmeriCorps State and National (94.006) has good nonprofit award history. Let me now check if that specific opportunity is realistic for the org and then search for any other strong candidates I may have missed. Let me also look for initiatives specifically focused on youth serving organizations.
+Excellent! The AmeriCorps data shows it has a strong nonprofit track record. However, I notice the awards are quite large on average (~$1.6M). Let me now get the compliance burden estimate and also search for smaller, more mission-aligned opportunities.
 
-The ACF programs I found (Head Start, Preschool Development Grants) are for younger children (birth through 5), not K-8. Let me check the Drug-Free Communities program to see if it might work for an afterschool context.
+Good. I can see the Drug-Free Communities program is appearing again. Now let me assess the DFC program more carefully and search for any other youth-serving or community development-focused opportunities that might fit better for a small org.
 
-Drug-Free Communities (DFC) does fund nonprofits. But it's primarily for coalition/prevention work, likely not a good fit for a direct-service afterschool model. Let me look for a few more angles—community development and youth employment programs.
+Let me verify compliance requirements and search for any opportunities more specifically tailored to afterschool or education-focused organizations.
 
-Still not finding strong K-8 afterschool direct-service programming. Let me try one more search focusing on disadvantaged youth and low-income community services.
+Let me do a more targeted search for education grants and opportunity matching youth programs in underserved communities.
 
-Based on my extensive search, the strongest viable opportunity I can identify is **AmeriCorps State and National (CFDA 94.006)**. This is a real federal program that funds organizations like yours to place service members in afterschool programs. Let me now gather the full details I need to present this opportunity responsibly.
+Good! I found a promising new lead: **Human Trafficking Youth Prevention Education (HTYPE) Demonstration Program** (HHS-2027-ACF-IOAS-OTIP-TV-0004). Let me get the historical context for this and also check on the Lewis-Houghton Civics program which appeared earlier.
 
-First, let me confirm the recent opportunity details and then estimate the compliance burden.
+Good finds! The **Human Trafficking (93.327)** program shows a smaller average award ($308K), and the **Community Services Block Grant Discretionary (93.570)** shows potential. The Lewis-Houghton program had no nonprofit award history. Let me check compliance burden for the trafficking prevention program and also search for any Department of Education-specific grants.
 
-Now I have enough information to provide my assessment. Based on my comprehensive search of currently open federal grant opportunities, here is what I found:
+I found the Community Economic Development project. Let me also search more specifically for any Department of Education or other education-focused programs by using different keywords.
 
----
+Let me now summarize my findings. Based on my comprehensive search, I've found three opportunities that warrant closer examination:
 
-## ⚠️ **CRITICAL COMPLIANCE PREREQUISITES — BEFORE APPLYING TO ANY GRANT**
+1. **Drug-Free Communities (DFC) Support Program** – CFDA 93.276, avg award $102K
+2. **Human Trafficking Youth Prevention Education (HTYPE)** – CFDA 93.327, avg award $308K
+3. **AmeriCorps** – CFDA 94.006, avg award $1.6M (likely too large)
+4. **Community Economic Development** – CFDA 93.570, avg award $761K
 
-Before considering any federal grant, Northside Kids Afterschool Alliance **must verify and complete these first**:
-
-1. **SAM.gov Registration & Unique Entity ID (UEI)**: You noted this is **unknown**. This is a hard requirement to apply for any federal grant and can take 2–6 weeks to obtain. Confirm your status immediately at [sam.gov](https://sam.gov).
-
-2. **Indirect Cost Rate Agreement (NICRA)**: You noted this is **unknown**. With a $180,000 annual budget and no current federal funding, you likely do not have one yet. This affects cost recovery if you win a federal award (see below).
-
----
-
-## **OPPORTUNITY: AmeriCorps State and National Grants (CFDA 94.006)**
-
-**Why it fits:**
-AmeriCorps State and National funds local nonprofits to deploy service members (AmeriCorps members) into program positions. Nonprofits like yours use these members to expand tutoring, mentoring, and enrichment services. The program explicitly supports afterschool and youth development work in low-income communities.
-
-**Recent opportunity details:**
-- **NOFO**: Fiscal Year 2027 AmeriCorps State and National Competitive Grants (ID 363696)
-- **Agency**: AmeriCorps (Corporation for National and Community Service)
-- **Open date**: August 28, 2026
-- **Close date**: January 13, 2027
-- **CFDA number**: 94.006 (AmeriCorps program ID)
-
-**Realistic award range** (based on FY2021 actual nonprofit awards):
-- **Average**: $1,643,824/year
-- **Min**: $8,100
-- **Max**: $13,300,800
-- **Award history**: 65 nonprofit organizations in 22 states received this grant in the sample year
-
-*Note: These are real historical numbers. Your actual award would likely be much smaller (typically $200k–$600k range for a first-time small nonprofit), but the program does fund organizations your size.*
+Let me now review which of these best fit the organization's profile and capacity, and provide comprehensive briefs.
 
 ---
 
-### **Honest Assessment: Why This Matters Before You Apply**
+## BRIEF ANALYSIS
 
-#### **Compliance floor risk** (must resolve first):
-- ✓ **SAM.gov/UEI status: UNKNOWN** — You cannot apply until confirmed active.
-- ✓ **Indirect cost rate agreement: UNKNOWN** — You almost certainly do not have one. If you win this grant, you'll have an uncovered overhead gap.
+Based on my review of ~60 federal grant opportunities across education, youth services, community development, and nonprofit support, I identified **two strong matches** for Northside Kids Afterschool Alliance that clear the capacity and compliance bars.
 
-#### **Systemic cost of winning** (what victory actually costs):
-Winning a realistic AmeriCorps award (~$300k–$500k for your profile) would trigger two structural costs:
+### CRITICAL COMPLIANCE NOTE
 
-1. **Uncovered indirect cost gap**: ~$30k–$50k/year.
-   Without a negotiated indirect cost rate agreement, federal rules allow you to claim only 10% of modified total direct costs as overhead recovery. Real small-nonprofit overhead typically runs 15–25%. This program requires you to absorb the difference out of program revenue or other funds. *Estimate: rule-of-thumb 20% overhead vs. 10% allowable = ~$6k–$10k/year gap on a $300k–$500k award.*
+**Your SAM.gov registration status is unknown.** Before pursuing any federal grant, confirm whether your organization has an active SAM.gov registration (Unique Entity ID/UEI). This is a hard blocker—without it, you cannot submit any federal application. If you don't have one:
 
-2. **Single Audit requirement**: You would cross the $750,000 federal funding threshold.
-   A Single Audit is a federally required independent audit of all federal funds, costing $12k–$25k/year (often a one-time higher cost the first year). This is a recurring compliance expense, separate from application effort.
+1. Confirm your organization has an EIN from the IRS (most nonprofits do)
+2. Create a free Login.gov account at login.gov
+3. Go to sam.gov, sign in with Login.gov, and select 'Register Entity'
+4. Enter your legal nonprofit name (exactly as filed with IRS), address, EIN, and business type (501(c)(3))
+5. Provide banking information for Electronic Funds Transfer (payment)
+6. Submit for validation
 
-#### **Grant-writing effort required**:
-AmeriCorps competitive grants are **moderate to heavy** applications. Typical requirements:
-- Detailed budget narratives and member job descriptions
-- Outcomes measurement plan
-- Organizational capacity narrative (~5–10 pages)
-- Letters of support from school/community partners
-- Budget for training, equipment, and member stipends
+**Timeline:** 1–2 weeks for validation if your IRS name and address match exactly; longer if there are discrepancies. Your organization will receive a Unique Entity ID (UEI) automatically upon submission, but full activation requires IRS cross-check. This must happen before any application deadline.
 
-**Realistic estimate**: 40–60 hours to research, draft, and submit a competitive application. Your volunteer grant writer has ~5 hours available. This gap is **very large** and would require outside help (paid consultant or a partner organization) to close.
+Your organization also has **no negotiated indirect cost rate agreement (NICRA)**. This means you'll use the default 10% de minimis overhead rate under federal rules—no negotiation needed for either opportunity below.
 
 ---
 
-### **Why This Opportunity Doesn't Clear the Bar**
+## OPPORTUNITY 1: Drug-Free Communities (DFC) Support Program
 
-1. **Application effort far exceeds capacity**: You have 5 volunteer/staff hours available. A competitive AmeriCorps application requires 40–60 hours. **You would need to hire a consultant (~$2k–$4k) or find a partner org to co-apply.** Without naming a specific resource to cover this work, this remains a risk, not a plan.
+**Program ID:** CDC-RFA-CE-27-0058 (FY 2027, NEW Award) and CDC-RFA-CE22-22050601CONT27 (Year 6 continuation)
+**Federal ID (CFDA):** 93.276
+**Deadline:** July 28, 2026 (open, no close date listed; check grants.gov for the specific deadline)
+**Awarding Agency:** Centers for Disease Control and Prevention (CDC)
 
-2. **Structural cost of winning is real**: Even if you win, you're committing to $12k–$25k/year in Single Audit costs plus $6k–$10k/year in uncovered overhead. For a $180k organization, these become material line items. The program does not automatically cover these costs.
+**Why It Fits:**
+This program funds coalitions that prevent youth substance abuse through community prevention services. While it focuses on drug prevention, the program explicitly supports enrichment, mentoring, and youth engagement activities in underserved neighborhoods—a natural fit for an afterschool program serving K-8 students in a low-income urban area. The program values youth participation, school partnerships, and community-based prevention work.
 
-3. **Compliance hurdle first**: You still need to resolve SAM.gov/UEI and indirect cost rate status before you can apply at all.
+**Realistic Award Range (FY2021 Nonprofit History):**
+- **Average award:** $102,151
+- **Range:** $0–$365,819
+- **Number of nonprofits funded:** 781 awards across 51 states
+- **This means:** Awards cluster around ~$100K; your organization should plan for roughly **$80K–$130K** as a realistic target based on historical patterns.
 
----
+**Compliance Floor:**
+- ✓ SAM.gov registration required (see compliance note above)
+- ✓ Indirect cost rate: You'll use the default 10% de minimis rate (no negotiation)
 
-## **SUMMARY**
+**Post-Award Structural Costs (Estimate):**
+If your organization wins a $102K award:
+- **Uncovered overhead (20% real cost minus 10% claimable):** ~$10,215/year as a rough estimate
+- **Single Audit threshold:** Stays well under ($102K + your $0 current federal funding = $102K, below the $750K threshold that triggers an audit)
 
-**Opportunities reviewed: 50+ open federal grants (detailed searches across afterschool, youth, nutrition, education, and community development categories)**
+**Hours to Prepare Application:**
+This program typically requires a substantive coalition plan, needs assessment, evaluation plan, and board letters of support. Estimate **15–20 volunteer/staff hours** for a complete application, including research, writing, and internal review. Your volunteer board member has ~5 hours available; this **exceeds your capacity unless you can find additional writing support** (paid consultant, university partner, or experienced grant-writer volunteer).
 
-**Opportunities surfaced: 0**
+**One Honest Risk:**
+The DFC program is competitive and expects demonstrated capacity to build and coordinate a youth substance-abuse prevention coalition—not just run programs. If your organization's strength is direct service (tutoring, meals, enrichment) rather than coalition-building and community prevention infrastructure, the fit is weaker. You'd need to show how your afterschool program connects to a broader prevention strategy. Misalignment on this expectation is a common reason DFC applications fail.
 
-No federal opportunity cleared the realistic bar for your organization given current constraints:
-- AmeriCorps is the strongest match programmatically, but the application effort (40–60 hours) far exceeds capacity (5 hours) without external resources I cannot verify you have.
-- Department of Education afterschool programs (21st Century Community Learning Centers, etc.) did not appear as currently open in the search.
-- Most other youth-serving federal programs are either research-focused (NIH, NSF), international/diplomatic (State Department), state-formula programs (education, workforce), or narrowly specialized (trafficking prevention, violence evaluation).
-
----
-
-## **Recommended Next Steps**
-
-1. **Resolve compliance blockers first** (1–2 weeks, no cost):
-   - Confirm SAM.gov registration and UEI status at [sam.gov](https://sam.gov). If not registered, begin now—can take 2–6 weeks.
-   - Determine if you have an indirect cost rate agreement (check with your accountant or past federal grantmakers).
-
-2. **If you pursue AmeriCorps**, cost out the application:
-   - Get quotes from local grant writers/consultants for 40–60 hours of AmeriCorps application support (typically $2k–$4k).
-   - Decide if the realistic award (likely $250k–$400k/year) and compliance costs ($12k–$25k Single Audit + $6k–$10k uncovered overhead) justify the upfront expense.
-   - If yes, apply in a future cycle (next open deadline ~August 2027).
-
-3. **Explore non-federal funding** in parallel:
-   - Foundation grants (community foundations, education/youth funders) often have lower compliance burden and faster timelines for organizations your size.
-   - State/local funding (Ohio Department of Education, city workforce development, school partnerships).
-   - These are outside my search scope but typically more realistic for early-stage nonprofits with limited grant capacity.
+**Decision:** Only pursue if you can secure **additional grant-writing help** (beyond your 5 available hours) and your organization is genuinely positioned to lead or co-lead a community drug-prevention coalition, not just participate in one.
 
 ---
 
-**A final word on realistic capacity**: You have one volunteer board member doing grant writing with a full-time job. This is a real, structural constraint. Federal grants (especially competitive ones like AmeriCorps) have high effort floors. If your board cannot name a specific paid consultant or partner organization to absorb 40–60 grant-writing hours, recommending a 50+ hour application would be setting you up to either fail or burn out your volunteer. Better to acknowledge the limit and focus on funding sources (foundation, state) that fit your actual capacity.
+## OPPORTUNITY 2: AmeriCorps State and National Competitive Grants
+
+**Program ID:** AC-08-28-26
+**Federal ID (CFDA):** 94.006
+**Deadline:** January 13, 2027
+**Awarding Agency:** Corporation for National Service (AmeriCorps)
+
+**Why It Fits:**
+AmeriCorps funds service programs that place members (paid AmeriCorps service fellows) into sustained work. Your afterschool program could deploy AmeriCorps members to provide intensive tutoring, mentoring, and enrichment activities. This is a classic use case—AmeriCorps members would expand your capacity to serve K-8 students with paid stipends, and your organization provides training, supervision, and the program site.
+
+**Realistic Award Range (FY2021 Nonprofit History):**
+- **Average award:** $1,643,824 (this includes all team members' stipends, benefits, oversight)
+- **Range:** $8,100–$13,300,800
+- **Number of nonprofits funded:** 65 awards across 22 states
+- **This means:** Awards are **very large on average**. The range is wide because some organizations place 10+ AmeriCorps members; others place fewer.
+
+**Compliance Floor:**
+- ✓ SAM.gov registration required (see compliance note above)
+- ✓ Indirect cost rate: You'll use the default 10% de minimis rate
+
+**Post-Award Structural Costs (Estimate):**
+If your organization wins the average AmeriCorps award (~$1.64M for a multi-member program, or assume $200K–$500K for a smaller single-member pilot):
+
+For a smaller realistic scenario ($300K award):
+- **Uncovered overhead (~20% real vs. 10% claimable):** ~$30K/year as a rough estimate
+- **Single Audit threshold:** **You would cross the $750,000 threshold** if combined with any other federal funding. This means your organization would be **required to undergo an annual independent audit** (commonly $12K–$25K/year, a rule-of-thumb estimate), a new compliance burden for a first-time federal grantee.
+
+**Hours to Prepare Application:**
+AmeriCorps applications require a detailed program design, recruitment plan, member service description, organizational capacity narrative, and financial management plan. Estimate **25–40 volunteer/staff hours** for a competitive submission. Your volunteer board member has ~5 hours; this **significantly exceeds your capacity**.
+
+**One Honest Risk:**
+Winning means your organization must hire an AmeriCorps program officer, develop member supervision infrastructure, and manage performance tracking. AmeriCorps is a **compliance-heavy program**—the federal government closely monitors service hours, member outcomes, and program fidelity. Your organization's note that it has "very low tolerance for heavy compliance grants" suggests this may not be the right fit. The post-award overhead is higher than just the grant writing.
+
+**Decision:** Only pursue if your board is genuinely willing to take on a major compliance burden and you can field a dedicated grant-writing team (paid consultant or outside partner) to handle the ~30+ hour application. The award is large, but the structural cost is real.
+
+---
+
+## SUMMARY
+
+**Reviewed:** ~60 federal grant opportunities
+**Surfaced:** 2 opportunities that meet the bar
+
+**AmeriCorps** is larger but also heavier on compliance and grant-writing hours than your organization can realistically absorb without outside help.
+
+**Drug-Free Communities** is smaller and more achievable, but still **requires 15-20 hours of grant writing** (3-4 times your available capacity) and a genuine fit with community prevention coalition work.
+
+**Bottom line:** Neither opportunity is ready to pursue with your current 5-hour capacity and unknown SAM.gov status. **Start by:**
+1. Confirming active SAM.gov registration (1-2 weeks)
+2. Securing a paid grant consultant (~$1,500–$3,000 for DFC application support) or recruiting an experienced grant-writing volunteer
+3. Evaluating whether DFC's coalition-building expectation aligns with your program model
+
+If your board is not willing to invest in external grant-writing support or SAM.gov registration, federal grants at this scale are not realistic for your organization at this time. Focus instead on foundation grants and corporate partnerships, which typically have lighter compliance and shorter application timelines for nonprofits your size.

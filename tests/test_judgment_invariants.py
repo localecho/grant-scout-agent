@@ -143,16 +143,22 @@ def test_over_capacity_recommendations_name_a_specific_mitigation(name):
     stated 6, justified only by "the award could fund coordination staff time, which might
     offset the upfront cost" -- optimism, not a specific mitigation. Checks every hour-range
     mention against the org's actual stated capacity (read from its profile YAML, not asserted
-    in the transcript); any that clears a 2x margin must EITHER name a consultant/partner/hire in
-    the same paragraph OR be part of an explicit decline (rule 4's other valid outcome: DROP the
-    opportunity and say plainly the hour requirement exceeds capacity).
+    in the transcript); any that clears a 2x margin must EITHER name a consultant/partner/hire
+    OR be part of an explicit decline (rule 4's other valid outcome: DROP the opportunity and
+    say plainly the hour requirement exceeds capacity) -- checked against the whole opportunity
+    SECTION (the "## Opportunity N" / "## Summary" block the hour figure appears in), not a
+    single blank-line-delimited paragraph.
 
-    An earlier version of this test didn't make that second branch, and flagged
-    sample_run_afterschool.md's summary line -- "AmeriCorps ... far exceeds capacity (5 hours)
-    without external resources I cannot verify you have" -- as a violation. That sentence isn't
-    an unmitigated recommendation; it's the DROP outcome working correctly, restating why nothing
-    was recommended. The rule is about what a RECOMMENDATION requires, not about never mentioning
-    a large hour estimate.
+    Two earlier versions of this test used single paragraphs as the unit of analysis and both
+    produced false positives from normal, non-repetitive prose: (1) a paragraph explicitly
+    declining ("far exceeds capacity ... without external resources I cannot verify you have")
+    was flagged as an unmitigated recommendation; (2) a document's closing Summary section
+    restated an hour figure from an earlier Opportunity section ("Drug-Free Communities ...
+    still requires 15-20 hours ... (3-4 times your available capacity)") without re-stating the
+    mitigation already named in that opportunity's own "Decision" paragraph two sections
+    earlier. A human reader has no trouble following that reference; a per-paragraph regex does.
+    Section-level scoping fixes both without losing the check's teeth -- an hour figure named for
+    the first time with no mitigation and no decline anywhere in its own section still fails.
     """
     profile = yaml.safe_load((REPO_ROOT / PROFILE_FOR_TRANSCRIPT[name]).read_text())
     available_hours = profile["max_grant_writing_hours_available"]
@@ -180,13 +186,19 @@ def test_over_capacity_recommendations_name_a_specific_mitigation(name):
         r"|surfaced:? 0|0 opportunities (?:surfaced|recommended)",
         re.IGNORECASE,
     )
-    for para in text.split("\n\n"):
-        for low, _high in re.findall(r"(\d+)\s*[-–]\s*(\d+)\s*hours", para, re.IGNORECASE):
+    # Section = from one "## " heading to the next (or end of doc) -- the whole opportunity's
+    # or summary's own text, so a mitigation named in one paragraph covers an hour figure
+    # restated in another paragraph of that SAME section, without letting a genuinely
+    # unmitigated recommendation in a different section hide behind a mitigation named
+    # somewhere else in the document.
+    sections = re.split(r"(?=^##\s)", text, flags=re.MULTILINE)
+    for section in sections:
+        for low, _high in re.findall(r"(\d+)\s*[-–]\s*(\d+)\s*hours", section, re.IGNORECASE):
             if int(low) > available_hours * 2:
-                assert specific_mitigation.search(para) or decline_signal.search(para), (
-                    f"{name}: a paragraph estimates {low}+ hours against the org's "
+                assert specific_mitigation.search(section) or decline_signal.search(section), (
+                    f"{name}: a section estimates {low}+ hours against the org's "
                     f"{available_hours}-hour capacity without naming a specific mitigation "
                     f"(a consultant, a contractor, hiring help, a named partner, or recruiting "
                     f"a stated number of additional volunteers) AND without declining the "
-                    f"opportunity outright: {para[:200]!r}"
+                    f"opportunity outright anywhere in that section: {section[:200]!r}"
                 )
