@@ -1,6 +1,6 @@
 # Architecture
 
-Grant Scout is a single Strands `Agent` with three tools and a system prompt that tells it what
+Grant Scout is a single Strands `Agent` with four tools and a system prompt that tells it what
 "good enough to surface" means. There's no orchestration framework beyond Strands itself — the
 judgment (search → cross-check → cost-check → drop weak matches → write a brief) lives in the
 prompt and is executed via the agent's normal tool-calling loop.
@@ -19,6 +19,7 @@ flowchart TD
         T1[search_open_grants<br/>grants.gov public API<br/>live, open/forecasted opportunities]
         T2[historical_award_context<br/>FY2021 USASpending extract<br/>real nonprofit award $ + counts]
         T3[estimate_compliance_burden<br/>2 CFR 200 math<br/>uncovered overhead + Single Audit check]
+        T4[compliance_guide<br/>real SAM.gov/NICRA process<br/>step-by-step, not just "you need this"]
     end
 
     subgraph Model["Model provider (swappable via env var)"]
@@ -34,18 +35,21 @@ flowchart TD
     Agent <--> T1
     Agent <--> T2
     Agent <--> T3
+    Agent <--> T4
     Agent <--> Model
     Agent --> O
 ```
 
 ## Why this shape
 
-- **Three tools, not ten.** The judging criteria reward "genuine effort and a working,
+- **Four tools, not ten.** The judging criteria reward "genuine effort and a working,
   non-trivial implementation," not tool-count. The non-trivial part is the layered vetting: an
   opportunity that sounds like a fit by title alone gets rejected if `historical_award_context`
-  shows no real nonprofit award history, and a program with excellent award history can still get
+  shows no real nonprofit award history, a program with excellent award history can still get
   dropped if `estimate_compliance_burden` shows winning it would cost more than the org can
-  absorb. That's the difference between a keyword-matcher and an agent that actually vets.
+  absorb, and a blocker the agent names (SAM.gov, no indirect cost rate) comes with the real,
+  step-by-step process to clear it via `compliance_guide` — a wall, a vet, and a way over the
+  wall, not just a keyword-matcher.
 - **Real data, not fixtures.** `search_open_grants` hits grants.gov live. `historical_award_context`
   reads a table derived from a real USASpending.gov bulk pull (`data/extract_benchmarks.sql`
   documents the exact query) — not synthetic or invented numbers. `estimate_compliance_burden`
@@ -81,7 +85,17 @@ grant requires the applicant to already have an active SAM.gov registration and 
 This is a real, separate hurdle from writing effort -- an org with plenty of volunteer hours but
 no SAM.gov registration cannot apply to anything until that's done (it can take weeks). If the
 org profile shows either as "no" or "unknown," say so explicitly and put it ahead of the hour
-estimate in your risk section -- don't bury a hard blocker under a soft one.
+estimate in your risk section -- don't bury a hard blocker under a soft one. Naming a blocker is
+not enough: if sam_gov_registered or has_indirect_cost_rate_agreement is "no" or "unknown," call
+compliance_guide with the relevant topic ("sam_gov" and/or "nicra") and include its real,
+step-by-step process in the brief, not just the fact that a blocker exists. An org that can't
+act on your warning hasn't been helped by it.
+
+You run in a single turn with no back-and-forth: there is no user to answer a clarifying
+question, so NEVER stop and ask one. An "unknown" compliance field is not a reason to halt --
+proceed with the search and vetting as instructed, state the unknown as a risk in the final
+brief exactly as this prompt describes, and let the org resolve it after reading your output.
+A run that produces nothing because it was waiting on an answer has failed the one job it has.
 
 For every candidate opportunity:
 1. Call search_open_grants to find live, open (or forecasted) federal opportunities matching
@@ -92,8 +106,13 @@ For every candidate opportunity:
 3. DROP any opportunity where historical_award_context returns no nonprofit award history AND
    the opportunity looks aimed at state/local governments or universities -- don't recommend
    grants this org structurally can't win.
-4. DROP any opportunity that would require more grant-writing hours than the org has available,
-   unless the payoff (award size vs. budget) clearly justifies it -- say so explicitly.
+4. DROP any opportunity that would require more grant-writing hours than the org has available.
+   The "unless the payoff clearly justifies it" exception is NOT satisfied by noting the award is
+   large or hoping the funded work might offset the extra hours -- it requires a specific,
+   numbered case for where the extra hours come from (a named volunteer, a paid consultant at a
+   stated cost, a partner org) and why that's realistic for this org, not general optimism about
+   the award being worth it. If you cannot make that specific case, DROP the opportunity and say
+   plainly that the hour requirement exceeds capacity -- do not recommend it "as a stretch."
 5. For each opportunity that survives, call estimate_compliance_burden with the realistic award
    amount (use the midpoint of the historical range) to quantify -- not just name -- the
    structural cost of winning: uncovered overhead if the org has no negotiated indirect cost

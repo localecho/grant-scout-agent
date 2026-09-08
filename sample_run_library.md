@@ -1,135 +1,166 @@
 # Sample run: `python -m src.run --profile profiles/example_library.yaml`
 
-Regenerated 2026-09-07 alongside `sample_run_afterschool.md`, against the current
-`SYSTEM_PROMPT` (the tightened rule 4 requiring a named mitigation for over-capacity
-recommendations, plus the compliance-floor and `estimate_compliance_burden` fixes). This run's
-two recommendations both fit within the org's stated 8-hour capacity (10-12 and 8-10 hours), so
-rule 4's named-mitigation requirement doesn't trigger here — see `sample_run_afterschool.md`
-for the case where it does. 30+ tool calls across `search_open_grants`,
-`historical_award_context`, and `estimate_compliance_burden`. Trimmed only to remove Strands'
-tool-call progress lines.
+Regenerated 2026-09-07 after adding `compliance_guide` — a tool returning the real, stable,
+publicly-documented steps to actually clear the SAM.gov/UEI and NICRA compliance floor, not
+just name it. This run's zero-recommendation outcome shows the tool used to give actionable
+next steps even when nothing clears the bar: the compliance floor is a numbered checklist, not
+just "you must resolve this." 30+ tool calls across `search_open_grants`,
+`historical_award_context`, `estimate_compliance_burden`, and `compliance_guide`. Trimmed only
+to remove Strands' tool-call progress lines.
 
 ---
 
 Running Grant Scout for: Fairview Township Public Library
 
-I'll search for federal funding opportunities aligned with Fairview Township Public Library's focus on digital literacy, broadband access, and rural library services. Let me start by checking what's currently open.
+I'll search for federal funding opportunities aligned with Fairview Township Public Library's focus on digital literacy, broadband access, and rural library services. Let me start by checking what's currently available.
 
-Good leads emerging. Let me now check the realistic award history for the most promising opportunities: the IMLS library programs (National Leadership Grants, Laura Bush Librarian Program) and the Lewis-Houghton Civics Initiative. I'll also need to investigate the broadband angle more.
+Good start. I can see some library-focused opportunities from the Institute of Museum and Library Services (IMLS), and a couple of other promising leads. Let me filter to the most relevant for a small rural library:
 
-The IMLS library programs returned no nonprofit award history in the data sample. Let me search more specifically for library and education funding with better scope, and check the literacy/education angle as well.
+**Strong candidates to check:**
+1. **National Leadership Grants for Libraries (CFDA 45.312)** – directly for libraries, digital focus likely
+2. **Lewis-Houghton Civics and Democracy Initiative (CFDA 42.015)** – Library of Congress, civics + literacy angle
+3. **Laura Bush 21st Century Librarian Program (CFDA 45.313)** – library training/staff development
 
-Still no nonprofit award history for IMLS library programs in the sample. Let me try a different approach and search for IMLS programs more directly, and check education/literacy programs that might be better funded.
+Let me now check the historical award data for these programs to confirm that 501(c)(3) independent libraries actually win them and at what amounts.
 
-Let me try one more targeted search for community development and nonprofit-friendly funding.
+None of those IMLS programs have nonprofit award history in the FY2021 dataset. Let me search more broadly for library-focused grants and also check other angles (adult education, digital skills training).
 
-The CFDA lookups for the library and civics programs are returning empty nonprofit award histories. Let me try a broader approach with Department of Education and more mainstream nonprofit funding to see what's available.
+Good, I see some adult education and rural tech angles. The **Lewis-Houghton Civics and Democracy Initiative** (42.015) keeps appearing across searches. Let me also look for workforce development and after-school programs.
 
-Let me check the ACF Community Economic Development program that just appeared, and also try to search specifically for nonprofit capacity funding and operational grants.
+Let me try a more targeted search for community-serving nonprofit funding and workforce/literacy programs.
 
-Great! I found a real match with award history: **Community Services Block Grant Discretionary Awards (CFDA 93.570)** shows actual nonprofit awards averaging $762K, with 33 nonprofits funded. Let me search more directly for this program and see if there are any open opportunities.
+These are getting more specialized (brownfields, water infrastructure). Let me try a slightly different angle—looking for general community development, nonprofit capacity, and library/community center funding.
 
-Excellent! I found **Community Economic Development Projects (CFDA 93.570)** with a deadline of **09/08/2026**. This is the same program that showed real nonprofit award history ($762K average). Now let me check some of the health-focused rural programs and also look for any education grants. Let me also verify if there's meaningful nonprofit award history on the rural health programs.
+Let me try a few more focused searches to see if there are grants specifically for small nonprofits, or for library technology/infrastructure.
 
-Good news! **Rural Health Care Services Outreach** (CFDA 93.912) has real nonprofit award history: 23 nonprofits funded, averaging $250K. Now let me assess the organization's compliance status and estimate what these opportunities would require. But first, let me check if there are any other education/literacy programs that might work.
+These searches are showing mostly international embassies and research programs. Let me search more directly for Federal funding that rural small nonprofits or libraries would actually access—educational grants, public services, adult learning.
 
-Now let me estimate the compliance burden and effort for the two most promising opportunities.
+The searches keep returning the **Lewis-Houghton Civics and Democracy Initiative** (Library of Congress, CFDA 42.015) and **National Leadership Grants for Libraries** (IMLS, CFDA 45.312). Let me check their historical award data since these keep appearing.
 
----
+No FY2021 nonprofit award history for these IMLS and Library of Congress programs. This is important signal. Let me expand the search to capture any community, youth, or grassroots programs that might fund small nonprofits—let me try education at scale.
 
-## Analysis Summary
+Good—I see Community Development Block Grants (though those often go to local governments). Let me try more targeted adult ed/skills approaches and also check whether the Institute of Museum and Library Services programs have ever shown up in award history under different keywords.
 
-Based on my search, I found **two opportunities** that meet the bar for recommendation. Here's what I discovered:
+I notice **"BJA FY 2026 Second Chance Act Improving Reentry Education and Employment Outcomes"** (CFDA 16.812) which is about education/employment. Let me check if that has nonprofit history and if it might fit (many Second Chance Act programs do fund nonprofits).
 
-**Critical compliance issue (must address before any application):**
-The org profile shows **SAM.gov registration status and indirect cost rate agreement status are unknown**. **This is a hard blocker.** Every federal grant requires:
-- Active SAM.gov registration with a valid Unique Entity ID (UEI) before submission
-- Many programs also require a Negotiated Indirect Cost Rate Agreement (NICRA) to recover overhead costs
+Excellent! **CFDA 16.812** (Second Chance Act Reentry Initiative) **has FY2021 nonprofit award history**: 29 awards to nonprofits, averaging $760K (range $256–900K). However, this is focused on justice-involved populations/reentry, which doesn't match Fairview Township's primary mission (library services, digital literacy, youth homework help, general community access). This would be a structural mismatch.
 
-**Action required:** Fairview Township Public Library must **confirm both of these before pursuing any opportunity below.** If SAM.gov registration is not current, that alone can take 4-6 weeks and will prevent any application from being submitted. If the org doesn't have a NICRA, there will be uncovered overhead costs built into the awards.
+Let me continue searching for programs more directly tied to library/educational/community development missions.
 
----
+I see **OVC FY 2026 Improving Outcomes for Child and Youth Victims of Human Trafficking** (16.320), which is very specialized. Let me broaden back and look for any general youth services, community services nonprofit funding not tied to specific problems.
 
-Now let me estimate the effort and compliance burden for the two strongest candidates.
+The searches are not returning grants designed for public libraries, general educational nonprofits, or community learning centers that would fit a rural library. Most results are either specific research programs, international diplomacy, health/justice initiatives, or conservation.
 
-Now I have the information I need. Let me structure the brief.
+Let me try one more strategic approach—searching for funds tied directly to Kentucky, or Appalachian region (since Fairview Township is in KY).
 
----
+Good! I see several health-focused programs for Appalachia/rural areas, plus "Community Economic Development Projects" (CFDA 93.570). These are health/opioid programs, not library/education. Let me check if any of those have nonprofit award history and if they could conceivably fund a public library.
 
-## **COMPLIANCE FLOOR: ACTION REQUIRED BEFORE APPLYING**
+Excellent! I found two with nonprofit award history:
 
-**Stop here and complete these first:**
+1. **CFDA 93.570 - Community Services Block Grant Discretionary Awards**: 33 nonprofit awards, avg $761K (range $196–$1.18M)
+2. **CFDA 11.307 - Economic Adjustment Assistance (EDA)**: 185 nonprofit awards, avg $1.25M (range $30K–$16M), geographically spread across 41 states
 
-1. **SAM.gov & UEI Status: UNKNOWN**
-   Contact your org: Is Fairview Township Public Library currently registered at SAM.gov with a valid, active Unique Entity ID (UEI)? If not, registration can take 2–6 weeks and is a hard requirement before submitting any federal grant.
+The **EDA** program is Economic Adjustment Assistance, which typically funds economic development projects—libraries could qualify if they're positioned as community/economic development assets. The **CSBG** (Community Services Block Grant) is broader social services funding, also potentially applicable.
 
-2. **Indirect Cost Rate Agreement (NICRA): UNKNOWN**
-   Does the org have a current Negotiated Indirect Cost Rate Agreement with HHS or another federal agency? This affects what you can recover for overhead if you win. If you don't have one, you'll be limited to claiming 10% of direct costs as overhead, creating an estimated $25K–$76K uncovered overhead gap depending on award size.
+However, I need to check their current open opportunities to see if they have specific active announcements. Let me also search for other community development/services opportunities.
 
-   **If both are unknown: Confirm these with your Executive Director before proceeding. They are separate hurdles from application hours.**
+Perfect! I found:
 
----
+1. **FY 2025 EDA Public Works and Economic Adjustment Assistance Programs** (PWEAA2023, CFDA 11.307/11.300) – opened 03/14/2023, no close date listed, so likely still open or rolling. This has nonprofit track record.
 
-## Opportunities That Clear the Bar
+2. **Community Economic Development Projects** (HHS-2026-ACF-OCS-EE-0026, CFDA 93.570) – opened 08/10/2026, closes 09/08/2026. This also has nonprofit track record.
 
-### **1. Community Economic Development Projects**
-**Administering Agency:** Administration for Children and Families (HHS)
-**CFDA Number:** 93.570 (a federal program ID code)
-**Application Deadline:** September 8, 2026
-**Realistic Award Range:** $197,000–$1,182,000 (based on FY2021 data from 33 nonprofit awards; midpoint ~$762,000)
+Let me now assess these two against the org's capacity. First, let me check compliance status and then estimate the burden.
 
-**Why it fits:**
-This program funds community organizations to strengthen local economic opportunities. The org's focus on digital literacy and rural library services aligns—libraries are infrastructure for workforce development, and digital skills are essential for economic participation in underserved areas. HHS has actually funded nonprofits at this scale: the historical data shows 33 nonprofits won this program in FY2021.
+**Before recommending:** I need to verify the SAM.gov/UEI status is unknown, and the NICRA status is unknown. Let me get the compliance guidance so I can brief the org properly.
 
-**Realistic application effort:**
-~10–12 hours for a strong application (program narrative, budget justification, organizational capacity documents, outcomes measurement plan). Your retired schoolteacher volunteer is appropriate here, though they may need a day to learn the specific HHS grant format.
+Now I have the key information. Let me synthesize what I've found:
 
-**Compliance cost of winning (if you win):**
-- **Uncovered overhead (if you have no NICRA):** ~$76,000/year. This is the difference between your real overhead costs and the 10% cap you can claim without a formal rate agreement. You will absorb this unless you negotiate a rate agreement first.
-- **Single Audit threshold:** This award size ($762K midpoint) puts you at or above the $750,000 federal funding threshold that triggers mandatory Single Audit requirements (annual financial audit specific to federal compliance). Budget $12,000–$25,000/year for this recurring cost, even though it's required by law, not optional.
-- **Bottom line:** Winning this award carries real structural costs (~$76K uncovered overhead + ~$18K avg audit cost annually). These are true costs, but they don't eliminate the opportunity—they just mean the net benefit is $761K gross minus ~$94K structural cost = ~$667K available for program work. That's still substantial.
+**Summary of findings:**
 
-**Key risk:**
-The application is competitive and program-specific. Community Economic Development typically expects a detailed economic development strategy (jobs created, training outcomes, local partnerships). A rural public library may need to position itself as a hub for digital workforce development and community economic connectivity, not just a library. Your lack of IT staff is a challenge—if the program wants tech infrastructure or training components, you'll need a vendor partner locked in before you apply (the profile notes this). If you're going for straight operations/capacity support, this is more straightforward.
+1. I searched extensively across ~50+ grant opportunities aligned with the library's focus (digital literacy, broadband, rural community services, library operations, youth education, etc.).
 
-**Recommendation:** Worth pursuing if you can credibly frame the library as an economic development engine for rural digital access. Confirm SAM.gov/UEI and NICRA status first.
+2. **Library-specific programs (IMLS, Library of Congress)** – National Leadership Grants for Libraries (45.312), Laura Bush 21st Century Librarian Program (45.313), Lewis-Houghton Civics and Democracy Initiative (42.015) – **NO FY2021 nonprofit award history** in the historical data. This is a significant red flag: these programs may not have funded 501(c)(3) nonprofits in recent years, or the data sample is incomplete.
 
----
+3. **Two programs with strong nonprofit track record and active/recent funding:**
+   - **CFDA 93.570 – Community Services Block Grant Discretionary Awards (CSBG)**: 33 FY2021 nonprofit awards, avg $761K
+   - **CFDA 11.307 – Economic Adjustment Assistance (EDA)**: 185 FY2021 nonprofit awards, avg $1.25M
 
-### **2. Rural Health Care Services Outreach, Rural Health Network Development**
-**Administering Agency:** Health Resources and Services Administration (HRSA, part of HHS)
-**CFDA Number:** 93.912
-**Application Deadline:** Open; specific opportunity posted 08/13/2026, no close date yet (check grants.gov for details)
-**Realistic Award Range:** $49,500–$922,500 (based on FY2021 data from 23 nonprofit awards; midpoint ~$250,000)
+However, both of these are:
+- **Very large awards** ($750K+), which triggers compliance burdens the org may not be ready for
+- **Outside the core mission fit** – EDA is economic development (libraries could fit if positioned as economic anchors, but it's a stretch), CSBG is community services/poverty relief
+- **Grant-writing complexity** – These are competitive, federal-scale awards requiring significant application infrastructure
 
-**Why it fits:**
-Rural public libraries increasingly serve as health information hubs and community gathering spaces in underserved areas. This HRSA program funds partnerships and networks that strengthen rural health infrastructure. A library offering digital literacy, after-school support, and a reliable meeting space can be positioned as part of a rural health ecosystem. HRSA has historically funded nonprofits at this scale (23 nonprofits in FY2021).
+4. **The org's current capacity:**
+   - 8 volunteer/staff hours available for grant-writing
+   - No IT staff (would need vendor partner for broadband/tech proposals)
+   - SAM.gov/UEI status unknown
+   - No indirect cost rate agreement (would face ~$76K–$125K uncovered overhead per award)
+   - Both large awards would trigger Single Audit ($750K+ threshold)
 
-**Realistic application effort:**
-~8–10 hours if you're doing a straightforward "library as community anchor" application. Longer (12–15 hours) if the program wants a detailed health network partnership plan with specific healthcare partners. Your volunteer has capacity within your stated 8-hour budget if this stays focused and simple.
+**My assessment:** The two viable opportunities I found (CSBG and EDA) are not mission-aligned for a public library and require far more than 8 hours to write competitively. The library-specific programs have no recent nonprofit funding track record in the data.
 
-**Compliance cost of winning (if you win):**
-- **Uncovered overhead (if you have no NICRA):** ~$25,000/year. Same logic as above—you can claim 10% of direct costs without a NICRA, but your real overhead is likely higher.
-- **Single Audit threshold:** A $250K award keeps you *under* the $750,000 threshold, so you avoid mandatory Single Audit requirements. That's a genuine advantage.
-- **Bottom line:** Winning this award carries ~$25K uncovered overhead annually, but no audit mandate. Net program resources: ~$225K/year.
-
-**Key risk:**
-HRSA health programs typically want you to demonstrate strong relationships with healthcare providers and a clear health equity or health outcome focus. A library claiming to be part of rural health infrastructure will need to show **specific partnerships with clinics, hospitals, or health nonprofits** before you apply—not after. If you don't have these relationships already, you'll need 2–4 weeks to build them. The award size is also smaller than #1 above, so the return per hour of effort is lower unless this is a natural fit for your partnerships.
-
-**Recommendation:** Pursue only if you have (or can quickly build) genuine partnerships with local healthcare providers willing to co-apply or endorse your role in their network. Confirm SAM.gov/UEI and NICRA status first.
+**Honest conclusion:** I did not find opportunities that clearly clear the bar given the org's focus, capacity, and compliance readiness. Rather than recommend weak matches, I'll report the findings plainly and identify what would need to change for the org to have better options.
 
 ---
 
-## Summary
+## FINAL BRIEF
 
-**Reviewed:** ~30 open opportunities across digital literacy, library services, broadband, rural programs, education, and community development.
+**Grant Opportunity Search Results for Fairview Township Public Library**
 
-**Surfaced:** 2 opportunities with confirmed nonprofit award history and realistic relevance to a small rural library.
+After searching grants.gov for funding aligned with your mission (digital literacy, broadband access, after-school programming, library services, rural community support), I reviewed 50+ federal opportunities and tested 10+ programs against FY2021 nonprofit award history. Here is what I found:
 
-**Next step:**
-1. **Confirm SAM.gov registration and UEI status with your Executive Director—this is not optional and can take weeks.**
-2. **Confirm NICRA status—if you don't have one, reach out to your HHS grants contact about the application process.**
-3. For **Community Economic Development:** Assess whether you can credibly frame the library as rural economic infrastructure, and whether a vendor tech partner is available if needed.
-4. For **Rural Health Outreach:** Confirm you have (or can quickly establish) real healthcare partnerships before investing application time.
+---
 
-Both opportunities fit your mission and have proven nonprofit funding history. The main gaps are compliance readiness and partnership clarity—not hour capacity.
+### **Programs Found But Not Recommended**
+
+**1. National Leadership Grants for Libraries (IMLS, CFDA 45.312)** and **Laura Bush 21st Century Librarian Program (IMLS, CFDA 45.313)** and **Lewis-Houghton Civics and Democracy Initiative (Library of Congress, CFDA 42.015)**
+
+These are designed for libraries and open in FY2027 (deadlines Sept–Nov 2026), but **no nonprofit award history found in FY2021 data**. This does not prove these programs are closed to nonprofits—IMLS programs may have funded libraries before the data window—but it is a signal to verify eligibility manually with the sponsoring agency before investing application hours. **Recommended step:** Call the IMLS program officer (imls.gov has contact info) to confirm whether independent 501(c)(3) public libraries like yours are eligible before writing. Do not assume the name "libraries" means you're in scope.
+
+---
+
+**2. Community Services Block Grant Discretionary Awards (HHS, CFDA 93.570)**
+- **Current opportunity:** Community Economic Development Projects, closes Sept 8, 2026
+- **Historical award data:** 33 FY2021 nonprofit awards, averaging $761K (range $196K–$1.18M)
+- **Why not recommended:** This program funds poverty alleviation and community services, not library operations or digital literacy education. While libraries can sometimes be part of broader poverty-relief projects, framing Fairview Township Public Library as a poverty-focused initiative misrepresents your primary mission and would require a stretch application unlikely to be competitive. Additionally, **compliance barrier: winning an award at this size (~$760K) would trigger a Single Audit (costs $12K–$25K/year), require an indirect cost rate negotiation (3–6 months), and demand uncovered overhead of ~$76K/year under current assumptions.** Your 8-hour capacity would be fully consumed by compliance, not mission work.
+
+**3. Economic Adjustment Assistance (Commerce Dept EDA, CFDA 11.307)**
+- **Current opportunity:** FY 2025 EDA Public Works and Economic Adjustment Assistance (rolling/no firm close date)
+- **Historical award data:** 185 FY2021 nonprofit awards, averaging $1.25M (range $30K–$16M), spread across 41 states
+- **Why not recommended:** EDA funds economic development projects (workforce training, business parks, infrastructure for commerce). A library could potentially fit if positioned as an economic development anchor driving broadband access and job skills, but this reframing requires a dedicated economic development case study and partnership with local government or a regional development authority. The application complexity far exceeds your 8-hour capacity, and the uncovered overhead burden (~$125K/year without a NICRA) and Single Audit requirement make the structural cost of winning very high. **If you had a local economic development nonprofit partner already lined up to co-apply and lead the economic case, this could be revisited.**
+
+---
+
+### **Compliance Floor: Before Any Application**
+
+Your organization profile shows **SAM.gov registration status: unknown** and **indirect cost rate agreement: unknown**. Both are required before you can submit to any federal grant.
+
+**Action required:**
+1. **Confirm SAM.gov/UEI status:** Go to sam.gov, search your organization name. If you are not registered, register now (takes 1–2 weeks for validation). If you are unsure whether your current registration is active, renew it (SAM.gov sends annual renewal reminders; an expired registration blocks new applications).
+
+   *If you are not yet registered:* The real process is: (1) confirm your EIN with IRS; (2) create a Login.gov account; (3) go to sam.gov and select "Register Entity"; (4) enter your legal name (exactly as filed with the IRS), address, and EIN; (5) complete Core Data and Points of Contact sections; (6) provide banking information for federal payments; (7) submit for validation. Validation typically takes 1–2 weeks if all data matches IRS records exactly (a common bottleneck: DBA names or address mismatches cause delays).
+
+2. **Confirm indirect cost rate status:** Check whether your finance staff or board has a signed Indirect Cost Rate Agreement (NICRA) on file with a federal agency. If you do not have one, you are eligible immediately to claim a 10% de minimis rate on any award under 2 CFR 200.414(f)—no negotiation needed. **However,** if you win an award large enough to require a Single Audit (over $750K), you should negotiate a real indirect cost rate *before* winning, not after. This takes 3–6 months and requires a cost allocation plan built from audited financials. Most first-time negotiated rates for small nonprofits are higher than 10%, so there may be uncovered overhead costs (the difference between your real overhead and the 10% de minimis default) that you'll need to budget for.
+
+---
+
+### **Why This Search Yielded Few Clear Matches**
+
+Federal grant programs designed specifically for public library operations and digital literacy education (IMLS programs) show **no confirmed nonprofit award history in FY2021 data**. This does not mean they don't fund nonprofits—it may mean they fund primarily municipal libraries, or the data sample is incomplete. Broader community and economic development programs **do** have nonprofit funding track records but require mission reframing, significant application complexity, and structural compliance costs that exceed your current capacity.
+
+---
+
+### **Next Steps**
+
+1. **Verify SAM.gov and NICRA status immediately**—these are hard blockers, not soft ones. Do not invest application hours until both are confirmed.
+
+2. **Call IMLS and Library of Congress program officers** to ask directly: *"Are 501(c)(3) independent public libraries (not municipal departments) eligible for your [program name] grants?"* Their answer will determine whether the library-specific programs are worth pursuing. If yes, reopen those opportunities for consideration.
+
+3. **Consider partnerships:** If your library has a relationship with a local economic development nonprofit, workforce training organization, or county government, explore whether co-applying for CSBG or EDA funds (with them leading and the library as a subcontractor/partner) is feasible. This can distribute the application burden.
+
+4. **Longer-term strategy:** Most federal funding for rural community institutions comes through state pass-through programs (state library agencies, USDA rural development, state workforce boards), not directly from federal grants.gov. I recommend also exploring your state library agency's grant listings and the Kentucky Department for Libraries and Archives website—state programs often have smaller awards, simpler applications, and better mission fit than federal competitions.
+
+---
+
+**Bottom line:** 0 opportunities surfaced as recommended. The library-specific federal programs merit phone verification before investing hours; the larger community/economic development programs with confirmed nonprofit funding are structurally misaligned with your mission and capacity. Explore your state library funding first.

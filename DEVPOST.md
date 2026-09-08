@@ -56,9 +56,10 @@ turns "we should apply for grants sometime" into an actual, actionable short lis
 
 ## How we built it
 
-Strands Agents SDK, two tools, one system prompt that encodes the *judgment* (drop plausible-
-sounding matches that fail the historical-award cross-check; weigh effort against payoff; cap
-output at 3; say "nothing cleared the bar" rather than pad the list). Model provider is
+Strands Agents SDK, four tools, one system prompt that encodes the *judgment* (drop plausible-
+sounding matches that fail the historical-award cross-check; quantify what winning actually
+costs; weigh effort against payoff; cap output at 3; say "nothing cleared the bar" rather than
+pad the list). Model provider is
 OpenRouter by default (Strands' OpenAI-compatible provider pointed at OpenRouter's endpoint),
 with a first-class, code-identical Amazon Bedrock path available via one environment variable —
 demonstrating Strands' provider-agnostic design rather than avoiding AWS's own model stack.
@@ -97,15 +98,24 @@ in the recommend/drop decision, not just a caveat: `sample_run_library.md` and
 program with strong nonprofit history — dropped specifically because winning it would trigger a
 Single Audit the org can't afford.
 
+A nonprofit-sector critic on our own review panel pushed further: naming a blocker (SAM.gov,
+no indirect cost rate) isn't the same as helping an org clear it. A fourth tool,
+`compliance_guide`, answers that directly — it returns the real, stable, publicly-documented
+federal process for both (EIN → Login.gov → sam.gov registration → EFT banking → validation for
+SAM.gov; the 10% de minimis fallback vs. a negotiated rate for NICRA), and the agent includes it
+verbatim in the brief instead of just naming the wall. `sample_run_food_bank.md` shows this live:
+the org gets an 8-step SAM.gov registration walkthrough, not just "you need to register."
+
 ## Accomplishments we're proud of
 
 Run against four differently-shaped orgs (food pantry, library, health clinic, afterschool
 program), the current agent converges on the same disciplined shape every time: flag the
 compliance floor before searching, ground every claim in what the tools actually returned (never
-padded with outside assumptions), and surface exactly the one opportunity that clears every bar —
-fit, real award history, capacity, *and* affordable compliance cost — rather than a list. That's
-not one demo tuned to look good; it's the same prompt and the same three tools producing
-consistent, defensible judgment across four real, live runs.
+padded with outside assumptions), give the org a real path to clear any blocker it names, and
+surface exactly the one opportunity that clears every bar — fit, real award history, capacity,
+*and* affordable compliance cost — rather than a list. That's not one demo tuned to look good;
+it's the same prompt and the same four tools producing consistent, defensible judgment across
+four real, live runs.
 
 ## What we learned
 

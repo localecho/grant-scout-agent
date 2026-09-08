@@ -13,6 +13,7 @@ from strands import Agent
 
 from src.profile import OrgProfile
 from src.tools.compliance_burden import estimate_compliance_burden
+from src.tools.compliance_guide import compliance_guide
 from src.tools.grants_gov import search_open_grants
 from src.tools.historical_benchmarks import historical_award_context
 
@@ -30,7 +31,11 @@ grant requires the applicant to already have an active SAM.gov registration and 
 This is a real, separate hurdle from writing effort -- an org with plenty of volunteer hours but
 no SAM.gov registration cannot apply to anything until that's done (it can take weeks). If the
 org profile shows either as "no" or "unknown," say so explicitly and put it ahead of the hour
-estimate in your risk section -- don't bury a hard blocker under a soft one.
+estimate in your risk section -- don't bury a hard blocker under a soft one. Naming a blocker is
+not enough: if sam_gov_registered or has_indirect_cost_rate_agreement is "no" or "unknown," call
+compliance_guide with the relevant topic ("sam_gov" and/or "nicra") and include its real,
+step-by-step process in the brief, not just the fact that a blocker exists. An org that can't
+act on your warning hasn't been helped by it.
 
 You run in a single turn with no back-and-forth: there is no user to answer a clarifying
 question, so NEVER stop and ask one. An "unknown" compliance field is not a reason to halt --
@@ -127,7 +132,12 @@ def build_agent() -> Agent:
     return Agent(
         model=_build_model(),
         system_prompt=SYSTEM_PROMPT,
-        tools=[search_open_grants, historical_award_context, estimate_compliance_burden],
+        tools=[
+            search_open_grants,
+            historical_award_context,
+            estimate_compliance_burden,
+            compliance_guide,
+        ],
     )
 
 
