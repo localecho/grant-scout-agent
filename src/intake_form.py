@@ -32,6 +32,10 @@ FIELD_LABELS = {
     "states": "States served (comma-separated postal codes, e.g. OH, KY)",
     "focus_keywords": "Focus keywords (comma-separated, e.g. food assistance, nutrition)",
     "max_grant_writing_hours_available": "Volunteer/staff hours available for grant writing per cycle",
+    "estimated_current_annual_federal_funding_usd": (
+        "Current annual federal funding already received, in dollars (0 if none — "
+        "used to check whether a NEW award would push you over the $750K Single Audit threshold)"
+    ),
     "notes": "Anything else the agent should know (optional)",
 }
 
@@ -117,6 +121,14 @@ def parse_form(fields: dict[str, str]) -> OrgProfile:
     except ValueError:
         raise ValueError('Volunteer hours must be a plain number, e.g. "6".')
 
+    try:
+        raw_federal = fields.get("estimated_current_annual_federal_funding_usd", "").replace(",", "").replace("$", "").strip()
+        existing_federal_funding = float(raw_federal) if raw_federal else 0.0
+    except ValueError:
+        raise ValueError(
+            'Current federal funding must be a plain number, e.g. "0" or "150000" (no letters).'
+        )
+
     return OrgProfile(
         name=fields["name"].strip(),
         mission=fields["mission"].strip(),
@@ -125,6 +137,7 @@ def parse_form(fields: dict[str, str]) -> OrgProfile:
         states=[s.strip().upper() for s in fields["states"].split(",") if s.strip()],
         focus_keywords=[k.strip() for k in fields.get("focus_keywords", "").split(",") if k.strip()],
         max_grant_writing_hours_available=hours,
+        estimated_current_annual_federal_funding_usd=existing_federal_funding,
         notes=fields.get("notes", "").strip(),
         sam_gov_registered=_tristate_to_bool(fields.get("sam_gov_registered")),
         has_indirect_cost_rate_agreement=_tristate_to_bool(fields.get("has_indirect_cost_rate_agreement")),
@@ -142,6 +155,7 @@ def profile_to_yaml(profile: OrgProfile) -> str:
         "states": profile.states,
         "focus_keywords": profile.focus_keywords,
         "max_grant_writing_hours_available": profile.max_grant_writing_hours_available,
+        "estimated_current_annual_federal_funding_usd": profile.estimated_current_annual_federal_funding_usd,
         "notes": profile.notes,
         "sam_gov_registered": profile.sam_gov_registered,
         "has_indirect_cost_rate_agreement": profile.has_indirect_cost_rate_agreement,

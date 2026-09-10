@@ -5,4 +5,5 @@ annual_budget_usd: 180000
 states: ["OH"]
 focus_keywords: ["afterschool program", "youth tutoring", "out-of-school time", "child nutrition", "K-8 enrichment"]
 max_grant_writing_hours_available: 5
+estimated_current_annual_federal_funding_usd: 0
 notes: "Two-person staff, both program-facing; grant writing is done by a single volunteer board member with a full-time day job. Very low tolerance for heavy compliance grants."

@@ -5,4 +5,5 @@ annual_budget_usd: 420000
 states: ["OH"]
 focus_keywords: ["food assistance", "nutrition", "emergency food", "food security", "senior meals"]
 max_grant_writing_hours_available: 6
+estimated_current_annual_federal_funding_usd: 150000
 notes: "All-volunteer grant committee. Cannot realistically write a 40-page federal proposal; strongly prefers state/regional funders or federal programs with light application lift."

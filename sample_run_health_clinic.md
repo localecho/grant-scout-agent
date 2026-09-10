@@ -1,194 +1,163 @@
-# Sample run: `python -m src.run --profile profiles/example_health_clinic.yaml`
-
-Regenerated 2026-09-07 after adding `compliance_guide` — a tool returning the real, stable,
-publicly-documented steps to actually clear the SAM.gov/UEI and NICRA compliance floor, not
-just name it. This run shows the compliance blocker rendered as a concrete, numbered checklist
-("How to Clear the SAM.gov Blocker") the org can act on immediately, plus a genuinely
-low-lift third opportunity the agent found: reaching out to the state Primary Care Association,
-which requires zero hours from the clinic itself. 14+ tool calls across `search_open_grants`,
-`historical_award_context`, `estimate_compliance_burden`, and `compliance_guide`. Trimmed only
-to remove Strands' tool-call progress lines.
-
----
-
 Running Grant Scout for: Cedar Valley Community Health Clinic
 
-I'll search for federal funding opportunities matching Cedar Valley's focus on primary care and rural health, then vet each one against their capacity and compliance status.
+I'll search for current federal funding opportunities matching Cedar Valley Community Health Clinic's focus, then vet each candidate against their capacity and compliance posture.
+Tool #1: search_open_grants
 
-I found several promising candidates. Let me now check the historical award data for the most relevant programs to see if nonprofits like Cedar Valley actually win them and at what funding levels.
+Tool #2: search_open_grants
 
-Interesting — the Rural Health Network Development program (93.912) shows good nonprofit award history, but some others don't. Let me check a few more candidates that might fit Cedar Valley's direct service mission.
+Tool #3: search_open_grants
+Most of these are NIH research grants, which require research infrastructure Cedar Valley doesn't have. Let me focus on the HRSA programs designed for health centers and look for more operational/service delivery funding:
+Tool #4: search_open_grants
 
-Let me check whether these programs are focused on research or clinical care, and also search for programs specifically focused on community health center funding.
+Tool #5: search_open_grants
+Good—I've found two HRSA programs that are geographically and structurally relevant: the **Rural Health Network Development Program (93.912)** and **Appalachian Region Healthcare Support Program (93.619)**. Let me check their historical award history and then search for any HRSA programs specifically for FQHC look-alikes or primary care operational support:
+Tool #6: historical_award_context
 
-Most of these appear research-focused. Let me check the HRSA Primary Care Association program and look for direct primary care or health center operational funding opportunities.
+Tool #7: historical_award_context
 
-Excellent! I found the Service Area Competition (SAC) program (CFDA 93.224) which is the primary health center operational funding. Let me check its historical award context.
+Tool #8: search_open_grants
+Excellent! I found **HRSA-27-006: Fiscal Year 2027 Service Area Competition (SAC)** which is CFDA 93.224 — this is the primary operational funding stream for Federally Qualified Health Centers and FQHC look-alikes. I also see the **Rural Communities Opioid Response Program** (93.690) appeared. Let me check the award history for those and continue vetting:
+Tool #9: historical_award_context
 
-Excellent! Now let me verify compliance requirements and estimate the structural costs for the most promising opportunities. First, let me check if SAM.gov and NICRA are absolute requirements by looking at the compliance guide.
+Tool #10: historical_award_context
+Perfect. Now I have strong historical data on two candidates:
 
-Now let me run the full analysis for the top candidates:
+1. **CFDA 93.224 (HRSA Service Area Competition)** — 254 nonprofit awards in FY2021, average ~$3.18M, min $7.8K, max $46.9M, across 32 states. This is clearly designed for health centers.
+2. **CFDA 93.912 (Rural Health Network Development)** — 23 awards, average ~$250K, range $50K–$923K, across 17 states.
 
-1. **HRSA-27-051 / HRSA-27-048**: Rural Health Network Development Program (93.912)
-2. **HRSA-27-014**: Primary Care Association Technical Assistance (93.129)
-3. **HRSA-27-005 through HRSA-27-009**: Service Area Competition (93.224) – direct health center funding
+The opioid program (93.690) has no FY2021 nonprofit history in the data, so I'll drop it. The Appalachian program (93.619) also returned no nonprofit award history, so I'll drop that too.
 
-Let me estimate compliance burden for the realistic award amounts I found.
+Now I need to assess Cedar Valley's capacity and compliance posture for the two survivors:
 
-Perfect. Now I have enough information. Let me organize the findings for Cedar Valley. The key constraints are:
+**Critical compliance blocker first**: Cedar Valley has **NO SAM.gov registration/UEI** and **NO indirect cost rate agreement (NICRA)**. Both of these are hard prerequisites to submit any federal grant. Let me get the real steps to clear these blockers:
+Tool #11: compliance_guide
 
-1. **No SAM.gov registration (UEI) yet** — this is a hard blocker for ANY federal grant application
-2. **No indirect cost rate agreement** — will result in uncovered overhead costs under the 10% de minimis cap
-3. **~15 volunteer hours available** — modest capacity
+Tool #12: compliance_guide
+Now let me estimate the compliance burden for both surviving opportunities using realistic award amounts:
+Tool #13: estimate_compliance_burden
 
-Let me create the final brief with the most appropriate opportunities.
+Tool #14: estimate_compliance_burden
+Now I need to assess writing capacity. Cedar Valley has ~15 volunteer/staff hours available and a part-time grants coordinator (0.25 FTE). 
 
----
+- **HRSA Service Area Competition (93.224)** for a $3.18M health center grant is a complex, multi-section application requiring detailed budget narratives, community needs assessments, staffing plans, quality improvement plans, and clinical data. This typically requires **40–60+ hours** of writing and compilation, far exceeding the org's stated 15 hours. Even with the grants coordinator's 0.25 FTE effort (~5 hrs/week), backfilling would strain the clinic's operations during application season.
 
-## ⚠️ COMPLIANCE BLOCKER: SAM.gov Registration Required First
+- **Rural Health Network Development (93.912)** is more modest (~$250K) and focuses on network collaboration rather than operational funding. A network development proposal is typically **20–30 hours** of work, still above the 15-hour stated capacity but closer to feasible if the part-time coordinator prioritized it.
 
-**Cedar Valley cannot apply to any federal grant** until a Unique Entity ID (UEI — a federal identifier) is active on sam.gov. This is a non-negotiable pre-application requirement for every opportunity listed below.
+Let me look for any other health-focused opportunities that might be lighter-lift, or that might have more favorable overhead/audit implications:
+Tool #15: search_open_grants
 
-### How to Clear the SAM.gov Blocker
+Tool #16: search_open_grants
+The CDC Diabetes Prevention and Management program (93.945) appeared again; let me check its FY2021 award history. The Title X Family Planning program (93.217) is also worth checking since it funds primary care services at qualified nonprofits. And the "Whole-Person Health Models for Women Living with HIV in the South" (93.940) appeared again but is narrowly focused on HIV.
+Tool #17: historical_award_context
 
-1. **Confirm you have an EIN** (Employer Identification Number from the IRS). If not, apply free at irs.gov online.
+Tool #18: historical_award_context
+Excellent—both have real nonprofit award history. Let me now evaluate these three candidates against Cedar Valley's constraints:
 
-2. **Create a Login.gov account** at login.gov using the email of your grants coordinator (or whoever will manage the account long-term). This is the identity verification step SAM.gov requires.
+**Summary of candidates with FY2021 nonprofit award history:**
 
-3. **Register at sam.gov**: Sign in with Login.gov, select "Get Started" → "Register Entity," and enter:
-   - Your legal nonprofit name (exactly as it appears in IRS records — this is the most common source of delays)
-   - Physical address
-   - EIN
+1. **HRSA-27-006: CFDA 93.224 (Health Center Program / Service Area Competition)** — 254 awards, avg $3.18M, range $7.8K–$46.9M. *Likelihood:* Very high that nonprofits win. *Fit:* Perfect—FQHC look-alikes are explicitly eligible. *Hours:* ~40–60, **exceeds capacity significantly**.
 
-4. **Complete the required sections**: Business type (select 501(c)(3) nonprofit), NAICS codes, and at least one named point of contact.
+2. **HRSA-27-051: CFDA 93.912 (Rural Health Network Development)** — 23 awards, avg $250K, range $50K–$923K. *Likelihood:* High. *Fit:* Good if Cedar Valley is part of or wants to lead a rural health network. *Hours:* ~20–30, **slightly exceeds stated 15-hour capacity**.
 
-5. **Provide banking information** for electronic fund transfers (EFT) — required because this is how federal payments arrive.
+3. **RFA-DP-27-051: CFDA 93.945 (Chronic Disease Prevention—Diabetes)** — 15 awards, avg $336K, range $54K–$1.46M. *Likelihood:* Moderate (only 8 states in FY2021 sample). *Fit:* Good if Cedar Valley can run a research/demonstration program on diabetes prevention and management coordination. *Hours:* ~25–35, **exceeds capacity**.
 
-6. **Submit and wait for validation**: SAM.gov generates a UEI immediately, but full IRS validation typically takes **1–2 weeks** (longer if your legal name, address, or EIN doesn't match IRS records exactly).
+4. **PA-FPH-27-001: CFDA 93.217 (Title X Family Planning)** — 52 awards, avg $2.20M, range $31.6K–$21M. *Likelihood:* Very high. *Fit:* Only if Cedar Valley provides or plans to expand into family planning services. Not mentioned in mission. **Drop: mismatch with clinic's stated focus.**
 
-**Action**: Assign this to your 0.25 FTE grants coordinator today, before pursuing any grants. Do not submit applications until SAM.gov confirms your registration is active.
+Now I'll apply the hard filter: **capacity and compliance blockers**.
 
----
+**Compliance Floor for All Candidates:**
+- Cedar Valley **must register with SAM.gov and obtain a UEI before any application**. Timeline: 1–2 weeks if clean registration.
+- Cedar Valley has **no negotiated indirect cost rate agreement (NICRA)** but **can immediately claim the 10% de minimis rate** under federal law. If any award pushes total federal funding above $750K/year, they will cross the Single Audit threshold (~$12K–$25K/year recurring audit cost).
 
-## Opportunity 1: Health Center Program — Service Area Competition (SAC)
+**Realistic Writing Capacity:**
+Cedar Valley has ~15 hours stated + a part-time coordinator at 0.25 FTE. A 0.25 FTE role across a typical clinic workweek (40 hrs) = ~10 hrs/week = ~40 hrs/month available. During a concentrated grant-writing push, the coordinator might dedicate 50% of time to a single application for 2–3 weeks = ~40–60 hours peak capacity. But that's assuming the clinic can backfill the coordinator's other duties, which is unrealistic for a small clinic. A more conservative estimate: **25–30 realistically available hours total** (coordinator's time + volunteer effort) for an application the clinic views as important.
 
-**Program**: HRSA-27-005 through HRSA-27-009
-**CFDA**: 93.224 (the program's federal ID number)
-**Agency**: Health Resources and Services Administration (HRSA)
-**Open date**: July–September 2026 (multiple rolling deadlines by region)
+**Capacity-based eliminations:**
 
-### Why This Fits Cedar Valley
+- **93.224 (Health Center Program, $3.18M avg):** Requires 40–60+ hours. **EXCEEDS CAPACITY.** Not recommended unless Cedar Valley hires a consultant or partners with a fiscal intermediary, which the profile doesn't indicate. Additionally, this award crosses the Single Audit threshold and carries ~$318K uncovered overhead cost, a significant unfunded burden.
 
-This is the **primary federal operating grant for community health centers**. Cedar Valley, as a FQHC look-alike, is eligible. The program funds sliding-scale primary care delivery, exactly your mission. Unlike most federal grants, this directly pays for clinic operations: staff, equipment, uninsured care, chronic disease management.
+- **93.912 (Rural Health Network, $250K avg):** Requires ~20–30 hours. **AT/SLIGHTLY OVER CAPACITY.** This is feasible if the coordinator prioritizes it and has some volunteer support, but tight. Compliance burden is lighter (~$25K uncovered overhead, crosses Single Audit threshold).
 
-### Realistic Award Range
-
-Based on FY2021 award history for nonprofits: **$3.18M average**, ranging from $8K to $47M. Cedar Valley's population and current budget (~$1.5M) would likely place you in the **$500K–$2M range** as a first-time applicant, though the program scales to your service area. (This is an estimate based on the average; the grants officer will set your specific competition ceiling.)
-
-### Deadline & Compliance Floor
-
-- **Deadline**: Multiple windows July–September 2026; check grants.gov for your region-specific window
-- **SAM.gov/UEI required**: Yes (see blocker above)
-- **Indirect cost rate agreement required**: No, but see "Structural Cost" below
-
-### Structural Cost of Winning (Rule-of-Thumb Estimates)
-
-If Cedar Valley won $1.5M in SAC funding, the real annual compliance costs would be:
-
-- **Uncovered overhead**: ~$150,000/year. Since Cedar Valley has no negotiated indirect cost rate agreement, you can claim a flat 10% de minimis rate on direct costs. The typical real overhead for running a clinic is ~20%, leaving a ~$150K annual gap. This is a **real operational shortfall** — not an accounting artifact — that the clinic would absorb or need to find from other sources (patient revenues, state funding, donations).
-
-- **Single Audit threshold**: Cedar Valley would cross the $750,000 Single Audit threshold (the point where federal law requires an independent audit of all finances annually). Annual audit cost: **$12,000–$25,000/year**, rule of thumb. This is a one-time jump but recurring annually thereafter.
-
-**In practical terms**: Winning this grant would require Cedar Valley to absorb ~$150K–$175K/year in new compliance and overhead costs it cannot bill to the federal grant. This is common in health center funding, but it's a real number you should factor into the board's decision.
-
-### Application Effort
-
-Grant writing for SAC is **substantial**: needs detailed service area analysis, budget justification, organizational capacity narrative, sustainability plan. Likely **30–50 hours** for a first-time application. This exceeds Cedar Valley's ~15-hour capacity unless:
-- Your grants coordinator (0.25 FTE) dedicates multiple weeks to this (realistic during a grant cycle), or
-- Cedar Valley partners with a HRSA technical assistance provider (HRSA-27-014, listed below, often provides free help for applicants)
-
-**Recommendation**: Pursue this, but **only after SAM.gov registration is active**. The grant is large enough and focused enough to justify the extra hours. Consider reaching out to your state's Primary Care Association (they administer HRSA-27-014 technical assistance) to ask if they offer free application writing support to first-time applicants.
+- **93.945 (CDC Chronic Disease, $336K avg):** Requires ~25–35 hours, likely for a research/demonstration component. **EXCEEDS STATED CAPACITY.** Additionally, it's a narrower, research-focused program, and only 8 states were represented in FY2021 data—lower geographic spread suggests more competitive/specialized focus. **Not recommended.**
 
 ---
 
-## Opportunity 2: Rural Health Network Development Program
+Given the constraints, I have **one opportunity worth recommending with caveats** and one that is marginal. Let me now write the briefs:
 
-**Program**: HRSA-27-051 (full network program) and HRSA-27-048 (planning-only variant)
-**CFDA**: 93.912
-**Agency**: Health Resources and Services Administration (HRSA)
-**Open date**: August 13, 2026
+## **RECOMMENDED OPPORTUNITY 1: Rural Health Network Development Program**
 
-### Why This Fits Cedar Valley
+**Opportunity:** HRSA-27-051: Rural Health Network Development Program (CFDA 93.912)  
+**Open Date:** August 13, 2026 | **Close Date:** Not yet specified  
+**Realistic Award Range:** $49,500 – $922,600 (FY2021 nonprofit history, 23 awards); planning estimate: **$200,000–$300,000** for a small clinic leading or participating in network infrastructure.
 
-This program funds **rural health networks** — multi-provider collaborations to improve care delivery, share services, and reduce costs. Cedar Valley could lead or participate in a network linking local hospitals, specialists, and public health. It's aligned with your mill-town rural setting and chronic disease focus.
+**Why It Fits Cedar Valley:**
+This HRSA program funds development of networks that strengthen rural health care delivery, coordination, and capacity. Cedar Valley, as a small FQHC look-alike in a mill town, can lead or partner in a rural health network for your region—combining primary care coordination, chronic disease management infrastructure, and expanded access to uninsured/underinsured populations. The award size ($50K–$923K range) is much more realistic for a startup clinic than the massive Health Center Program grants, and the application focuses on network design and governance rather than clinical data compilation.
 
-### Realistic Award Range
+**Compliance Floor:**
+- ⚠️ **HARD BLOCKER: SAM.gov registration + UEI required** before submission. Timeline: 1–2 weeks if registration is clean (legal name, address, EIN all match IRS records exactly). See step-by-step process below.
+- ⚠️ **NO negotiated indirect cost rate agreement (NICRA).** Cedar Valley can immediately use the federal fallback: 10% de minimis indirect cost rate on Modified Total Direct Costs. No negotiation needed. If this award is won, the clinic's total federal funding will reach ~$800,000/year, crossing the $750,000 Single Audit threshold—this will add ~$12,000–$25,000/year in audit costs, a real but manageable burden.
 
-Based on FY2021 nonprofit award history: **$250K average**, ranging from $50K–$923K.
+**Systemic Cost of Winning:**
+- **Uncovered overhead estimate:** ~$25,000 (gap between actual overhead and the 10% de minimis rate the clinic can claim without a NICRA; this is a rule-of-thumb estimate, not verified per your clinic).
+- **Single Audit burden:** Yes, total federal funding would reach $800K+, triggering mandatory annual Single Audit compliance (~$12K–$25K/year for a small nonprofit's first audit; this is a recurring, not one-time, cost).
+- **Total estimated systemic cost of winning:** ~$37,000–$50,000 in Year 1 (uncovered overhead + first audit), then ~$12K–$25K/year ongoing if the award renews.
 
-### Deadline & Compliance Floor
+**Writing Effort:**
+A rural health network development application typically requires ~20–30 hours: network governance structure, letters of commitment from partners, a community health needs assessment for the region, a 3–5-year work plan, and a budget narrative. This is **at the edge of Cedar Valley's stated ~15-hour capacity**, but feasible if the grants coordinator (0.25 FTE) dedicates concentrated time over 2–3 weeks and has volunteer support from board members or clinical staff for sections like the needs assessment.
 
-- **Deadline**: August 13, 2026 (no close date listed yet; assume fall 2026 or early 2027)
-- **SAM.gov/UEI required**: Yes (see blocker above)
-- **Indirect cost rate agreement required**: No
-
-### Structural Cost of Winning
-
-At $250K:
-- **Uncovered overhead**: ~$25,000/year (same 10% de minimis vs. 20% real overhead gap as above).
-- **Single Audit threshold**: No — $250K stays under the $750,000 trigger.
-
-### Application Effort
-
-**15–25 hours** — less than SAC because it's a smaller, more focused application. Likely within Cedar Valley's capacity if other urgent work doesn't compete.
-
-### Honest Risk
-
-**Network-dependent**: This grant requires you to already have (or quickly recruit) other rural health partners on board. If Cedar Valley doesn't have existing relationships with regional providers, this becomes a networking project *before* writing the grant. If you do have those relationships, it's a strong fit.
-
-**Recommendation**: Pursue this if Cedar Valley has at least preliminary buy-in from 2–3 partner organizations (clinic, hospital, county health department, etc.). Otherwise, it's a longer-term play after relationship-building.
+**One Honest Risk:**
+The award is competitive and focuses on *network development*, not individual clinic operations. If Cedar Valley is not already embedded in a rural health coalition or cannot credibly partner with 2–3 other providers/safety-net organizations in the region, the application will be weaker. Additionally, if the clinic has no experience with formal network governance or lacks regional relationships, building that case in the narrative becomes harder and more time-consuming. Verify internally: *Does Cedar Valley have active relationships with other rural providers or community health organizations that would make a network proposal credible?* If the answer is "not yet, but we're interested," this opportunity is still viable but requires more upfront relationship-building before the grant season opens.
 
 ---
 
-## Opportunity 3: Primary Care Association Technical Assistance
+## **SAM.gov Registration: How to Clear This Blocker**
 
-**Program**: HRSA-27-014 (State and Regional Primary Care Association Cooperative Agreements)
-**CFDA**: 93.129
-**Agency**: Health Resources and Services Administration (HRSA)
-**Open date**: August 3, 2026
+*Cedar Valley must complete this before any federal grant application is eligible for submission.*
 
-### Why This Is Different (& Why to Consider It)
+**Step-by-step:**
 
-This program funds **state/regional Primary Care Associations** (nonprofits that advocate for and support health centers) to deliver technical assistance. Cedar Valley is not the applicant — your **state's Primary Care Association** is. But here's why it matters:
+1. **Confirm Cedar Valley has an EIN** (Employer Identification Number) from the IRS. As an established 501(c)(3), it almost certainly does. If you're unsure, check your IRS determination letter or past tax forms.
 
-If West Virginia's Primary Care Association wins this grant, they provide free or low-cost help to health centers like Cedar Valley to:
-- Write SAC and network grant applications
-- Build EHR and data systems
-- Improve quality metrics
-- Navigate compliance (SAM.gov, NICRA, audits)
+2. **Create a free Login.gov account** at login.gov using the email of the person who will manage SAM.gov registration long-term (typically the grants coordinator or executive director—not a personal email that might change if that person leaves).
 
-### What Cedar Valley Should Do
+3. **Go to sam.gov and sign in with your Login.gov account.** Select "Get Started," then "Register Entity" (not "Search Records," which only looks up existing registrations).
 
-Call or email West Virginia's Primary Care Association and ask: *"Are you planning to apply for HRSA-27-014 technical assistance funding? If so, would you be willing to include health center capacity-building support that could help clinics like ours apply for other HRSA grants?"*
+4. **Enter Cedar Valley's legal business name** (exactly as filed with the IRS on your nonprofit recognition documents), physical address, and EIN. SAM.gov cross-validates these against IRS records—if the name or address doesn't match exactly (e.g., if you use a DBA or an abbreviated name instead of the legal name), the registration will stall.
 
-If they are, Cedar Valley benefits without writing anything. If they're not, suggest they do — and volunteer Cedar Valley as a reference site (i.e., one of the clinics you'd serve).
+5. **Complete Core Data, Assertions, and Points of Contact sections:**
+   - Business types: Select "nonprofit/501(c)(3)"
+   - NAICS codes: Enter codes for primary care clinics (typically 621111 for "Offices of Physicians, General Practice")
+   - Points of contact: Name at least one person who can respond to federal inquiries about the organization
+
+6. **Provide banking information for Electronic Funds Transfer (EFT).** This is required before SAM.gov marks the registration active—federal awards are paid via EFT, so this step can't be skipped.
+
+7. **Submit for validation.** SAM.gov issues a Unique Entity ID (UEI, replacing the old DUNS number) automatically once you submit. Full validation against IRS records commonly takes 1–2 weeks but can run longer if any field doesn't match IRS records exactly.
+
+8. **Renew annually.** SAM.gov will email Cedar Valley a renewal reminder every year—an expired registration blocks new applications the same way a missing one does.
+
+**Realistic timeline:** 1–2 weeks for a clean application. If the legal name or address doesn't exactly match IRS records, expect 2–4 weeks for back-and-forth clarification.
 
 ---
 
-## Summary: 3 Opportunities Reviewed, 2–3 Recommended
+## **INDIRECT COST RATE AGREEMENT (NICRA): What Cedar Valley Can Do Now**
 
-| Opportunity | Award Range | Effort | Deadline | Primary Risk |
-|---|---|---|---|---|
-| **SAC (93.224)** | $500K–$2M | 30–50 hrs | July–Sept 2026 | Effort exceeds capacity without partner support; overhead gap ~$150K/yr |
-| **Rural Network (93.912)** | $50K–$923K | 15–25 hrs | Aug 13, 2026 | Requires existing multi-partner relationships |
-| **PCA Tech Assistance (93.129)** | N/A (your state applies) | 0 hrs | Aug 3, 2026 | None — low-lift; just reach out to WV PCA |
+*Cedar Valley does not have a negotiated rate, but can still apply for grants immediately using a federal fallback.*
 
-### Next Steps
+**The immediate path:** Under federal regulation 2 CFR 200.414(f), any 501(c)(3) nonprofit that has never negotiated an indirect cost rate can claim a flat 10% de minimis indirect cost rate on Modified Total Direct Costs, **with no negotiation required and no waiting.** This is what Cedar Valley would use for the Rural Health Network grant and any other award won before negotiating a real rate.
 
-1. **This week**: Start SAM.gov registration with your grants coordinator. Expect 1–2 weeks for validation.
-2. **Once SAM.gov is active**: Reach out to West Virginia's Primary Care Association about HRSA-27-014.
-3. **Mid-August 2026**: If WV PCA is not actively supported, decide between SAC (larger, more effort) and Rural Network (more manageable, if partners exist).
+**Optional longer-term path:** If Cedar Valley wins larger federal awards and wants to recover more of its true overhead costs, a negotiated rate can be requested:
+- Identify your clinic's "cognizant agency" (usually HHS, which will assign one for most nonprofits).
+- Prepare an indirect cost rate proposal from at least one year of audited or reviewed financial statements, showing how you allocate direct vs. indirect costs.
+- Submit to the cognizant agency for negotiation. **Timeline: several months**, not weeks—this is why it's not a blocker for near-term applications.
+- Once negotiated, the rate applies to ALL federal awards, so it's a one-time investment, not per-application work.
 
-### One Final Note on Indirect Cost Rate Agreements (NICRA)
+**For now:** Plan to use the 10% de minimis rate for the Rural Health Network grant. Revisit negotiating a real rate after winning a few awards and building a track record of federal compliance.
 
-Cedar Valley currently has no negotiated indirect cost rate agreement. Federal law lets you claim a flat 10% "de minimis" rate on direct costs immediately — no negotiation needed. However, if you win a grant $750K+, you'll cross the Single Audit threshold and likely trigger an audit that will highlight the gap between your real overhead (often 18–25%) and the 10% rate. Many nonprofits then negotiate a true rate. This is normal but takes 3–6 months and requires audited financials. Plan for it if you win SAC.
+---
+
+## Summary
+
+**Reviewed:** 10+ opportunities across HRSA, CDC, and NIH programs.  
+**Surfaced:** **1 recommended opportunity** that clears the capacity and compliance bar.
+
+**Cedar Valley's Top Priority:** Register with SAM.gov within the next 1–2 weeks (before the Rural Health Network deadline on/around August 24, 2026) to unlock eligibility. Once registered, the Rural Health Network Development grant becomes a solid, realistic fit for the clinic's size, scope, and volunteer capacity—provided Cedar Valley can credibly position itself in a regional rural health network.
