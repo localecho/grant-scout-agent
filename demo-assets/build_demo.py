@@ -71,14 +71,44 @@ def draw_multiline(draw: ImageDraw.ImageDraw, xy, text: str, font, fill, spacing
         y += (bbox[3] - bbox[1]) + spacing
 
 
+def cover_resize(src: Image.Image, w: int, h: int) -> Image.Image:
+    sw, sh = src.size
+    scale = max(w / sw, h / sh)
+    nw, nh = round(sw * scale), round(sh * scale)
+    src = src.resize((nw, nh), Image.LANCZOS)
+    left = (nw - w) // 2
+    top = (nh - h) // 2
+    return src.crop((left, top, left + w, top + h))
+
+
 def render_card(beat: dict, duration: float, audio: Path, out: Path) -> None:
-    bg = hex_rgb(beat.get("bg", "#0d1117"))
-    img = Image.new("RGB", (W, H), bg)
+    art = beat.get("img")
+    if art:
+        base = cover_resize(Image.open(ROOT / "art" / art).convert("RGB"), W, H)
+        # bottom caption panel: fades in over fade_h, then flat-opaque so text
+        # never sits on a half-transparent, hard-to-read strip
+        panel_h, fade_h, max_alpha = 320, 90, 235
+        gradient = Image.new("L", (1, panel_h), max_alpha)
+        for y in range(fade_h):
+            gradient.putpixel((0, y), int(max_alpha * (y / fade_h)))
+        gradient = gradient.resize((W, panel_h))
+        overlay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+        black = Image.new("RGBA", (W, panel_h), (5, 6, 8, 255))
+        black.putalpha(gradient)
+        overlay.paste(black, (0, H - panel_h), black)
+        img = Image.alpha_composite(base.convert("RGBA"), overlay).convert("RGB")
+    else:
+        bg = hex_rgb(beat.get("bg", "#0d1117"))
+        img = Image.new("RGB", (W, H), bg)
     d = ImageDraw.Draw(img)
-    title_font = ImageFont.truetype(SANS_BOLD, 56)
-    sub_font = ImageFont.truetype(SANS, 28)
-    draw_multiline(d, (0, H // 2 - 140), beat["title"], title_font, (255, 255, 255), 18, anchor_center_x=W // 2)
-    draw_multiline(d, (0, H // 2 - 10), beat.get("sub", ""), sub_font, (201, 209, 217), 14, anchor_center_x=W // 2)
+    title_font = ImageFont.truetype(SANS_BOLD, 56 if not art else 42)
+    sub_font = ImageFont.truetype(SANS, 28 if not art else 22)
+    if art:
+        draw_multiline(d, (60, H - 210), beat["title"], title_font, (255, 255, 255), 12)
+        draw_multiline(d, (60, H - 210 + 62), beat.get("sub", ""), sub_font, (216, 222, 228), 10)
+    else:
+        draw_multiline(d, (0, H // 2 - 140), beat["title"], title_font, (255, 255, 255), 18, anchor_center_x=W // 2)
+        draw_multiline(d, (0, H // 2 - 10), beat.get("sub", ""), sub_font, (201, 209, 217), 14, anchor_center_x=W // 2)
     png = WORK / f"{beat['id']}.png"
     img.save(png)
     run([

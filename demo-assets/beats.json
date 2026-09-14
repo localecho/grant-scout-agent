@@ -5,23 +5,26 @@
     "bg": "#0d1117",
     "title": "80,000+ live federal grants.",
     "sub": "A volunteer food-bank board has about six hours a month\nto find the ones they can actually win.",
-    "vo": "There are over eighty thousand live federal grant opportunities right now. A small food pantry with an all-volunteer board might have six hours a month to spend finding one they can actually win. That search-and-filter problem, not the writing, is where they lose real money."
+    "vo": "There are over eighty thousand live federal grant opportunities right now. A small food pantry with an all-volunteer board might have six hours a month to spend finding one they can actually win. That search-and-filter problem, not the writing, is where they lose real money.",
+    "img": "01_hook.png"
   },
   {
     "id": "02_title",
     "kind": "card",
     "bg": "#0d1117",
     "title": "Grant Scout",
-    "sub": "A background agent that hunts and vets federal grants\nfor small nonprofits — built on Strands Agents.\nGood Neighbor track — Agents for Humans Hackathon",
-    "vo": "Grant Scout is a background agent for organizations like that. Food banks, libraries, small nonprofits, the Good Neighbor track's audience. You give it your org's profile once, mission, budget, states, focus area, and how many volunteer hours you actually have, and it does the busywork."
+    "sub": "A background agent that hunts and vets federal grants\nfor small nonprofits \u2014 built on Strands Agents.\nGood Neighbor track \u2014 Agents for Humans Hackathon",
+    "vo": "Grant Scout is a background agent for organizations like that. Food banks, libraries, small nonprofits, the Good Neighbor track's audience. You give it your org's profile once, mission, budget, states, focus area, and how many volunteer hours you actually have, and it does the busywork.",
+    "img": "02_title.png"
   },
   {
     "id": "03_how",
     "kind": "card",
     "bg": "#0d1117",
     "title": "One Strands agent, four real tools",
-    "sub": "search_open_grants — live grants.gov search\nhistorical_award_context — did nonprofits actually win this, and at what $\nestimate_compliance_burden — realistic application effort\ncompliance_guide — the real SAM.gov / indirect-cost-rate steps",
-    "vo": "It's one Strands agent with four tools. One searches grants dot gov live. Another checks a program's real award history against actual USA Spending federal award data, so a grant that sounds like a fit gets rejected if nonprofits never actually win it. A third and fourth estimate real application effort and walk the org through the actual SAM dot gov registration steps, not just a warning that they need one."
+    "sub": "search_open_grants \u2014 live grants.gov search\nhistorical_award_context \u2014 did nonprofits actually win this, and at what $\nestimate_compliance_burden \u2014 realistic application effort\ncompliance_guide \u2014 the real SAM.gov / indirect-cost-rate steps",
+    "vo": "It's one Strands agent with four tools. One searches grants dot gov live. Another checks a program's real award history against actual USA Spending federal award data, so a grant that sounds like a fit gets rejected if nonprofits never actually win it. A third and fourth estimate real application effort and walk the org through the actual SAM dot gov registration steps, not just a warning that they need one.",
+    "img": "03_how.png"
   },
   {
     "id": "04_intro",
@@ -33,22 +36,22 @@
   {
     "id": "05_reject",
     "kind": "screen",
-    "prompt": "$ Cross-checking award history…",
-    "body": "1. Cold Chain Grants for Emergency Food Assistance (CFDA 10.197)\n   → directly matches emergency food mission\n\nHistorical check:\n   No nonprofit award history found in FY2021 data.\n   Signals a state/local-government or commercial-processor\n   program, not a community nonprofit one.\n\n   VERDICT: NOT RECOMMENDED — flagged as a real risk,\n   not surfaced as a false positive.",
+    "prompt": "$ Cross-checking award history\u2026",
+    "body": "1. Cold Chain Grants for Emergency Food Assistance (CFDA 10.197)\n   \u2192 directly matches emergency food mission\n\nHistorical check:\n   No nonprofit award history found in FY2021 data.\n   Signals a state/local-government or commercial-processor\n   program, not a community nonprofit one.\n\n   VERDICT: NOT RECOMMENDED \u2014 flagged as a real risk,\n   not surfaced as a false positive.",
     "vo": "Here, Cold Chain Grants for Emergency Food Assistance. Sounds perfect. It checks the historical data. No nonprofit award history at all. It flags that as a real risk instead of recommending it anyway."
   },
   {
     "id": "06_recommend",
     "kind": "screen",
     "prompt": "$ Historical check: CFDA 94.002",
-    "body": "AmeriCorps Seniors RSVP (CFDA 94.002)\n   698 nonprofit awards, 47 states (FY2021)\n   Range: $5,000 – $736,000 · avg $64,940\n\n   Compliance floor: SAM.gov / UEI — unknown, must confirm\n   Indirect cost: 10% de minimis available now\n   Structural cost if won: ~$6,500/yr uncovered overhead\n\n   VERDICT: RECOMMENDED — with the honest risk stated,\n   not hidden.",
+    "body": "AmeriCorps Seniors RSVP (CFDA 94.002)\n   698 nonprofit awards, 47 states (FY2021)\n   Range: $5,000 \u2013 $736,000 \u00b7 avg $64,940\n\n   Compliance floor: SAM.gov / UEI \u2014 unknown, must confirm\n   Indirect cost: 10% de minimis available now\n   Structural cost if won: ~$6,500/yr uncovered overhead\n\n   VERDICT: RECOMMENDED \u2014 with the honest risk stated,\n   not hidden.",
     "vo": "AmeriCorps Seniors RSVP. Six hundred ninety eight nonprofit awards across forty seven states. Real dollar range, real deadline, and an honest risk attached, not forty links dumped on a volunteer board with no context."
   },
   {
     "id": "07_bottomline",
     "kind": "screen",
     "prompt": "$ Bottom line",
-    "body": "30+ federal opportunities reviewed\n 1 opportunity recommended\n\nBefore applying: confirm SAM.gov registration + UEI.\nThat is the hard blocker — not the grant-writing.",
+    "body": "30+ federal opportunities reviewed\n 1 opportunity recommended\n\nBefore applying: confirm SAM.gov registration + UEI.\nThat is the hard blocker \u2014 not the grant-writing.",
     "vo": "Thirty plus opportunities reviewed, one recommended, and the real blocker named up front: not the grant writing, the SAM dot gov registration."
   },
   {
@@ -56,8 +59,9 @@
     "kind": "card",
     "bg": "#0d1117",
     "title": "Provider-agnostic by default",
-    "sub": "Same agent code. OpenRouter for fast iteration today,\nAmazon Bedrock in production — one environment variable.",
-    "vo": "It defaults to OpenRouter for fast iteration, but it's the exact same agent code on Amazon Bedrock, one environment variable. Strands made that a non-event."
+    "sub": "Same agent code. OpenRouter for fast iteration today,\nAmazon Bedrock in production \u2014 one environment variable.",
+    "vo": "It defaults to OpenRouter for fast iteration, but it's the exact same agent code on Amazon Bedrock, one environment variable. Strands made that a non-event.",
+    "img": "08_agnostic.png"
   },
   {
     "id": "09_tests",
@@ -71,7 +75,8 @@
     "kind": "card",
     "bg": "#0d1117",
     "title": "Grant Scout",
-    "sub": "Turns \"we should look into grants sometime\" into a real\nshort list, every cycle — without asking a volunteer board\nto become grant-search experts.\ngithub.com/localecho/grant-scout-agent · MIT",
-    "vo": "This turns 'we should look into grants sometime' into an actual short list, every cycle, without asking a volunteer board to become grant search experts. Thanks for watching."
+    "sub": "Turns \"we should look into grants sometime\" into a real\nshort list, every cycle \u2014 without asking a volunteer board\nto become grant-search experts.\ngithub.com/localecho/grant-scout-agent \u00b7 MIT",
+    "vo": "This turns 'we should look into grants sometime' into an actual short list, every cycle, without asking a volunteer board to become grant search experts. Thanks for watching.",
+    "img": "10_close.png"
   }
 ]
