@@ -2,8 +2,9 @@
 
 Track: **Good Neighbor Agents**
 
-Status: DRAFT. Fill in `<REPO_URL>` and `<LIVE_DEMO_URL>` (optional) before pasting into the
-Devpost form. Video link added once recorded per `VIDEO_SCRIPT.md`.
+Status: DRAFT. Repo URL: https://github.com/localecho/grant-scout-agent (public, MIT — verified
+2026-09-14). No live-hosted demo (CLI tool, run locally per README) — leave `<LIVE_DEMO_URL>`
+blank on the form. Video link added once recorded per `VIDEO_SCRIPT.md`.
 
 ---
 

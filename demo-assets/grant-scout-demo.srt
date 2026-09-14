@@ -1,0 +1,39 @@
+1
+00:00:00,000 --> 00:00:15,550
+There are over eighty thousand live federal grant opportunities right now. A small food pantry with an all-volunteer board might have six hours a month to spend finding one they can actually win. That search-and-filter problem, not the writing, is where they lose real money.
+
+2
+00:00:15,550 --> 00:00:34,850
+Grant Scout is a background agent for organizations like that. Food banks, libraries, small nonprofits, the Good Neighbor track's audience. You give it your org's profile once, mission, budget, states, focus area, and how many volunteer hours you actually have, and it does the busywork.
+
+3
+00:00:34,850 --> 00:00:59,220
+It's one Strands agent with four tools. One searches grants dot gov live. Another checks a program's real award history against actual USA Spending federal award data, so a grant that sounds like a fit gets rejected if nonprofits never actually win it. A third and fourth estimate real application effort and walk the org through the actual SAM dot gov registration steps, not just a warning that they need one.
+
+4
+00:00:59,220 --> 00:01:06,380
+Watch it search, then cross-check. Thirty-plus current opportunities reviewed against grants dot gov, live.
+
+5
+00:01:06,380 --> 00:01:19,290
+Here, Cold Chain Grants for Emergency Food Assistance. Sounds perfect. It checks the historical data. No nonprofit award history at all. It flags that as a real risk instead of recommending it anyway.
+
+6
+00:01:19,290 --> 00:01:34,120
+AmeriCorps Seniors RSVP. Six hundred ninety eight nonprofit awards across forty seven states. Real dollar range, real deadline, and an honest risk attached, not forty links dumped on a volunteer board with no context.
+
+7
+00:01:34,120 --> 00:01:43,560
+Thirty plus opportunities reviewed, one recommended, and the real blocker named up front: not the grant writing, the SAM dot gov registration.
+
+8
+00:01:43,560 --> 00:01:53,880
+It defaults to OpenRouter for fast iteration, but it's the exact same agent code on Amazon Bedrock, one environment variable. Strands made that a non-event.
+
+9
+00:01:53,880 --> 00:02:05,230
+The tools are unit-tested independently of any model call, fifty eight passing tests, so anyone can verify the search parsing and the award-history lookup without needing an API key.
+
+10
+00:02:05,230 --> 00:02:15,710
+This turns 'we should look into grants sometime' into an actual short list, every cycle, without asking a volunteer board to become grant search experts. Thanks for watching.

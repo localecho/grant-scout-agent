@@ -1,0 +1,77 @@
+[
+  {
+    "id": "01_hook",
+    "kind": "card",
+    "bg": "#0d1117",
+    "title": "80,000+ live federal grants.",
+    "sub": "A volunteer food-bank board has about six hours a month\nto find the ones they can actually win.",
+    "vo": "There are over eighty thousand live federal grant opportunities right now. A small food pantry with an all-volunteer board might have six hours a month to spend finding one they can actually win. That search-and-filter problem, not the writing, is where they lose real money."
+  },
+  {
+    "id": "02_title",
+    "kind": "card",
+    "bg": "#0d1117",
+    "title": "Grant Scout",
+    "sub": "A background agent that hunts and vets federal grants\nfor small nonprofits — built on Strands Agents.\nGood Neighbor track — Agents for Humans Hackathon",
+    "vo": "Grant Scout is a background agent for organizations like that. Food banks, libraries, small nonprofits, the Good Neighbor track's audience. You give it your org's profile once, mission, budget, states, focus area, and how many volunteer hours you actually have, and it does the busywork."
+  },
+  {
+    "id": "03_how",
+    "kind": "card",
+    "bg": "#0d1117",
+    "title": "One Strands agent, four real tools",
+    "sub": "search_open_grants — live grants.gov search\nhistorical_award_context — did nonprofits actually win this, and at what $\nestimate_compliance_burden — realistic application effort\ncompliance_guide — the real SAM.gov / indirect-cost-rate steps",
+    "vo": "It's one Strands agent with four tools. One searches grants dot gov live. Another checks a program's real award history against actual USA Spending federal award data, so a grant that sounds like a fit gets rejected if nonprofits never actually win it. A third and fourth estimate real application effort and walk the org through the actual SAM dot gov registration steps, not just a warning that they need one."
+  },
+  {
+    "id": "04_intro",
+    "kind": "screen",
+    "prompt": "$ python -m src.run --profile profiles/example_food_bank.yaml",
+    "body": "Running Grant Scout for: Riverside Community Food Pantry\n\nI'll search for current federal funding opportunities matching\nRiverside's focus areas, then vet each against their capacity\nand eligibility constraints.\n\nTool #1  search_open_grants\nTool #2  search_open_grants   (8 calls total)\nTool #3  historical_award_context\nTool #4  historical_award_context   (4 calls total)",
+    "vo": "Watch it search, then cross-check. Thirty-plus current opportunities reviewed against grants dot gov, live."
+  },
+  {
+    "id": "05_reject",
+    "kind": "screen",
+    "prompt": "$ Cross-checking award history…",
+    "body": "1. Cold Chain Grants for Emergency Food Assistance (CFDA 10.197)\n   → directly matches emergency food mission\n\nHistorical check:\n   No nonprofit award history found in FY2021 data.\n   Signals a state/local-government or commercial-processor\n   program, not a community nonprofit one.\n\n   VERDICT: NOT RECOMMENDED — flagged as a real risk,\n   not surfaced as a false positive.",
+    "vo": "Here, Cold Chain Grants for Emergency Food Assistance. Sounds perfect. It checks the historical data. No nonprofit award history at all. It flags that as a real risk instead of recommending it anyway."
+  },
+  {
+    "id": "06_recommend",
+    "kind": "screen",
+    "prompt": "$ Historical check: CFDA 94.002",
+    "body": "AmeriCorps Seniors RSVP (CFDA 94.002)\n   698 nonprofit awards, 47 states (FY2021)\n   Range: $5,000 – $736,000 · avg $64,940\n\n   Compliance floor: SAM.gov / UEI — unknown, must confirm\n   Indirect cost: 10% de minimis available now\n   Structural cost if won: ~$6,500/yr uncovered overhead\n\n   VERDICT: RECOMMENDED — with the honest risk stated,\n   not hidden.",
+    "vo": "AmeriCorps Seniors RSVP. Six hundred ninety eight nonprofit awards across forty seven states. Real dollar range, real deadline, and an honest risk attached, not forty links dumped on a volunteer board with no context."
+  },
+  {
+    "id": "07_bottomline",
+    "kind": "screen",
+    "prompt": "$ Bottom line",
+    "body": "30+ federal opportunities reviewed\n 1 opportunity recommended\n\nBefore applying: confirm SAM.gov registration + UEI.\nThat is the hard blocker — not the grant-writing.",
+    "vo": "Thirty plus opportunities reviewed, one recommended, and the real blocker named up front: not the grant writing, the SAM dot gov registration."
+  },
+  {
+    "id": "08_agnostic",
+    "kind": "card",
+    "bg": "#0d1117",
+    "title": "Provider-agnostic by default",
+    "sub": "Same agent code. OpenRouter for fast iteration today,\nAmazon Bedrock in production — one environment variable.",
+    "vo": "It defaults to OpenRouter for fast iteration, but it's the exact same agent code on Amazon Bedrock, one environment variable. Strands made that a non-event."
+  },
+  {
+    "id": "09_tests",
+    "kind": "screen",
+    "prompt": "$ python -m pytest -v",
+    "body": "..........................................................\n58 passed, 1 warning in 4.02s",
+    "vo": "The tools are unit-tested independently of any model call, fifty eight passing tests, so anyone can verify the search parsing and the award-history lookup without needing an API key."
+  },
+  {
+    "id": "10_close",
+    "kind": "card",
+    "bg": "#0d1117",
+    "title": "Grant Scout",
+    "sub": "Turns \"we should look into grants sometime\" into a real\nshort list, every cycle — without asking a volunteer board\nto become grant-search experts.\ngithub.com/localecho/grant-scout-agent · MIT",
+    "vo": "This turns 'we should look into grants sometime' into an actual short list, every cycle, without asking a volunteer board to become grant search experts. Thanks for watching."
+  }
+]
