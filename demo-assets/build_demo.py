@@ -141,6 +141,9 @@ def ffprobe_duration(path: Path) -> float:
          "-of", "default=noprint_wrappers=1:nokey=1", str(path)],
         capture_output=True, text=True,
     )
+    if r.returncode != 0 or not r.stdout.strip():
+        raise SystemExit(f"FAIL: ffprobe couldn't read a duration from {path} -- "
+                          f"{r.stderr.strip() or 'empty output'}")
     return float(r.stdout.strip())
 
 
@@ -219,7 +222,23 @@ def main() -> None:
     (ROOT / "grant-scout-demo.srt").write_text(build_srt(beats, actual_durations))
     print(f"Max per-segment drift: {max_drift_ms:.0f}ms (within {DRIFT_TOLERANCE_S * 1000:.0f}ms "
           f"tolerance; SRT built from measured durations, not requested ones)")
-    print(f"\nDONE. Total runtime: {sum(actual_durations):.1f}s -> {out_mp4}")
+
+    # The segments going IN were verified above; the concat -c copy MUXING
+    # ITSELF can still diverge (timestamp edge cases at join points,
+    # especially AAC priming) -- probe the actual shipped file too, not just
+    # its inputs, or the SRT built from segment measurements could still be
+    # wrong against what a viewer actually plays.
+    final_duration = ffprobe_duration(out_mp4)
+    concat_drift = abs(final_duration - sum(actual_durations))
+    if concat_drift > DRIFT_TOLERANCE_S:
+        raise SystemExit(
+            f"FAIL: final mux {out_mp4.name} is {final_duration:.2f}s but its "
+            f"segments sum to {sum(actual_durations):.2f}s ({concat_drift * 1000:.0f}ms "
+            f"drift) -- concat itself introduced drift the SRT doesn't account for."
+        )
+    print(f"Final mux verified: {final_duration:.2f}s vs {sum(actual_durations):.2f}s "
+          f"segment sum ({concat_drift * 1000:.0f}ms drift)")
+    print(f"\nDONE. Total runtime: {final_duration:.1f}s -> {out_mp4}")
 
 
 def fmt_ts(sec: float) -> str:
