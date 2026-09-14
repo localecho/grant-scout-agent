@@ -48,17 +48,22 @@ def synth_narration(beat_id: str, text: str) -> tuple[Path, float]:
     wav = WORK / f"{beat_id}.wav"
     run(["say", "-v", VOICE, "-o", str(aiff), text])
     run(["ffmpeg", "-y", "-i", str(aiff), "-ar", "44100", str(wav)])
-    r = subprocess.run(
-        ["ffprobe", "-v", "error", "-show_entries", "format=duration",
-         "-of", "default=noprint_wrappers=1:nokey=1", str(wav)],
-        capture_output=True, text=True,
-    )
-    return wav, float(r.stdout.strip())
+    return wav, ffprobe_duration(wav)
 
 
 def hex_rgb(h: str) -> tuple[int, int, int]:
     h = h.lstrip("#")
-    return tuple(int(h[i:i + 2], 16) for i in (0, 2, 4))  # type: ignore[return-value]
+    r, g, b = (int(h[i:i + 2], 16) for i in (0, 2, 4))
+    return r, g, b
+
+
+def png_to_segment(png: Path, audio: Path, duration: float, out: Path) -> None:
+    run([
+        "ffmpeg", "-y", "-loop", "1", "-i", str(png), "-i", str(audio),
+        "-t", str(duration),
+        "-c:v", "libx264", "-pix_fmt", "yuv420p", "-c:a", "aac",
+        str(out),
+    ])
 
 
 def draw_multiline(draw: ImageDraw.ImageDraw, xy, text: str, font, fill, spacing: int, anchor_center_x: int | None = None):
@@ -111,12 +116,7 @@ def render_card(beat: dict, duration: float, audio: Path, out: Path) -> None:
         draw_multiline(d, (0, H // 2 - 10), beat.get("sub", ""), sub_font, (201, 209, 217), 14, anchor_center_x=W // 2)
     png = WORK / f"{beat['id']}.png"
     img.save(png)
-    run([
-        "ffmpeg", "-y", "-loop", "1", "-i", str(png), "-i", str(audio),
-        "-t", str(duration),
-        "-c:v", "libx264", "-pix_fmt", "yuv420p", "-c:a", "aac",
-        str(out),
-    ])
+    png_to_segment(png, audio, duration, out)
 
 
 def render_screen(beat: dict, duration: float, audio: Path, out: Path) -> None:
@@ -128,17 +128,39 @@ def render_screen(beat: dict, duration: float, audio: Path, out: Path) -> None:
     draw_multiline(d, (60, 130), beat["body"], body_font, (230, 237, 243), 12)
     png = WORK / f"{beat['id']}.png"
     img.save(png)
-    run([
-        "ffmpeg", "-y", "-loop", "1", "-i", str(png), "-i", str(audio),
-        "-t", str(duration),
-        "-c:v", "libx264", "-pix_fmt", "yuv420p", "-c:a", "aac",
-        str(out),
-    ])
+    png_to_segment(png, audio, duration, out)
+
+
+def ffprobe_duration(path: Path) -> float:
+    r = subprocess.run(
+        ["ffprobe", "-v", "error", "-show_entries", "format=duration",
+         "-of", "default=noprint_wrappers=1:nokey=1", str(path)],
+        capture_output=True, text=True,
+    )
+    return float(r.stdout.strip())
+
+
+def verify_segment_drift(segment_paths: list[Path], expected_durations: list[float]) -> float:
+    """Per-segment ffprobe check, not just the aggregate. AAC encoding can add
+    priming/padding samples per segment; `-c copy` concat carries that drift
+    forward uncorrected, so the SRT (built from *expected* durations) can be
+    off even when the final file's total duration looks right. Returns the
+    largest single-segment drift in seconds."""
+    max_drift = 0.0
+    for seg, expected in zip(segment_paths, expected_durations):
+        actual = ffprobe_duration(seg)
+        drift = abs(actual - expected)
+        max_drift = max(max_drift, drift)
+        if drift > 0.05:
+            print(f"  DRIFT {seg.name}: expected {expected:.2f}s, actual {actual:.2f}s "
+                  f"({drift * 1000:.0f}ms)", file=sys.stderr)
+    return max_drift
 
 
 def main() -> None:
     beats = json.loads((ROOT / "beats.json").read_text())
     segment_paths: list[Path] = []
+    expected_durations: list[float] = []
     srt_lines: list[str] = []
     t = 0.0
     for i, beat in enumerate(beats, 1):
@@ -150,6 +172,7 @@ def main() -> None:
         else:
             render_screen(beat, duration, wav, seg)
         segment_paths.append(seg)
+        expected_durations.append(duration)
 
         start = t
         end = t + duration
@@ -167,15 +190,19 @@ def main() -> None:
         "ffmpeg", "-y", "-f", "concat", "-safe", "0", "-i", str(concat_file),
         "-c", "copy", str(out_mp4),
     ])
+
+    max_drift = verify_segment_drift(segment_paths, expected_durations)
+    print(f"Max per-segment caption drift: {max_drift * 1000:.0f}ms "
+          f"({'within tolerance' if max_drift <= 0.1 else 'EXCEEDS 100ms tolerance'})")
     (ROOT / "grant-scout-demo.srt").write_text("\n".join(srt_lines))
     print(f"\nDONE. Total runtime: {t:.1f}s -> {out_mp4}")
 
 
 def fmt_ts(sec: float) -> str:
-    h = int(sec // 3600)
-    m = int((sec % 3600) // 60)
-    s = int(sec % 60)
-    ms = int(round((sec - int(sec)) * 1000))
+    total_ms = int(round(sec * 1000))
+    h, rem_ms = divmod(total_ms, 3_600_000)
+    m, rem_ms = divmod(rem_ms, 60_000)
+    s, ms = divmod(rem_ms, 1_000)
     return f"{h:02d}:{m:02d}:{s:02d},{ms:03d}"
 
 
