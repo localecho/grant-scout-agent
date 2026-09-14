@@ -84,7 +84,7 @@ def render_card(beat: dict, duration: float, audio: Path, out: Path) -> None:
     run([
         "ffmpeg", "-y", "-loop", "1", "-i", str(png), "-i", str(audio),
         "-t", str(duration),
-        "-c:v", "libx264", "-pix_fmt", "yuv420p", "-c:a", "aac", "-shortest",
+        "-c:v", "libx264", "-pix_fmt", "yuv420p", "-c:a", "aac",
         str(out),
     ])
 
@@ -101,7 +101,7 @@ def render_screen(beat: dict, duration: float, audio: Path, out: Path) -> None:
     run([
         "ffmpeg", "-y", "-loop", "1", "-i", str(png), "-i", str(audio),
         "-t", str(duration),
-        "-c:v", "libx264", "-pix_fmt", "yuv420p", "-c:a", "aac", "-shortest",
+        "-c:v", "libx264", "-pix_fmt", "yuv420p", "-c:a", "aac",
         str(out),
     ])
 
