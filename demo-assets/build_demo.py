@@ -21,7 +21,6 @@ from PIL import Image, ImageDraw, ImageFont
 
 ROOT = Path(__file__).resolve().parent
 WORK = ROOT / "work"
-WORK.mkdir(exist_ok=True)
 
 SANS_BOLD = "/System/Library/Fonts/Supplemental/Arial Bold.ttf"
 SANS = "/System/Library/Fonts/Supplemental/Arial.ttf"
@@ -52,8 +51,13 @@ def synth_narration(beat_id: str, text: str) -> tuple[Path, float]:
 
 
 def hex_rgb(h: str) -> tuple[int, int, int]:
-    h = h.lstrip("#")
-    r, g, b = (int(h[i:i + 2], 16) for i in (0, 2, 4))
+    stripped = h.lstrip("#")
+    if len(stripped) != 6:
+        raise ValueError(f"bg color {h!r} must be a 6-hex-digit color like '#0d1117'")
+    try:
+        r, g, b = (int(stripped[i:i + 2], 16) for i in (0, 2, 4))
+    except ValueError as exc:
+        raise ValueError(f"bg color {h!r} is not valid hex") from exc
     return r, g, b
 
 
@@ -140,28 +144,54 @@ def ffprobe_duration(path: Path) -> float:
     return float(r.stdout.strip())
 
 
-def verify_segment_drift(segment_paths: list[Path], expected_durations: list[float]) -> float:
-    """Per-segment ffprobe check, not just the aggregate. AAC encoding can add
-    priming/padding samples per segment; `-c copy` concat carries that drift
-    forward uncorrected, so the SRT (built from *expected* durations) can be
-    off even when the final file's total duration looks right. Returns the
-    largest single-segment drift in seconds."""
-    max_drift = 0.0
-    for seg, expected in zip(segment_paths, expected_durations):
+DRIFT_TOLERANCE_S = 0.1
+
+
+def measure_drift(segment_paths: list[Path], expected_durations: list[float]) -> list[float]:
+    """Real per-segment ffprobe of every rendered file. AAC encoding can add
+    priming/padding samples per segment, and `-c copy` concat carries that
+    forward uncorrected -- checking only the final file's aggregate duration
+    can look fine while individual segments (and therefore captions built
+    from *expected* durations) are off. Returns each segment's actual
+    duration; the caller builds the SRT from these, not from what was asked
+    for, so caption sync is exact regardless of encoder padding."""
+    actuals = []
+    for seg, expected in zip(segment_paths, expected_durations, strict=True):
         actual = ffprobe_duration(seg)
         drift = abs(actual - expected)
-        max_drift = max(max_drift, drift)
+        actuals.append(actual)
         if drift > 0.05:
-            print(f"  DRIFT {seg.name}: expected {expected:.2f}s, actual {actual:.2f}s "
+            print(f"  drift {seg.name}: expected {expected:.2f}s, actual {actual:.2f}s "
                   f"({drift * 1000:.0f}ms)", file=sys.stderr)
-    return max_drift
+        if drift > DRIFT_TOLERANCE_S:
+            # A drift this large isn't encoder padding, it's a rendering
+            # failure (e.g. `say` producing near-empty audio) -- a build
+            # that can't fail on this isn't actually verifying anything.
+            raise SystemExit(
+                f"FAIL: {seg.name} drifted {drift * 1000:.0f}ms from expected "
+                f"({DRIFT_TOLERANCE_S * 1000:.0f}ms tolerance) -- rendering is "
+                f"broken, not just padded; fix before shipping this build."
+            )
+    return actuals
+
+
+def build_srt(beats: list[dict], actual_durations: list[float]) -> str:
+    """Cumulative timeline from measured segment durations, not the durations
+    that were requested -- captions land on what the video actually plays."""
+    lines: list[str] = []
+    t = 0.0
+    for i, (beat, duration) in enumerate(zip(beats, actual_durations, strict=True), 1):
+        start, end = t, t + duration
+        lines += [str(i), f"{fmt_ts(start)} --> {fmt_ts(end)}", beat["vo"], ""]
+        t = end
+    return "\n".join(lines)
 
 
 def main() -> None:
+    WORK.mkdir(exist_ok=True)
     beats = json.loads((ROOT / "beats.json").read_text())
     segment_paths: list[Path] = []
     expected_durations: list[float] = []
-    srt_lines: list[str] = []
     t = 0.0
     for i, beat in enumerate(beats, 1):
         wav, vo_dur = synth_narration(beat["id"], beat["vo"])
@@ -173,14 +203,7 @@ def main() -> None:
             render_screen(beat, duration, wav, seg)
         segment_paths.append(seg)
         expected_durations.append(duration)
-
-        start = t
-        end = t + duration
-        srt_lines.append(str(i))
-        srt_lines.append(f"{fmt_ts(start)} --> {fmt_ts(end)}")
-        srt_lines.append(beat["vo"])
-        srt_lines.append("")
-        t = end
+        t += duration
         print(f"[{i}/{len(beats)}] {beat['id']}: {duration}s (running total {t:.1f}s)")
 
     concat_file = WORK / "concat.txt"
@@ -191,11 +214,12 @@ def main() -> None:
         "-c", "copy", str(out_mp4),
     ])
 
-    max_drift = verify_segment_drift(segment_paths, expected_durations)
-    print(f"Max per-segment caption drift: {max_drift * 1000:.0f}ms "
-          f"({'within tolerance' if max_drift <= 0.1 else 'EXCEEDS 100ms tolerance'})")
-    (ROOT / "grant-scout-demo.srt").write_text("\n".join(srt_lines))
-    print(f"\nDONE. Total runtime: {t:.1f}s -> {out_mp4}")
+    actual_durations = measure_drift(segment_paths, expected_durations)
+    max_drift_ms = max(abs(a - e) for a, e in zip(actual_durations, expected_durations)) * 1000
+    (ROOT / "grant-scout-demo.srt").write_text(build_srt(beats, actual_durations))
+    print(f"Max per-segment drift: {max_drift_ms:.0f}ms (within {DRIFT_TOLERANCE_S * 1000:.0f}ms "
+          f"tolerance; SRT built from measured durations, not requested ones)")
+    print(f"\nDONE. Total runtime: {sum(actual_durations):.1f}s -> {out_mp4}")
 
 
 def fmt_ts(sec: float) -> str:

@@ -1,0 +1,2 @@
+{"seat": "kimi_video_pipeline_review", "model": "moonshotai/kimi-k3", "cost": 0.014000159496504, "finish": "stop", "prompt_tokens": 2508, "completion_tokens": 554, "attempt": 1, "max_tokens": 1200}
+{"seat": "kimi_video_pipeline_regrade", "model": "moonshotai/kimi-k3", "cost": 0.014499270470556, "finish": "stop", "prompt_tokens": 2862, "completion_tokens": 521, "attempt": 1, "max_tokens": 1000}
